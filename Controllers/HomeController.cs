@@ -23,6 +23,11 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        public IActionResult SuccessPage()
+        { 
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
