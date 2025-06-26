@@ -1,4 +1,4 @@
-﻿@model QontrolSystem.Models.User
+@model QontrolSystem.Models.User
 @{
     ViewBag.Title = "Register";
     var isLoggedIn = Context.Session.GetInt32("UserID") != null;
@@ -19,9 +19,11 @@
     <link rel="stylesheet" href="~/QontrolSystem.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home-navbar.css" asp-append-version="true" />
 
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     @* // This line renders css per view *@
+
     @RenderSection("Styles", required: false)
 </head>
 <body>
