@@ -2,15 +2,41 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
+
 
 @if (ViewBag.Error != null)
 {
     <div style="color: red;">@ViewBag.Error</div>
 }
 
-<form asp-action="Login" method="post">
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
+<div class="container  min-vh-100 d-flex justify-content-center align-items-center flex-column w-50 h-auto rounded shadow-sm" style="background-color:#5BF464">
+    
+    <div class="m-4 text-center">
+        <img src="~/Images/logo.png" alt="Qontrol System Logo" class="img-fluid w-50 rounded" />
+    </div>
+
+    <form asp-action="Login" method="post" class="w-100" style="max-width: 400px;">
+        
+        <div class="form-outline mb-4 ">
+            <input type="email" name="email" class="form-control form-control-lg " placeholder="Enter a valid email address" required />
+        </div>
+
+        <div class="form-outline mb-4">
+            <input type="password" name="password" placeholder="Password" class="form-control form-control-lg " required />
+       </div>
+
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary btn-lg w-50">Login</button>
+        </div>   
+        
+        <div class="text-center mb-4">
+            <p>
+                Don't have an account? 
+                <a asp-controller="Account" asp-action="Register" class="link-primary link-underline-opacity-0">
+                    Register here
+                </a>
+            </p>
+        </div>
+       
+   </form>
+</div>
