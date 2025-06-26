@@ -1,0 +1,242 @@
+﻿
+.logo-container {
+    margin-bottom: 40px;
+}
+
+ .logo-container img {
+     max-width: 200px;
+     height: auto;
+     border-radius: 10px;
+    }
+.register-container {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    margin: -20px -15px;
+}
+
+.register-card {
+    display: flex;
+    max-width: 1000px;
+    width: 100%;
+    min-height: 500px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.welcome-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #5ec8e0 0%, #4f80e1 100%);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    position: relative;
+}
+
+    .welcome-panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+    }
+
+.welcome-content {
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-title {
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.welcome-subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.feature-list {
+    list-style: none;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+    .feature-item::before {
+        content: '✓';
+        width: 18px;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-weight: bold;
+        font-size: 0.8rem;
+    }
+
+.form-panel {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #29b6f6;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(41, 182, 246, 0.1);
+    }
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+.btn-register {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #5ec8e0 0%, #4f80e1 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+    .btn-register:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 16px rgba(41, 182, 246, 0.3);
+    }
+
+.checkmark-icon {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.register-link-container {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #4a5568;
+}
+
+.register-link {
+    color: #4299e1;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .register-link:hover {
+        text-decoration: underline;
+    }
+
+@media (max-width: 768px) {
+    .register-container {
+        padding: 20px 10px;
+    }
+
+    .register-card {
+        flex-direction: column;
+        max-width: 450px;
+    }
+
+    .welcome-panel {
+        padding: 30px 25px;
+    }
+
+    .form-panel {
+        padding: 30px 25px;
+    }
+
+    .welcome-title {
+        font-size: 1.8rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-container {
+        margin: -15px -10px;
+    }
+}
