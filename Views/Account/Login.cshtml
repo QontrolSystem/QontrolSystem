@@ -1,42 +1,70 @@
 ﻿@{
     ViewBag.Title = "Login";
 }
-
-
+@section Styles {
+    <link href="~/css/login.css" rel="stylesheet" />
+}
 
 @if (ViewBag.Error != null)
 {
-    <div style="color: red;">@ViewBag.Error</div>
+    <div class="error-message">@ViewBag.Error</div>
 }
 
-<div class="container  min-vh-100 d-flex justify-content-center align-items-center flex-column w-50 h-auto rounded shadow-sm" style="background-color:#5BF464">
-    
-    <div class="m-4 text-center">
-        <img src="~/Images/logo.png" alt="Qontrol System Logo" class="img-fluid w-50 rounded" />
+<div class="login-container">
+    <!-- Left side - Welcome section -->
+    <div class="welcome-section">
+        <div class="logo-container">
+            <img src="~/Images/logo.png" alt="Qontrol System Logo" />
+        </div>
+
+        <h1 class="welcome-title">Welcome to Qontrol</h1>
+        <p class="welcome-subtitle">Your trusted solution for ticketing systems, support, and more</p>
+
+        <ul class="feature-list">
+            <li class="feature-item">Secure Authentication</li>
+            <li class="feature-item">Real-time Updates</li>
+            <li class="feature-item">24/7 Support</li>
+        </ul>
     </div>
 
-    <form asp-action="Login" method="post" class="w-100" style="max-width: 400px;">
-        
-        <div class="form-outline mb-4 ">
-            <input type="email" name="email" class="form-control form-control-lg " placeholder="Enter a valid email address" required />
-        </div>
+    <!-- Right side - Login form -->
+    <div class="form-section">
+        <div class="form-container">
+            <div class="form-header">
+                <h2 class="form-title">Sign In</h2>
+                <p class="form-subtitle">Access your Qontrol account</p>
+            </div>
 
-        <div class="form-outline mb-4">
-            <input type="password" name="password" placeholder="Password" class="form-control form-control-lg " required />
-       </div>
+            <form asp-action="Login" method="post" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-input" placeholder="Enter your email" required />
+                </div>
 
-        <div class="text-center mb-4">
-            <button type="submit" class="btn btn-primary btn-lg w-50">Login</button>
-        </div>   
-        
-        <div class="text-center mb-4">
-            <p>
-                Don't have an account? 
-                <a asp-controller="Account" asp-action="Register" class="link-primary link-underline-opacity-0">
-                    Register here
-                </a>
-            </p>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" placeholder="Enter your password" required />
+                </div>
+
+                @*<div class="form-row">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="remember" name="remember" />
+                        <label for="remember" class="checkbox-label">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>*@
+
+                <button type="submit" class="login-button">Sign In</button>
+
+                <div class="register-link-container">
+                    <p>
+                        Don't have an account?
+                        <a asp-controller="Account" asp-action="Register" class="register-link">
+                            Register here
+                        </a>
+                    </p>
+                </div>
+            </form>
         </div>
-       
-   </form>
+    </div>
 </div>
