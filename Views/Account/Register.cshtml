@@ -1,5 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model QontrolSystem.Models.User
 @{
+    ViewBag.Title = "Register";
 }
+
+<h2>Register</h2>
+
+<form asp-action="Register" method="post">
+    <input asp-for="FirstName" placeholder="First Name" required />
+    <input asp-for="LastName" placeholder="Last Name" required />
+    <input asp-for="Email" type="email" placeholder="Email" required />
+    <input asp-for="PasswordHash" type="password" placeholder="Password" required />
+    <input asp-for="PhoneNumber" placeholder="Phone Number" />
+
+    <select asp-for="DepartmentID">
+        <option disabled selected>Select Department</option>
+        @foreach (var dept in ViewBag.Departments)
+        {
+            <option value="@dept.DepartmentID">@dept.DepartmentName</option>
+        }
+    </select>
+
+    <button type="submit">Register</button>
+</form>
