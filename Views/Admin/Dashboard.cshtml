@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+@section Styles {
+    <link href="~/css/admin-dashboard.css" rel="stylesheet" />
+}
+
+<div class="dashboard-container">
+    <h2 class="dashboard-title">Welcome, System Administrator</h2>
+
+    <!-- Summary Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h5 class="stat-title">Total Users</h5>
+            <p class="stat-number">@ViewBag.UserCount</p>
+        </div>
+        <div class="stat-card technicians">
+            <h5 class="stat-title">Technicians</h5>
+            <p class="stat-number">@ViewBag.TechnicianCount</p>
+        </div>
+        <div class="stat-card departments">
+            <h5 class="stat-title">Departments</h5>
+            <p class="stat-number">@ViewBag.DepartmentCount</p>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="content-grid">
+        <div class="chart-card">
+            <h5 class="chart-title">User Status Overview</h5>
+            <div class="chart-container">
+                <canvas id="usersChart"></canvas>
+            </div>
+        </div>
+
+        <div class="quick-links-section">
+            <h5 class="quick-links-title">Quick Links</h5>
+            <ul class="links-list">
+                <li class="link-item">
+                    <a asp-controller="UserManagement" asp-action="UserManagementIndex" target="_blank" class="link-anchor">👥 Manage Users</a>
+                </li>
+                <li class="link-item">
+                    <a href="#" class="link-anchor">📈 View Reports</a>
+                </li>
+                <li class="link-item">
+                    <a asp-controller="Departments" asp-action="Index" class="link-anchor">🏢 Manage Departments</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('usersChart').getContext('2d');
+    const usersChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Active Users', 'Inactive Users'],
+            datasets: [{
+                label: 'User Status',
+                data: [@ViewBag.ActiveUsers, @ViewBag.InactiveUsers],
+                backgroundColor: ['#3b82f6', '#e5e7eb'],
+                borderColor: ['#2563eb', '#d1d5db'],
+                borderWidth: 2,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿@model QontrolSystem.Models.User
+@{
+    ViewBag.Title = "Delete User";
+}
+
+<h2>Confirm Delete</h2>
+
+<p>Are you sure you want to delete the following user?</p>
+
+<p><strong>@Model.FirstName @Model.LastName</strong> - @Model.Email</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="UserID" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="UserManagementIndex" class="btn btn-secondary">Cancel</a>
+</form>

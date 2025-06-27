@@ -5,7 +5,7 @@
 namespace QontrolSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigration : Migration
+    public partial class NewlyUpdatedMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
