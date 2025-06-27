@@ -1,0 +1,32 @@
+﻿@model QontrolSystem.Models.User
+@{
+    ViewBag.Title = "User Details";
+}
+
+<h2>User Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Full Name</dt>
+    <dd class="col-sm-9">@Model.FirstName @Model.LastName</dd>
+
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+    <dt class="col-sm-3">Role</dt>
+    <dd class="col-sm-9">@Model.Role?.RoleName</dd>
+
+    <dt class="col-sm-3">Department</dt>
+    <dd class="col-sm-9">@Model.Department?.DepartmentName</dd>
+
+    <dt class="col-sm-3">Active</dt>
+    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+
+    <dt class="col-sm-3">Created</dt>
+    <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.UserID" class="btn btn-warning">Edit</a>
+<a asp-action="UserManagementIndex" class="btn btn-secondary">Back</a>

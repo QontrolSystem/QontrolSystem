@@ -16,7 +16,7 @@ namespace QontrolSystem.Controllers
 
         private bool IsAdmin()
         {
-            return HttpContext.Session.GetString("Role") == "Employee";
+            return HttpContext.Session.GetString("Role") == "System Administrator";
         }
 
 
@@ -40,7 +40,7 @@ namespace QontrolSystem.Controllers
                     u.Department.DepartmentName.Contains(searchString));
             }
 
-            return View("UserManagementIndex",users.ToList());
+            return View(users.ToList());
         }
 
 
@@ -85,7 +85,7 @@ namespace QontrolSystem.Controllers
 
             _context.Users.Add(user);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("UserManagementIndex");
         }
 
         public IActionResult Edit(int? id)
@@ -120,7 +120,7 @@ namespace QontrolSystem.Controllers
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
 
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("UserManagementIndex");
         }
 
 
@@ -144,7 +144,7 @@ namespace QontrolSystem.Controllers
 
             _context.Users.Remove(user);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("UserManagementIndex");
         }
 
     }

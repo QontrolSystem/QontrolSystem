@@ -65,7 +65,7 @@ namespace QontrolSystem.Controllers
             // Redirect based on role
             switch (user.Role.RoleName)
             {
-                case "Employee":
+                case "System Administrator":
                     return RedirectToAction("Dashboard", "Admin");
                 case "Technician":
                     return RedirectToAction("Index", "TechnicianDashboard");
