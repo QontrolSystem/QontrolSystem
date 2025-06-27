@@ -82,6 +82,38 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
+        public IActionResult Profile()
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null) return RedirectToAction("Login");
+
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound();
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult Profile(User updatedUser, string? NewPassword)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null) return RedirectToAction("Login");
+
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound();
+
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.Email = updatedUser.Email;
+            user.PhoneNumber = updatedUser.PhoneNumber;
+
+            if (!string.IsNullOrEmpty(NewPassword))
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
+
+            _context.SaveChanges();
+            TempData["Success"] = "Profile updated successfully!";
+            return RedirectToAction("Profile");
+        }
 
         private string HashPassword(string password)
         {
