@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Welcome, System Administrator</h2>
+
+<!-- Summary Cards -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text fs-3">@ViewBag.UserCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Technicians</h5>
+                <p class="card-text fs-3">@ViewBag.TechnicianCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Departments</h5>
+                <p class="card-text fs-3">@ViewBag.DepartmentCount</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart Section -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">User Status Overview</h5>
+                <canvas id="usersChart" width="150" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h5 class="mb-3">Quick Links</h5>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a asp-controller="UserManagement" asp-action="UserManagementIndex" target="_blank">👥 Manage Users</a>
+            </li>
+            <li class="list-group-item">
+                <a href="#">📈 View Reports</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Departments" asp-action="Index">🏢 Manage Departments</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('usersChart').getContext('2d');
+    const usersChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Active Users', 'Inactive Users'],
+            datasets: [{
+                label: 'User Status',
+                data: [@ViewBag.ActiveUsers, @ViewBag.InactiveUsers],
+                backgroundColor: ['#28a745', '#dc3545'],
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
