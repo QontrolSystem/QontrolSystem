@@ -1,0 +1,40 @@
+﻿@model QontrolSystem.Models.User
+@{
+    ViewBag.Title = "Create User";
+}
+
+<h2>Create User</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label>First Name</label>
+        <input asp-for="FirstName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Last Name</label>
+        <input asp-for="LastName" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" type="email" required />
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input asp-for="PasswordHash" class="form-control" type="password" required />
+    </div>
+    <div class="mb-3">
+        <label>Phone Number</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Role</label>
+        <select asp-for="RoleID" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))"></select>
+    </div>
+    <div class="mb-3">
+        <label>Department</label>
+        <select asp-for="DepartmentID" class="form-control" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="UserManagementIndex" class="btn btn-secondary">Cancel</a>
+</form>
