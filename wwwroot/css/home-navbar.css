@@ -1,0 +1,286 @@
+﻿/* navbar.css */
+:root {
+    --navbar-bg: #ffffff;
+    --navbar-border: #e2e8f0;
+    --navbar-text: #2d3748;
+    --navbar-hover: #4299e1;
+    --navbar-active: #2c5282;
+    --navbar-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --logo-height: 40px;
+    --navbar-height: 70px;
+}
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header and Navigation */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--navbar-border);
+    box-shadow: var(--navbar-shadow);
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--navbar-height);
+    padding: 0;
+    background: var(--navbar-bg);
+    position: relative;
+}
+
+.container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Logo and Brand */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--navbar-text);
+    transition: color 0.3s ease;
+}
+
+    .navbar-brand:hover {
+        color: var(--navbar-hover);
+        text-decoration: none;
+    }
+
+.navbar-logo {
+    height: var(--logo-height);
+    width: auto;
+    margin-right: 12px;
+    object-fit: contain;
+}
+
+/* Mobile Toggle Button */
+.navbar-toggler {
+    display: none;
+    background: none;
+    border: 2px solid var(--navbar-border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .navbar-toggler:hover {
+        border-color: var(--navbar-hover);
+        background-color: rgba(66, 153, 225, 0.1);
+    }
+
+    .navbar-toggler:focus {
+        outline: none;
+        border-color: var(--navbar-active);
+        box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+    }
+
+.navbar-toggler-icon {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: var(--navbar-text);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+    .navbar-toggler-icon::before,
+    .navbar-toggler-icon::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: var(--navbar-text);
+        transition: all 0.3s ease;
+    }
+
+    .navbar-toggler-icon::before {
+        top: -6px;
+    }
+
+    .navbar-toggler-icon::after {
+        bottom: -6px;
+    }
+
+/* Navigation Collapse */
+.navbar-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-left: 2rem;
+}
+
+/* Navigation List */
+.navbar-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.nav-item {
+    position: relative;
+}
+
+/* Navigation Links */
+.nav-link {
+    display: block;
+    padding: 8px 16px;
+    color: var(--navbar-text);
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+    .nav-link:hover {
+        color: var(--navbar-hover);
+        background-color: rgba(66, 153, 225, 0.1);
+        text-decoration: none;
+    }
+
+    .nav-link:focus {
+        outline: 2px solid var(--navbar-active);
+        outline-offset: 2px;
+    }
+
+    /* Active Link Indicator */
+    .nav-link.active {
+        color: var(--navbar-active);
+        background-color: rgba(44, 82, 130, 0.1);
+    }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 2px;
+            background-color: var(--navbar-active);
+            border-radius: 1px;
+        }
+
+    /* Welcome Text Styling */
+    .nav-link.welcome-text {
+        color: var(--navbar-active);
+        font-weight: 600;
+        background-color: rgba(44, 82, 130, 0.05);
+        cursor: default;
+    }
+
+        .nav-link.welcome-text:hover {
+            background-color: rgba(44, 82, 130, 0.05);
+            color: var(--navbar-active);
+        }
+
+    /* Login/Register Button Styling */
+    .nav-link.auth-button {
+        background-color: var(--navbar-active);
+        color: white;
+        margin-left: 8px;
+    }
+
+        .nav-link.auth-button:hover {
+            background-color: #1a365d;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .nav-link.logout-button {
+        background-color: #e53e3e;
+        color: white;
+    }
+
+        .nav-link.logout-button:hover {
+            background-color: #c53030;
+            color: white;
+        }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-toggler {
+        display: block;
+    }
+
+    .navbar-collapse {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--navbar-bg);
+        border-top: 1px solid var(--navbar-border);
+        box-shadow: var(--navbar-shadow);
+        padding: 1rem;
+        margin-left: 0;
+    }
+
+        .navbar-collapse.show {
+            display: block;
+        }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 0.25rem;
+        width: 100%;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 12px 16px;
+        border-radius: 6px;
+        text-align: left;
+    }
+
+        .nav-link.active::after {
+            display: none;
+        }
+
+    .container-fluid {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    .navbar-logo {
+        height: 32px;
+        margin-right: 8px;
+    }
+
+    :root {
+        --navbar-height: 60px;
+        --logo-height: 32px;
+    }
+}
