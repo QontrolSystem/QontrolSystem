@@ -1,6 +1,5 @@
 
 @{
-    ViewBag.Title = "Register";
     var isLoggedIn = Context.Session.GetInt32("UserID") != null;
     var userRole = Context.Session.GetString("Role");
 }
@@ -61,8 +60,13 @@
                             @if(userRole == "System Administrator")
                             {
                                 <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
-                            }   
-                            
+                            }
+                            @if (userRole == "Employee")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Account" asp-action="Profile">My Profile</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <span class="nav-link welcome-text">Welcome, @userRole</span>
                             </li>
