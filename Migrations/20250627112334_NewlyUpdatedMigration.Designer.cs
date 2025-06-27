@@ -12,8 +12,8 @@ using QontrolSystem.Data;
 namespace QontrolSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250625235236_NewMigration")]
-    partial class NewMigration
+    [Migration("20250627112334_NewlyUpdatedMigration")]
+    partial class NewlyUpdatedMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

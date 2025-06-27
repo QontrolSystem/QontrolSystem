@@ -1,4 +1,4 @@
-@model QontrolSystem.Models.User
+
 @{
     ViewBag.Title = "Register";
     var isLoggedIn = Context.Session.GetInt32("UserID") != null;
@@ -58,6 +58,11 @@
                         }
                         else
                         {
+                            @if(userRole == "System Administrator")
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+                            }   
+                            
                             <li class="nav-item">
                                 <span class="nav-link welcome-text">Welcome, @userRole</span>
                             </li>
