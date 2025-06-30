@@ -30,6 +30,8 @@ namespace QontrolSystem.Controllers
                 return View(user);
             }
 
+            TempData["Success"] = "Registration successful! You can now log in.";
+
             user.PasswordHash = HashPassword(user.PasswordHash);
             user.RoleID = 1;
             user.CreatedAt = DateTime.Now;
