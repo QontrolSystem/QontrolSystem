@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
+using QontrolSystem.Models;
+using QontrolSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+//builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<ServiceEmail>();
 
 var app = builder.Build();
 
