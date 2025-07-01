@@ -28,6 +28,11 @@
     overflow: hidden;
 }
 
+.text-danger{
+    color:red;
+    font-weight:bold;
+}
+
 .welcome-panel {
     flex: 1;
     background: linear-gradient(135deg, #5ec8e0 0%, #4f80e1 100%);
