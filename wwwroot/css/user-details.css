@@ -1,0 +1,237 @@
+﻿/* User Details Styles */
+.user-details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-title {
+    color: #2563eb;
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 3px solid #3b82f6;
+    padding-bottom: 1rem;
+}
+
+/* Details Card */
+.details-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #3b82f6;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Details List */
+.details-list {
+    margin: 0;
+    padding: 0;
+}
+
+.detail-row {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.3s ease;
+}
+
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+
+    .detail-row:hover {
+        background-color: #f8fafc;
+        border-radius: 8px;
+        margin: 0 -1rem;
+        padding: 1rem;
+    }
+
+.detail-label {
+    flex: 0 0 200px;
+    font-weight: 700;
+    color: #374151;
+    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.detail-value {
+    flex: 1;
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
+}
+
+    /* Special styling for specific fields */
+    .detail-value.email {
+        color: #2563eb;
+        font-weight: 500;
+    }
+
+    .detail-value.active {
+        font-weight: 600;
+    }
+
+        .detail-value.active.yes {
+            color: #059669;
+        }
+
+        .detail-value.active.no {
+            color: #dc2626;
+        }
+
+    .detail-value.role {
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        color: #1e40af;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #bfdbfe;
+    }
+
+    .detail-value.department {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        color: #0c4a6e;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #7dd3fc;
+    }
+
+/* Status badges */
+.status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+    .status-badge.active {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #065f46;
+        border: 1px solid #6ee7b7;
+    }
+
+    .status-badge.inactive {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        color: #991b1b;
+        border: 1px solid #f87171;
+    }
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+    .btn-edit:hover {
+        background: linear-gradient(135deg, #d97706, #b45309);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+.btn-back {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
+}
+
+    .btn-back:hover {
+        background: linear-gradient(135deg, #4b5563, #374151);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-details-container {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .details-card {
+        padding: 1.5rem;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .detail-label {
+        flex: none;
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        font-size: 1rem;
+        margin-left: 1.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-btn {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-value {
+        margin-left: 0;
+    }
+
+    .detail-row:hover {
+        margin: 0;
+        padding: 1rem 0;
+    }
+}

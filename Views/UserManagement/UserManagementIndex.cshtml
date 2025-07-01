@@ -1,8 +1,65 @@
-﻿@model List<QontrolSystem.Models.User>
+@model List<QontrolSystem.Models.User>
 @{
     ViewBag.Title = "User Management";
 }
 @section Styles {
+<link href="~/css/user-management.css" rel="stylesheet" />
+}
+
+
+<div class="user-management-container">
+    <h2 class="page-title">System Users</h2>
+
+    <div class="header-actions">
+
+        <!-- First row: Create, Search input, Search button -->
+        <div class="top-row">
+            <a class="create-btn" href="@Url.Action("Create")">➕ Create New User</a>
+
+            <form asp-action="UserManagementIndex" method="get" class="search-form" style="display:flex; gap:0.5rem;">
+                <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="search-input" placeholder="Search users..." />
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+
+        <!-- Second row: Filters -->
+        <form asp-action="UserManagementIndex" method="get" class="filter-form">
+            <select name="roleFilter" class="filter-dropdown">
+                <option value="">All Roles</option>
+                @foreach (var role in ViewBag.Roles as List<string>)
+                {
+                    var selected = Context.Request.Query["roleFilter"] == role ? "selected" : null;
+                    <option value="@role" selected="@selected">@role</option>
+                }
+            </select>
+
+            <select name="isActiveFilter" class="filter-dropdown">
+                <option value="">All Statuses</option>
+                @{
+                    var isActive = Context.Request.Query["isActiveFilter"];
+                }
+                <option value="true" selected="@(isActive == "true" ? "selected" : null)">Active</option>
+                <option value="false" selected="@(isActive == "false" ? "selected" : null)">Inactive</option>
+            </select>
+
+            <select name="departmentFilter" class="filter-dropdown">
+                <option value="">All Departments</option>
+                @foreach (var dept in ViewBag.Departments as List<string>)
+                {
+                    var selected = Context.Request.Query["departmentFilter"] == dept ? "selected" : null;
+                    <option value="@dept" selected="@selected">@dept</option>
+                }
+            </select>
+
+            <button type="submit" class="filter-btn">Apply Filters</button>
+        </form>
+
+    </div>
+
+
+        <div class="users-table-container">
+            @if (Model != null && Model.Any())
+=======
     <link href="~/css/user-management.css" rel="stylesheet" />
 }
 
@@ -36,6 +93,25 @@
                 <tbody class="table-body">
                     @foreach (var user in Model)
                     {
+                    <tr>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role.RoleName</td>
+                        <td>@user.Department.DepartmentName</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a class="action-btn btn-details" href="@Url.Action("Details", new { id = user.UserID })">
+                                    Details
+                                </a>
+                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID })">
+                                    Edit
+                                </a>
+                                <a class="action-btn btn-delete" href="@Url.Action("Delete", new { id = user.UserID })">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                         <tr>
                             <td>@user.FirstName @user.LastName</td>
                             <td>@user.Email</td>
@@ -66,5 +142,7 @@
                 <p>No users match your search criteria or no users exist in the system.</p>
             </div>
         }
+        </div>
+    </div>
     </div>
 </div>

@@ -2,31 +2,66 @@
 @{
     ViewBag.Title = "User Details";
 }
+@section Styles {
+    <link href="~/css/user-details.css" rel="stylesheet" />
+}
 
-<h2>User Details</h2>
+<div class="user-details-container">
+    <h2 class="page-title">User Details</h2>
 
-<dl class="row">
-    <dt class="col-sm-3">Full Name</dt>
-    <dd class="col-sm-9">@Model.FirstName @Model.LastName</dd>
+    <div class="details-card">
+        <dl class="details-list">
+            <div class="detail-row">
+                <dt class="detail-label name">Full Name</dt>
+                <dd class="detail-value">@Model.FirstName @Model.LastName</dd>
+            </div>
 
-    <dt class="col-sm-3">Email</dt>
-    <dd class="col-sm-9">@Model.Email</dd>
+            <div class="detail-row">
+                <dt class="detail-label email">Email</dt>
+                <dd class="detail-value email">@Model.Email</dd>
+            </div>
 
-    <dt class="col-sm-3">Phone</dt>
-    <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            <div class="detail-row">
+                <dt class="detail-label phone">Phone</dt>
+                <dd class="detail-value">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Not provided" : Model.PhoneNumber)</dd>
+            </div>
 
-    <dt class="col-sm-3">Role</dt>
-    <dd class="col-sm-9">@Model.Role?.RoleName</dd>
+            <div class="detail-row">
+                <dt class="detail-label role">Role</dt>
+                <dd class="detail-value">
+                    <span class="detail-value role">@(Model.Role?.RoleName ?? "Not assigned")</span>
+                </dd>
+            </div>
 
-    <dt class="col-sm-3">Department</dt>
-    <dd class="col-sm-9">@Model.Department?.DepartmentName</dd>
+            <div class="detail-row">
+                <dt class="detail-label department">Department</dt>
+                <dd class="detail-value">
+                    <span class="detail-value department">@(Model.Department?.DepartmentName ?? "Not assigned")</span>
+                </dd>
+            </div>
 
-    <dt class="col-sm-3">Active</dt>
-    <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+            <div class="detail-row">
+                <dt class="detail-label active">Status</dt>
+                <dd class="detail-value">
+                    <span class="status-badge @(Model.IsActive ? "active" : "inactive")">
+                        @(Model.IsActive ? "Active" : "Inactive")
+                    </span>
+                </dd>
+            </div>
 
-    <dt class="col-sm-3">Created</dt>
-    <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
-</dl>
+            <div class="detail-row">
+                <dt class="detail-label created">Created</dt>
+                <dd class="detail-value">@Model.CreatedAt.ToString("MMMM dd, yyyy 'at' hh:mm tt")</dd>
+            </div>
+        </dl>
+    </div>
 
-<a asp-action="Edit" asp-route-id="@Model.UserID" class="btn btn-warning">Edit</a>
-<a asp-action="UserManagementIndex" class="btn btn-secondary">Back</a>
+    <div class="action-buttons">
+        <a asp-action="Edit" asp-route-id="@Model.UserID" class="action-btn btn-edit">
+            Edit User
+        </a>
+        <a asp-action="UserManagementIndex" class="action-btn btn-back">
+            Back to List
+        </a>
+    </div>
+</div>
