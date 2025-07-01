@@ -66,11 +66,21 @@
     margin-bottom: 30px;
 }
 
-    .logo-container img {
-        max-width: 150px;
-        height: auto;
-        border-radius: 10px;
-    }
+success-message {
+    width: 100%;
+    height: 5rem;
+    z-index: 1;
+    text-align: center;
+    background-color: #48bb78;
+    font-weight: bold;
+    color: #fff;
+    line-height: 5rem;
+}
+.logo-container img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+}
 
 .welcome-title {
     font-size: 2.8rem;
