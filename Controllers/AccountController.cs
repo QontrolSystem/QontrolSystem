@@ -56,7 +56,12 @@ namespace QontrolSystem.Controllers
             _context.SaveChanges();
 
             TempData["Success"] = "Registration successful! You can now log in.";
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Login", "Account"),
+                duration = 3000,
+                message = "Redirecting to login...",
+            });
         }
 
 
@@ -83,25 +88,36 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetString("Role", user.Role.RoleName);
 
-            // Redirect based on role
-            switch (user.Role.RoleName)
+            string? targetUrl = user.Role.RoleName switch
             {
-                case "System Administrator":
-                    return RedirectToAction("Dashboard", "Admin");
-                case "Technician":
-                    return RedirectToAction("Index", "TechnicianDashboard");
-                case "IT Manager":
-                    return RedirectToAction("Index", "ManagerDashboard");
-                default:
-                    return RedirectToAction("Index", "Home");
-            }
+                "System Administrator" => Url.Action("Dashboard", "Admin"),
+                "Technician" => Url.Action("Index", "TechnicianDashboard"),
+                "IT Manager" => Url.Action("Index", "ManagerDashboard"),
+                _ => Url.Action("Index", "Home")
+            };
+
+            // Redirect to loading screen first
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = targetUrl ?? Url.Action("Index", "Home"),
+                duration = 3000,
+                message = "Loading your dashboard...",
+            });
         }
 
 
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+         
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Login", "Account"),
+                duration = 3000,
+                message = "Logging out...",
+            });
+
+
         }
         public IActionResult Profile()
         {
@@ -133,7 +149,14 @@ namespace QontrolSystem.Controllers
 
             _context.SaveChanges();
             TempData["Success"] = "Profile updated successfully!";
-            return RedirectToAction("Profile");
+
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Profile", "Account"),
+                duration = 3000,
+                message = "Loading your profile...",
+            });
+
         }
 
         private string HashPassword(string password)
