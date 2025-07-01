@@ -112,7 +112,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
                 duration = 3000,
-                message = "Creating user...",
+                message = "Creating user",
             });
         }
 
@@ -153,7 +153,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
                 duration = 3000,
-                message = "Saving changes...",
+                message = "Saving changes",
             });
         }
 
@@ -183,7 +183,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
                 duration = 3000,
-                message = "Deleting user...",
+                message = "Deleting user",
             });
         }
 

@@ -16,7 +16,7 @@ namespace QontrolSystem.Controllers
                 RedirectUrl = redirectUrl,
                 Duration = duration,
                 Title = "Loading - QontrolSystem",
-                Message = message ?? "Loading..."
+                Message = message ?? "Loading"
             };
 
             return View();

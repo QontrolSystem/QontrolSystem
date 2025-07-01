@@ -60,7 +60,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("Login", "Account"),
                 duration = 3000,
-                message = "Redirecting to login...",
+                message = "Redirecting to login",
             });
         }
 
@@ -101,7 +101,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = targetUrl ?? Url.Action("Index", "Home"),
                 duration = 3000,
-                message = "Loading your dashboard...",
+                message = "Loading your dashboard",
             });
         }
 
@@ -114,7 +114,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("Login", "Account"),
                 duration = 3000,
-                message = "Logging out...",
+                message = "Logging out",
             });
 
 
@@ -154,7 +154,7 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("Profile", "Account"),
                 duration = 3000,
-                message = "Loading your profile...",
+                message = "Loading your profile",
             });
 
         }
