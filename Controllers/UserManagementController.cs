@@ -107,7 +107,13 @@ namespace QontrolSystem.Controllers
 
             _context.Users.Add(user);
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+          
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Creating user",
+            });
         }
 
         public IActionResult Edit(int? id)
@@ -142,7 +148,13 @@ namespace QontrolSystem.Controllers
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
 
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+           
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Saving changes",
+            });
         }
 
 
@@ -166,7 +178,13 @@ namespace QontrolSystem.Controllers
 
             _context.Users.Remove(user);
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+           
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Deleting user",
+            });
         }
 
     }
