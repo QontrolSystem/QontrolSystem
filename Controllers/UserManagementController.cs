@@ -20,7 +20,7 @@ namespace QontrolSystem.Controllers
         }
 
 
-        public IActionResult UserManagementIndex(string searchString)
+        public IActionResult UserManagementIndex(string searchString, string roleFilter, string departmentFilter, string isActiveFilter)
         {
             if (!IsAdmin())
                 return RedirectToAction("AccessDenied", "Account");
@@ -29,6 +29,10 @@ namespace QontrolSystem.Controllers
                 .Include(u => u.Role)
                 .Include(u => u.Department)
                 .AsQueryable();
+
+
+            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
+            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -39,6 +43,24 @@ namespace QontrolSystem.Controllers
                     u.Role.RoleName.Contains(searchString) ||
                     u.Department.DepartmentName.Contains(searchString));
             }
+            if (!string.IsNullOrEmpty(roleFilter))
+            {
+                users = users.Where(u => u.Role.RoleName == roleFilter);
+            }
+
+            if (!string.IsNullOrEmpty(departmentFilter))
+            {
+                users = users.Where(u => u.Department.DepartmentName == departmentFilter);
+            }
+
+            if (!string.IsNullOrEmpty(isActiveFilter))
+            {
+                bool isActive = bool.Parse(isActiveFilter);
+                users = users.Where(u => u.IsActive == isActive);
+            }
+
+            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).ToList();
+            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).ToList();
 
             return View(users.ToList());
         }

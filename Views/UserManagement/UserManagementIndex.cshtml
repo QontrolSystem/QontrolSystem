@@ -1,4 +1,4 @@
-﻿@model List<QontrolSystem.Models.User>
+@model List<QontrolSystem.Models.User>
 @{
     ViewBag.Title = "User Management";
 }
@@ -59,6 +59,26 @@
 
         <div class="users-table-container">
             @if (Model != null && Model.Any())
+=======
+    <link href="~/css/user-management.css" rel="stylesheet" />
+}
+
+<div class="user-management-container">
+    <h2 class="page-title">System Users</h2>
+    
+    <div class="header-actions">
+        <a class="create-btn" href="@Url.Action("Create")">
+            ➕ Create New User
+        </a>
+        
+        <form asp-action="UserManagementIndex" method="get" class="search-form">
+            <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="search-input" placeholder="Search users..." />
+            <button type="submit" class="search-btn">🔍 Search</button>
+        </form>
+    </div>
+    
+    <div class="users-table-container">
+        @if (Model != null && Model.Any())
         {
             <table class="users-table">
                 <thead class="table-header">
@@ -92,6 +112,25 @@
                             </div>
                         </td>
                     </tr>
+                        <tr>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.Role.RoleName</td>
+                            <td>@user.Department.DepartmentName</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a class="action-btn btn-details" href="@Url.Action("Details", new { id = user.UserID })">
+                                        Details
+                                    </a>
+                                    <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID })">
+                                        Edit
+                                    </a>
+                                    <a class="action-btn btn-delete" href="@Url.Action("Delete", new { id = user.UserID })">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -105,3 +144,5 @@
         }
         </div>
     </div>
+    </div>
+</div>
