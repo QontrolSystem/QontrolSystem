@@ -76,13 +76,19 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
-                               .FirstOrDefault(u => u.Email == email && u.IsActive);
+                               .FirstOrDefault(u => u.Email == email);
 
 
             if (user == null || !VerifyPassword(password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
+            }
+
+            if(!user.IsActive)
+            {
+                
+                return View("PendingApproval");
             }
 
             HttpContext.Session.SetInt32("UserID", user.UserID);
