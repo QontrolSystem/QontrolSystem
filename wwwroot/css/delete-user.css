@@ -1,0 +1,180 @@
+﻿/* Delete User Styles */
+.delete-user-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-title {
+    color: #dc2626;
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 3px solid #ef4444;
+    padding-bottom: 1rem;
+}
+
+/* Warning Card */
+.warning-card {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 2px solid #fca5a5;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid #dc2626;
+}
+
+.warning-message {
+    color: #374151;
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.user-info {
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-name {
+    color: #2563eb;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.user-email {
+    color: #6b7280;
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+/* Form Styles */
+.delete-form {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 140px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: 2px solid transparent;
+}
+
+    .btn-delete:hover {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        color: white;
+    }
+
+    .btn-delete:active {
+        transform: translateY(0);
+    }
+
+.btn-cancel {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
+    border: 2px solid transparent;
+}
+
+    .btn-cancel:hover {
+        background: linear-gradient(135deg, #4b5563, #374151);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-cancel:active {
+        transform: translateY(0);
+    }
+
+/* Warning Alert */
+.danger-alert {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #dc2626;
+    font-weight: 500;
+}
+
+.danger-alert-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #7f1d1d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .delete-user-container {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+    }
+
+    .warning-card {
+        padding: 1.5rem;
+    }
+
+    .delete-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-btn {
+        min-width: auto;
+    }
+
+    .user-info {
+        padding: 1rem;
+    }
+
+    .user-name {
+        font-size: 1.25rem;
+    }
+
+    .user-email {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .warning-message {
+        font-size: 1rem;
+    }
+
+    .action-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}

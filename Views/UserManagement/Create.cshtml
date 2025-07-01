@@ -2,39 +2,74 @@
 @{
     ViewBag.Title = "Create User";
 }
+@section Styles {
+    <link href="~/css/create-user.css" rel="stylesheet" />
+}
 
-<h2>Create User</h2>
+<div class="form-container">
+    <h2>Create User</h2>
+    <form asp-action="Create" method="post">
+        <!-- First Row: First Name and Last Name -->
+        <div class="form-row">
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>First Name</label>
+                    <input asp-for="FirstName" class="form-control" required />
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Last Name</label>
+                    <input asp-for="LastName" class="form-control" required />
+                </div>
+            </div>
+        </div>
 
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label>First Name</label>
-        <input asp-for="FirstName" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Last Name</label>
-        <input asp-for="LastName" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control" type="email" required />
-    </div>
-    <div class="mb-3">
-        <label>Password</label>
-        <input asp-for="PasswordHash" class="form-control" type="password" required />
-    </div>
-    <div class="mb-3">
-        <label>Phone Number</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label>Role</label>
-        <select asp-for="RoleID" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))"></select>
-    </div>
-    <div class="mb-3">
-        <label>Department</label>
-        <select asp-for="DepartmentID" class="form-control" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))"></select>
-    </div>
+        <!-- Second Row: Email and Password -->
+        <div class="form-row">
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control" type="email" required />
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input asp-for="PasswordHash" class="form-control" type="password" required />
+                </div>
+            </div>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="UserManagementIndex" class="btn btn-secondary">Cancel</a>
-</form>
+        <!-- Third Row: Phone Number and Role -->
+        <div class="form-row">
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                </div>
+            </div>
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Role</label>
+                    <select asp-for="RoleID" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))"></select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fourth Row: Department (full width) -->
+        <div class="form-row-single">
+            <div class="field-container">
+                <div class="mb-3">
+                    <label>Department</label>
+                    <select asp-for="DepartmentID" class="form-control" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="UserManagementIndex" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
