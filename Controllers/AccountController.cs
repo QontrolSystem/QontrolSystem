@@ -21,26 +21,45 @@ namespace QontrolSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(User user)
+
+        // The Register method handles user registration by validating the input data, checking for existing users, and saving the new user to the database.
+        // The parameter has changed from Using the user model to RegisterValidation model to ensure that the input data is validated correctly.
+        public IActionResult Register(RegisterValidation model)
         {
-            if (_context.Users.Any(u => u.Email == user.Email))
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = _context.Departments.ToList();
+                return View(model);
+            }
+
+            if (_context.Users.Any(u => u.Email == model.Email))
             {
                 ModelState.AddModelError("Email", "Email already exists.");
                 ViewBag.Departments = _context.Departments.ToList();
-                return View(user);
+                return View(model);
             }
 
-            TempData["Success"] = "Registration successful! You can now log in.";
-
-            user.PasswordHash = HashPassword(user.PasswordHash);
-            user.RoleID = 1;
-            user.CreatedAt = DateTime.Now;
+            var user = new User
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                DepartmentID = model.DepartmentID,
+                PasswordHash = HashPassword(model.PasswordHash),
+                RoleID = 1,
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            };
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
+            TempData["Success"] = "Registration successful! You can now log in.";
             return RedirectToAction("Login");
         }
+
+
 
         public IActionResult Login()
         {
