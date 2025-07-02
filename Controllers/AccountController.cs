@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
+using QontrolSystem.Services;
 
 namespace QontrolSystem.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ServiceEmail _serviceEmail;
 
-        public AccountController(AppDbContext context)
+
+        public AccountController(AppDbContext context, ServiceEmail _serviceEmail)
         {
             _context = context;
+            this._serviceEmail = _serviceEmail;
         }
 
         public IActionResult Register()
@@ -24,7 +28,8 @@ namespace QontrolSystem.Controllers
 
         // The Register method handles user registration by validating the input data, checking for existing users, and saving the new user to the database.
         // The parameter has changed from Using the user model to RegisterValidation model to ensure that the input data is validated correctly.
-        public IActionResult Register(RegisterValidation model)
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterValidation model)
         {
             if (!ModelState.IsValid)
             {
@@ -55,6 +60,27 @@ namespace QontrolSystem.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
+
+            // ✅ Send email to the email provided by the user
+            await _serviceEmail.SendEmailAsync(
+                model.Email,
+                $"{model.FirstName} {model.LastName}",
+                "Welcome to QontrolSystem!",
+                $@"
+            <p>Dear {model.FirstName},</p>
+            <p>Thank you for registering on QontrolSystem.</p>
+            <p>We're excited to have you on board!</p>
+            <p>Please note that your account is currently inactive. An administrator will review your registration and activate your account shortly.</p>
+            <br/>
+            <p>Best regards,<br/>QontrolSystem Team</p>
+        "
+            );
+
+            Console.WriteLine("✅ Email sent successfully to " + model.Email);
+
+            TempData["Success"] = "Registration successful! Please check your email for confirmation.";
+            return RedirectToAction("Login");
+
             TempData["Success"] = "Registration successful! You can now log in.";
             return RedirectToAction("Index", "Loading", new
             {
@@ -62,7 +88,9 @@ namespace QontrolSystem.Controllers
                 duration = 3000,
                 message = "Redirecting to login",
             });
+
         }
+
 
 
 
