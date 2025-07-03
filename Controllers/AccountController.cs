@@ -11,11 +11,10 @@ namespace QontrolSystem.Controllers
         private readonly AppDbContext _context;
         private readonly ServiceEmail _serviceEmail;
 
-
-        public AccountController(AppDbContext context, ServiceEmail _serviceEmail)
+        public AccountController(AppDbContext context, ServiceEmail serviceEmail)
         {
             _context = context;
-            this._serviceEmail = _serviceEmail;
+            _serviceEmail = serviceEmail;
         }
 
         public IActionResult Register()
@@ -24,10 +23,6 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
-        [HttpPost]
-
-        // The Register method handles user registration by validating the input data, checking for existing users, and saving the new user to the database.
-        // The parameter has changed from Using the user model to RegisterValidation model to ensure that the input data is validated correctly.
         [HttpPost]
         public async Task<IActionResult> Register(RegisterValidation model)
         {
@@ -44,6 +39,7 @@ namespace QontrolSystem.Controllers
                 return View(model);
             }
 
+<<<<<<< HEAD
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -52,46 +48,62 @@ namespace QontrolSystem.Controllers
                 PhoneNumber = model.PhoneNumber,
                 DepartmentID = model.DepartmentID,
                 PasswordHash = HashPassword(model.PasswordHash),
-                RoleID = 1,
+                RoleID = 1, // Default role: Employee
                 CreatedAt = DateTime.Now,
-                IsActive = true
+                IsActive = true,
+                IsApproved = false,
+                IsRejected = false
             };
+=======
+            user.PasswordHash = HashPassword(user.PasswordHash);
+            user.RoleID = 1; 
+            user.CreatedAt = DateTime.Now;
+            user.IsApproved = false; 
+            user.IsRejected = false;
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
-
-            // ✅ Send email to the email provided by the user
+<<<<<<< HEAD
+            // ✅ Send email to user
             await _serviceEmail.SendEmailAsync(
                 model.Email,
                 $"{model.FirstName} {model.LastName}",
                 "Welcome to QontrolSystem!",
                 $@"
-            <p>Dear {model.FirstName},</p>
-            <p>Thank you for registering on QontrolSystem.</p>
-            <p>We're excited to have you on board!</p>
-            <p>Please note that your account is currently inactive. An administrator will review your registration and activate your account shortly.</p>
-            <br/>
-            <p>Best regards,<br/>QontrolSystem Team</p>
-        "
+                <p>Dear {model.FirstName},</p>
+                <p>Thank you for registering on QontrolSystem.</p>
+                <p>We're excited to have you on board!</p>
+                <p>Please note that your account is currently inactive. An administrator will review your registration and activate your account shortly.</p>
+                <br/>
+                <p>Best regards,<br/>QontrolSystem Team</p>"
             );
 
             Console.WriteLine("✅ Email sent successfully to " + model.Email);
 
-            TempData["Success"] = "Registration successful! Please check your email for confirmation.";
-            return RedirectToAction("Login");
-
-            TempData["Success"] = "Registration successful! You can now log in.";
-            return RedirectToAction("Index", "Loading", new
-            {
-                returnUrl = Url.Action("Login", "Account"),
-                duration = 3000,
-                message = "Redirecting to login",
-            });
-
+            TempData["Info"] = "Registration submitted! Awaiting admin approval.";
+            return RedirectToAction("PendingApproval");
         }
 
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+=======
+            TempData["Info"] = "Registration submitted! Awaiting admin approval.";
+            return RedirectToAction("PendingApproval");
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
+        }
+
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
 
 
         public IActionResult Login()
@@ -99,13 +111,22 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users
                                .Include(u => u.Role)
+<<<<<<< HEAD
                                .FirstOrDefault(u => u.Email == email);
-
+=======
+                               .FirstOrDefault(u => u.Email == email && u.IsActive);
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
 
             if (user == null || !VerifyPassword(password, user.PasswordHash))
             {
@@ -113,16 +134,49 @@ namespace QontrolSystem.Controllers
                 return View();
             }
 
-            if(!user.IsActive)
+<<<<<<< HEAD
+            // Skip approval check for System Administrators
+=======
+            
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
+            bool isAdmin = user.Role.RoleName == "System Administrator";
+
+            if (!isAdmin)
             {
-                
-                return View("PendingApproval");
+<<<<<<< HEAD
+                if (!user.IsActive || user.IsRejected)
+                {
+                    return RedirectToAction("AccessDenied");
+=======
+                if (user.IsRejected)
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
+                }
+
+                if (!user.IsApproved)
+                {
+<<<<<<< HEAD
+                    return RedirectToAction("PendingApproval");
+                }
             }
 
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetString("Role", user.Role.RoleName);
 
             string? targetUrl = user.Role.RoleName switch
+=======
+                    return RedirectToAction("PendingApproval", "Account");
+                }
+            }
+
+            // Store session values
+            HttpContext.Session.SetInt32("UserID", user.UserID);
+            HttpContext.Session.SetString("Role", user.Role.RoleName);
+
+            // Role-based redirect
+            switch (user.Role.RoleName)
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
             {
                 "System Administrator" => Url.Action("Dashboard", "Admin"),
                 "Technician" => Url.Action("Index", "TechnicianDashboard"),
@@ -130,7 +184,6 @@ namespace QontrolSystem.Controllers
                 _ => Url.Action("Index", "Home")
             };
 
-            // Redirect to loading screen first
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = targetUrl ?? Url.Action("Index", "Home"),
@@ -140,19 +193,19 @@ namespace QontrolSystem.Controllers
         }
 
 
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-         
+
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = Url.Action("Login", "Account"),
                 duration = 3000,
                 message = "Logging out",
             });
-
-
         }
+
         public IActionResult Profile()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -182,15 +235,14 @@ namespace QontrolSystem.Controllers
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
 
             _context.SaveChanges();
-            TempData["Success"] = "Profile updated successfully!";
 
+            TempData["Success"] = "Profile updated successfully!";
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = Url.Action("Profile", "Account"),
                 duration = 3000,
                 message = "Loading your profile",
             });
-
         }
 
         private string HashPassword(string password)
@@ -202,7 +254,5 @@ namespace QontrolSystem.Controllers
         {
             return BCrypt.Net.BCrypt.Verify(inputPassword, storedHash);
         }
-
     }
 }
-

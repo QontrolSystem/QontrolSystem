@@ -23,6 +23,7 @@ namespace QontrolSystem.Controllers
 
             var activeUsers = _context.Users.Count(u => u.IsActive);
             var inactiveUsers = _context.Users.Count(u => !u.IsActive);
+            ViewBag.PendingUserCount = _context.Users.Count(u => !u.IsApproved && !u.IsRejected);
 
             ViewBag.UserCount = userCount;
             ViewBag.TechnicianCount = technicianCount;
@@ -33,5 +34,40 @@ namespace QontrolSystem.Controllers
 
             return View();
         }
+
+        public IActionResult ApproveUsers()
+        {
+            var pendingUsers = _context.Users
+                .Include(u => u.Role)
+                .Where(u => !u.IsApproved && !u.IsRejected)
+                .ToList();
+
+            return View(pendingUsers);
+        }
+
+        [HttpPost]
+        public IActionResult Approve(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user != null)
+            {
+                user.IsApproved = true;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("ApproveUsers");
+        }
+
+        [HttpPost]
+        public IActionResult Reject(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user != null)
+            {
+                user.IsRejected = true;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("ApproveUsers");
+        }
+
     }
 }
