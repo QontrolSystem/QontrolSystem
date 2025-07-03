@@ -44,6 +44,7 @@ namespace QontrolSystem.Controllers
                 return View(model);
             }
 
+<<<<<<< HEAD
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -56,10 +57,18 @@ namespace QontrolSystem.Controllers
                 CreatedAt = DateTime.Now,
                 IsActive = true
             };
+=======
+            user.PasswordHash = HashPassword(user.PasswordHash);
+            user.RoleID = 1; 
+            user.CreatedAt = DateTime.Now;
+            user.IsApproved = false; 
+            user.IsRejected = false;
+>>>>>>> 524c99e (User Approval Functionality)
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
+<<<<<<< HEAD
 
             // ✅ Send email to the email provided by the user
             await _serviceEmail.SendEmailAsync(
@@ -92,12 +101,28 @@ namespace QontrolSystem.Controllers
         }
 
 
+=======
+            TempData["Info"] = "Registration submitted! Awaiting admin approval.";
+            return RedirectToAction("PendingApproval");
+        }
+
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
+>>>>>>> 524c99e (User Approval Functionality)
 
 
         public IActionResult Login()
         {
             return View();
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult Login(string email, string password)
@@ -106,13 +131,13 @@ namespace QontrolSystem.Controllers
                                .Include(u => u.Role)
                                .FirstOrDefault(u => u.Email == email);
 
-
             if (user == null || !VerifyPassword(password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
 
+<<<<<<< HEAD
             if(!user.IsActive)
             {
                 
@@ -123,6 +148,30 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.SetString("Role", user.Role.RoleName);
 
             string? targetUrl = user.Role.RoleName switch
+=======
+            
+            bool isAdmin = user.Role.RoleName == "System Administrator";
+
+            if (!isAdmin)
+            {
+                if (user.IsRejected)
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
+
+                if (!user.IsApproved)
+                {
+                    return RedirectToAction("PendingApproval", "Account");
+                }
+            }
+
+            // Store session values
+            HttpContext.Session.SetInt32("UserID", user.UserID);
+            HttpContext.Session.SetString("Role", user.Role.RoleName);
+
+            // Role-based redirect
+            switch (user.Role.RoleName)
+>>>>>>> 524c99e (User Approval Functionality)
             {
                 "System Administrator" => Url.Action("Dashboard", "Admin"),
                 "Technician" => Url.Action("Index", "TechnicianDashboard"),
@@ -138,6 +187,8 @@ namespace QontrolSystem.Controllers
                 message = "Loading your dashboard",
             });
         }
+
+
 
 
         public IActionResult Logout()
