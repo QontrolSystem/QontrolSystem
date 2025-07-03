@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Deleted Account";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Account Pending Approval</title>
+    <link href="~/css/deactivated-user.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="~/Images/logo.png" alt="Qontrol System Logo" />
+        </div>
+
+        <div class="status-icon"></div>
+
+        <div class="subtitle">Account Status</div>
+        <h1>Deactivated Account</h1>
+
+        <p>Your account has been deactivated by our system administrators.</p>
+        <div class="contact-section">
+            <p>If you believe this is a mistake or have any questions:</p>
+            <a href="mailto:support@qontrolsystem.com" class="contact-btn">
+                📧 Contact Support
+            </a>
+        </div>
+        <div class="back-btn-cont">
+            <a asp-action="Login" class="action-btn btn-back">Back</a>
+        </div>
+
+        <div class="footer-text">
+            © 2025 QontrolSystem. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
