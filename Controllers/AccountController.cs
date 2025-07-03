@@ -39,6 +39,7 @@ namespace QontrolSystem.Controllers
                 return View(model);
             }
 
+<<<<<<< HEAD
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -53,10 +54,18 @@ namespace QontrolSystem.Controllers
                 IsApproved = false,
                 IsRejected = false
             };
+=======
+            user.PasswordHash = HashPassword(user.PasswordHash);
+            user.RoleID = 1; 
+            user.CreatedAt = DateTime.Now;
+            user.IsApproved = false; 
+            user.IsRejected = false;
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
+<<<<<<< HEAD
             // ✅ Send email to user
             await _serviceEmail.SendEmailAsync(
                 model.Email,
@@ -85,19 +94,39 @@ namespace QontrolSystem.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+=======
+            TempData["Info"] = "Registration submitted! Awaiting admin approval.";
+            return RedirectToAction("PendingApproval");
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
         }
+
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
+
 
         public IActionResult Login()
         {
             return View();
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users
                                .Include(u => u.Role)
+<<<<<<< HEAD
                                .FirstOrDefault(u => u.Email == email);
+=======
+                               .FirstOrDefault(u => u.Email == email && u.IsActive);
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
 
             if (user == null || !VerifyPassword(password, user.PasswordHash))
             {
@@ -105,18 +134,29 @@ namespace QontrolSystem.Controllers
                 return View();
             }
 
+<<<<<<< HEAD
             // Skip approval check for System Administrators
+=======
+            
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
             bool isAdmin = user.Role.RoleName == "System Administrator";
 
             if (!isAdmin)
             {
+<<<<<<< HEAD
                 if (!user.IsActive || user.IsRejected)
                 {
                     return RedirectToAction("AccessDenied");
+=======
+                if (user.IsRejected)
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
                 }
 
                 if (!user.IsApproved)
                 {
+<<<<<<< HEAD
                     return RedirectToAction("PendingApproval");
                 }
             }
@@ -125,6 +165,18 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.SetString("Role", user.Role.RoleName);
 
             string? targetUrl = user.Role.RoleName switch
+=======
+                    return RedirectToAction("PendingApproval", "Account");
+                }
+            }
+
+            // Store session values
+            HttpContext.Session.SetInt32("UserID", user.UserID);
+            HttpContext.Session.SetString("Role", user.Role.RoleName);
+
+            // Role-based redirect
+            switch (user.Role.RoleName)
+>>>>>>> 524c99edee68821d8e5fef44432a6ba3f3a70533
             {
                 "System Administrator" => Url.Action("Dashboard", "Admin"),
                 "Technician" => Url.Action("Index", "TechnicianDashboard"),
@@ -139,6 +191,8 @@ namespace QontrolSystem.Controllers
                 message = "Loading your dashboard",
             });
         }
+
+
 
         public IActionResult Logout()
         {
