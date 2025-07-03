@@ -30,22 +30,35 @@ namespace QontrolSystem.Controllers
                 return View(user);
             }
 
-            TempData["Success"] = "Registration successful! You can now log in.";
-
             user.PasswordHash = HashPassword(user.PasswordHash);
-            user.RoleID = 1;
+            user.RoleID = 1; 
             user.CreatedAt = DateTime.Now;
+            user.IsApproved = false; 
+            user.IsRejected = false;
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return RedirectToAction("Login");
+            TempData["Info"] = "Registration submitted! Awaiting admin approval.";
+            return RedirectToAction("PendingApproval");
         }
+
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
+
 
         public IActionResult Login()
         {
             return View();
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public IActionResult Login(string email, string password)
@@ -54,17 +67,33 @@ namespace QontrolSystem.Controllers
                                .Include(u => u.Role)
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
 
-
             if (user == null || !VerifyPassword(password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
 
+            
+            bool isAdmin = user.Role.RoleName == "System Administrator";
+
+            if (!isAdmin)
+            {
+                if (user.IsRejected)
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
+
+                if (!user.IsApproved)
+                {
+                    return RedirectToAction("PendingApproval", "Account");
+                }
+            }
+
+            // Store session values
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetString("Role", user.Role.RoleName);
 
-            // Redirect based on role
+            // Role-based redirect
             switch (user.Role.RoleName)
             {
                 case "System Administrator":
@@ -77,6 +106,8 @@ namespace QontrolSystem.Controllers
                     return RedirectToAction("Index", "Home");
             }
         }
+
+
 
 
         public IActionResult Logout()

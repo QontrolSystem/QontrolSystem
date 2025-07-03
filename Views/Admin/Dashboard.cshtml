@@ -10,21 +10,24 @@
 
     <!-- Summary Cards -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <h5 class="stat-title">Total Users</h5>
-            <p class="stat-number">@ViewBag.UserCount</p>
-        </div>
+        <a asp-controller="UserManagement" asp-action="UserManagementIndex" class="stat-card-link">
+            <div class="stat-card">
+                <h5 class="stat-title">Total Users</h5>
+                <p class="stat-number"><span class="count" data-count="@ViewBag.UserCount">0</span></p>
+            </div>
+        </a>
         <div class="stat-card technicians">
-            <h5 class="stat-title">Technicians</h5>
-            <p class="stat-number">@ViewBag.TechnicianCount</p>
+            <h5 class="stat-title">Active Technicians</h5>
+            <p class="stat-number"><span class="count" data-count="@ViewBag.TechnicianCount">0</span></p>
         </div>
-        <div class="stat-card departments">
-            <h5 class="stat-title">Departments</h5>
-            <p class="stat-number">@ViewBag.DepartmentCount</p>
-        </div>
+        <a asp-controller="Admin" asp-action="ApproveUsers" class="stat-card-link">
+            <div class="stat-card pending-users">
+                <h5 class="stat-title">Pending Users</h5>
+                <p class="stat-number"><span class="count" data-count="@ViewBag.PendingUserCount">0</span></p>
+            </div>
+        </a>
     </div>
 
-    <!-- Chart Section -->
     <div class="content-grid">
         <div class="chart-card">
             <h5 class="chart-title">User Status Overview</h5>
@@ -37,9 +40,6 @@
             <h5 class="quick-links-title">Quick Links</h5>
             <ul class="links-list">
                 <li class="link-item">
-                    <a asp-controller="UserManagement" asp-action="UserManagementIndex" class="link-anchor">👥 Manage Users</a>
-                </li>
-                <li class="link-item">
                     <a href="#" class="link-anchor">📈 View Reports</a>
                 </li>
                 <li class="link-item">
@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<!-- Chart.js CDN -->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('usersChart').getContext('2d');
@@ -84,4 +84,28 @@
             }
         }
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const counters = document.querySelectorAll('.count');
+        const duration = 1000; // 1 second
+
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-count');
+            const stepTime = Math.max(Math.floor(duration / target), 10);
+            let count = 0;
+
+            const updateCounter = () => {
+                count++;
+                counter.innerText = count;
+                if (count < target) {
+                    setTimeout(updateCounter, stepTime);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+
+            updateCounter();
+        });
+    });
+
 </script>
