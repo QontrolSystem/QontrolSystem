@@ -1,0 +1,285 @@
+﻿/* pending-users.css */
+.pending-users-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #e3f2fd;
+}
+
+.page-title {
+    color: #1e3c72;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(30, 60, 114, 0.1);
+}
+
+.user-count {
+    display: flex;
+    align-items: center;
+}
+
+.count-badge {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+}
+
+/* No users message */
+.no-users-message {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f8fbff, #e3f2fd);
+    border-radius: 15px;
+    border: 2px dashed #bbdefb;
+    margin: 20px 0;
+}
+
+.no-users-icon {
+    color: #2a5298;
+    margin-bottom: 20px;
+}
+
+.no-users-message h3 {
+    color: #1e3c72;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.no-users-message p {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Table styles */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e3f2fd;
+}
+
+.pending-users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+    .pending-users-table thead {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+    }
+
+    .pending-users-table th {
+        padding: 20px 15px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
+    }
+
+    .pending-users-table tbody tr {
+        border-bottom: 1px solid #f0f8ff;
+        transition: all 0.3s ease;
+    }
+
+        .pending-users-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8fbff, #e3f2fd);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.1);
+        }
+
+        .pending-users-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+    .pending-users-table td {
+        padding: 20px 15px;
+        vertical-align: middle;
+        border: none;
+    }
+
+/* User name with initials */
+.user-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.name-initials {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #4a90e2, #2a5298);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.full-name {
+    font-weight: 600;
+    color: #1e3c72;
+}
+
+.email {
+    color: #666;
+    font-size: 14px;
+}
+
+.role-badge {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    color: #1e3c72;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.department {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-approve {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    color: white;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+    .btn-approve:hover {
+        background: linear-gradient(135deg, #45a049, #3d8b40);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+    }
+
+.btn-reject {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+    .btn-reject:hover {
+        background: linear-gradient(135deg, #d32f2f, #b71c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+    }
+
+.btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .pending-users-container {
+        padding: 10px;
+    }
+
+    .header-section {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .pending-users-table {
+        min-width: 700px;
+    }
+
+        .pending-users-table th,
+        .pending-users-table td {
+            padding: 12px 8px;
+        }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .btn {
+        justify-content: center;
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    .user-name {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .name-initials {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .no-users-message {
+        padding: 40px 15px;
+    }
+
+        .no-users-message h3 {
+            font-size: 20px;
+        }
+
+        .no-users-message p {
+            font-size: 14px;
+        }
+}

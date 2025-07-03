@@ -1,2 +1,36 @@
-﻿<h2>Access Denied</h2>
-<p>Your registration was rejected. Please contact the system administrator for clarification.</p>
+﻿@{
+    ViewBag.Title = "Rejected Account";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Account Application Rejected</title>
+    <link href="~/css/access-denied.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="~/Images/logo.png" alt="Qontrol System Logo" />
+        </div>
+        <div class="status-icon rejected"></div>
+        <div class="subtitle">Account Status</div>
+        <h1>Regestration Rejected</h1>
+        <p>Unfortunately, your account application has been rejected after review by our administrators.</p>
+        <div class="contact-section">
+            <p>For more information about this decision or to discuss your application:</p>
+            <a href="mailto:support@qontrolsystem.com" class="contact-btn">
+                📧 Contact Support
+            </a>
+        </div>
+        <div class="back-btn-cont">
+            <a asp-action="Login" class="action-btn btn-back">Back to Login</a>
+        </div>
+        <div class="footer-text">
+            © 2025 QontrolSystem. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
