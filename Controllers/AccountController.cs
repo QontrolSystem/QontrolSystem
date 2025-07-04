@@ -54,10 +54,15 @@ namespace QontrolSystem.Controllers
                 IsRejected = false
             };
 
+
             user.IsActive = false;
+
 
             _context.Users.Add(user);
             _context.SaveChanges();
+
+
+            // ✅ Send email to user
 
             await _serviceEmail.SendEmailAsync(
                 model.Email,
@@ -98,13 +103,20 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
+
                                .FirstOrDefault(u => u.Email == email);
+
+                               .FirstOrDefault(u => u.Email == email && u.IsActive);
+
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
+
+
+            // Skip approval check for System Administrators
 
             bool isAdmin = user.Role.RoleName == "System Administrator";
 
