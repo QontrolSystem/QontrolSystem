@@ -51,6 +51,7 @@ namespace QontrolSystem.Controllers
             var user = _context.Users.Find(id);
             if (user != null)
             {
+                user.IsActive = true;
                 user.IsApproved = true;
                 _context.SaveChanges();
             }

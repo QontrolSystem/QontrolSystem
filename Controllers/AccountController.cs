@@ -47,17 +47,23 @@ namespace QontrolSystem.Controllers
                 PhoneNumber = model.PhoneNumber,
                 DepartmentID = model.DepartmentID,
                 PasswordHash = HashPassword(model.PasswordHash),
-                RoleID = 1, // Default role: Employee
+                RoleID = 1, // Default to Employee
                 CreatedAt = DateTime.Now,
                 IsActive = true,
                 IsApproved = false,
                 IsRejected = false
             };
 
+
+            user.IsActive = false;
+
+
             _context.Users.Add(user);
             _context.SaveChanges();
 
+
             // ✅ Send email to user
+
             await _serviceEmail.SendEmailAsync(
                 model.Email,
                 $"{model.FirstName} {model.LastName}",
@@ -97,15 +103,21 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
+
+                               .FirstOrDefault(u => u.Email == email);
+
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
 
-            if (user == null || !VerifyPassword(password, user.PasswordHash))
+
+            if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
             }
 
+
             // Skip approval check for System Administrators
+
             bool isAdmin = user.Role.RoleName == "System Administrator";
 
             if (!isAdmin)
@@ -143,7 +155,6 @@ namespace QontrolSystem.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = Url.Action("Login", "Account"),

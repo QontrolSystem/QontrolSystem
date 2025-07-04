@@ -28,8 +28,8 @@ namespace QontrolSystem.Controllers
             var users = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Where(u =>  u.IsActive && u.IsApproved && !u.IsDeleted) 
                 .AsQueryable();
-
 
             ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
             ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
@@ -43,6 +43,7 @@ namespace QontrolSystem.Controllers
                     u.Role.RoleName.Contains(searchString) ||
                     u.Department.DepartmentName.Contains(searchString));
             }
+
             if (!string.IsNullOrEmpty(roleFilter))
             {
                 users = users.Where(u => u.Role.RoleName == roleFilter);
@@ -59,11 +60,9 @@ namespace QontrolSystem.Controllers
                 users = users.Where(u => u.IsActive == isActive);
             }
 
-            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).ToList();
-            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).ToList();
-
             return View(users.ToList());
         }
+
 
 
         public IActionResult Details(int? id)
@@ -75,6 +74,7 @@ namespace QontrolSystem.Controllers
             var user = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Where(u => !u.IsDeleted)
                 .FirstOrDefault(u => u.UserID == id);
 
             if (user == null) return NotFound();
@@ -171,14 +171,20 @@ namespace QontrolSystem.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            if (!IsAdmin()) return RedirectToAction("AccessDenied", "Account");
+            if (!IsAdmin())
+                return RedirectToAction("AccessDenied", "Account");
 
             var user = _context.Users.Find(id);
-            if (user == null) return NotFound();
+            if (user == null)
+                return NotFound();
 
-            _context.Users.Remove(user);
+            // Perform soft delete
+            user.IsDeleted = true;
+            user.IsActive = false;
+
+            _context.Users.Update(user);
             _context.SaveChanges();
-           
+
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
@@ -186,6 +192,7 @@ namespace QontrolSystem.Controllers
                 message = "Deleting user",
             });
         }
+
 
     }
 }
