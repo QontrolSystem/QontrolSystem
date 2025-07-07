@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
+using QontrolSystem.Models.ViewModels;
 using QontrolSystem.Services;
 
 namespace QontrolSystem.Controllers
@@ -98,8 +99,47 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
+            return View();
+        }
+
+        private string GenerateOtp(int length)
+        {
+            var random = new Random();
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                                         .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPassword model)
+        {
+            var otp = GenerateOtp(6);
+
+            var otpEntity = new PasswordResetOtp
+            {
+                Email = model.Email,
+                OtpCode = otp,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(10)
+            };
+
+            _context.PasswordResetOtps.Add(otpEntity);
+            await _context.SaveChangesAsync();
+
+            await _serviceEmail.SendEmailAsync(
+                model.Email,
+                "User",
+                "Password Reset OTP",
+                $@"
+            <p>Hello,</p>
+            <p>Please use this OTP to reset your password: <strong>{otp}</strong></p>
+            <p>This OTP expires in 10 minutes.</p>"
+            );
+
+            ViewBag.Message = "An OTP has been sent to your email.";
             return View();
         }
 
