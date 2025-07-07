@@ -6,12 +6,14 @@ namespace QontrolSystem.Data
 {
     public class AppDbContext : DbContext
     {
+        internal object PasswordResetOtp;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Department> Departments { get; set; }
-
+        public DbSet<PasswordResetOtp> PasswordResetOtps { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Seed Roles
