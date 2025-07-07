@@ -98,16 +98,17 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users
                                .Include(u => u.Role)
-
-                               .FirstOrDefault(u => u.Email == email);
-
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
-
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
@@ -115,9 +116,7 @@ namespace QontrolSystem.Controllers
                 return View();
             }
 
-
             // Skip approval check for System Administrators
-
             bool isAdmin = user.Role.RoleName == "System Administrator";
 
             if (!isAdmin)
