@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = ViewBag.LoadingConfig?.Title ?? "Loading";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/css/loading/loading.css" rel="stylesheet" />
+ 
+    <</head>
+
+    <body>
+
+<div class="loading-container" id="loadingContainer">
+        <div class="logo-section">
+            <img src="~/Images/logo.png" alt="Qontrol System Logo" class="logo-image" />
+            <h1 class="system-title">QontrolSystem</h1>
+            <p class="system-subtitle">Management Platform</p>
+        </div>
+
+    <div class="spinner-container">
+        <div class="spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+        </div>
+    </div>
+
+    <div class="loading-text">
+        @ViewBag.LoadingConfig?.Message <span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+</div>
+
+<script>
+    // Pass server data to JS
+    window.loadingConfig = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.LoadingConfig));
+</script>
+
+<script src="~/js/loading.js"></script>
+</body>
+</html>

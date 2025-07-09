@@ -2,45 +2,67 @@
 @{
     ViewBag.Title = "Edit User";
 }
+@section Styles {
+    <link href="~/css/user-management/edit-user.css" rel="stylesheet" />
+}
 
-<h2>Edit User</h2>
+<div class="edit-user-container">
+    <h2 class="page-title">Edit User</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="UserID" />
+    <form asp-action="Edit" method="post" class="edit-form">
+        <input type="hidden" asp-for="UserID" class="hidden-field" />
 
-    <div class="mb-3">
-        <label>First Name</label>
-        <input asp-for="FirstName" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Last Name</label>
-        <input asp-for="LastName" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control" required />
-    </div>
-    <div class="mb-3">
-        <label>Phone Number</label>
-        <input asp-for="PhoneNumber" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label>Role</label>
-        <select asp-for="RoleID" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))"></select>
-    </div>
-    <div class="mb-3">
-        <label>Department</label>
-        <select asp-for="DepartmentID" class="form-control" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))"></select>
-    </div>
-    <div class="mb-3">
-        <label>Is Active</label>
-        <input asp-for="IsActive" type="checkbox" class="form-check-input" />
-    </div>
-    <div class="mb-3">
-        <label>Reset Password (optional)</label>
-        <input name="NewPassword" class="form-control" type="password" />
-    </div>
+        <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input asp-for="FirstName" class="form-input" required />
+        </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
-    <a asp-action="UserManagementIndex" class="btn btn-secondary">Cancel</a>
-</form>
+        <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input asp-for="LastName" class="form-input" required />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input asp-for="Email" class="form-input" type="email" required />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input asp-for="PhoneNumber" class="form-input" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Role</label>
+            <select asp-for="RoleID" class="form-select" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))">
+                <option value="">Select a role...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Department</label>
+            <select asp-for="DepartmentID" class="form-select" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))">
+                <option value="">Select a department...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Status</label>
+            <div class="checkbox-group">
+                <input asp-for="IsActive" type="checkbox" class="form-checkbox" />
+                <label asp-for="IsActive" class="checkbox-label">User is active</label>
+            </div>
+        </div>
+
+        <div class="form-group password-group">
+            <label class="form-label">Reset Password (optional)</label>
+            <input name="NewPassword" class="form-input" type="password" />
+            <div class="password-help">Leave blank to keep current password</div>
+        </div>
+
+        <div class="action-buttons">
+            <button type="submit" class="action-btn btn-save">Save Changes</button>
+            <a asp-action="UserManagementIndex" class="action-btn btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>

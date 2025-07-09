@@ -20,7 +20,7 @@ namespace QontrolSystem.Controllers
         }
 
 
-        public IActionResult UserManagementIndex(string searchString)
+        public IActionResult UserManagementIndex(string searchString, string roleFilter, string departmentFilter, string isActiveFilter)
         {
             if (!IsAdmin())
                 return RedirectToAction("AccessDenied", "Account");
@@ -28,7 +28,11 @@ namespace QontrolSystem.Controllers
             var users = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Where(u =>  u.IsActive && u.IsApproved && !u.IsDeleted) 
                 .AsQueryable();
+
+            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
+            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -40,8 +44,25 @@ namespace QontrolSystem.Controllers
                     u.Department.DepartmentName.Contains(searchString));
             }
 
+            if (!string.IsNullOrEmpty(roleFilter))
+            {
+                users = users.Where(u => u.Role.RoleName == roleFilter);
+            }
+
+            if (!string.IsNullOrEmpty(departmentFilter))
+            {
+                users = users.Where(u => u.Department.DepartmentName == departmentFilter);
+            }
+
+            if (!string.IsNullOrEmpty(isActiveFilter))
+            {
+                bool isActive = bool.Parse(isActiveFilter);
+                users = users.Where(u => u.IsActive == isActive);
+            }
+
             return View(users.ToList());
         }
+
 
 
         public IActionResult Details(int? id)
@@ -53,6 +74,7 @@ namespace QontrolSystem.Controllers
             var user = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Where(u => !u.IsDeleted)
                 .FirstOrDefault(u => u.UserID == id);
 
             if (user == null) return NotFound();
@@ -85,7 +107,13 @@ namespace QontrolSystem.Controllers
 
             _context.Users.Add(user);
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+          
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Creating user",
+            });
         }
 
         public IActionResult Edit(int? id)
@@ -120,7 +148,13 @@ namespace QontrolSystem.Controllers
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
 
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+           
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Saving changes",
+            });
         }
 
 
@@ -137,15 +171,28 @@ namespace QontrolSystem.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            if (!IsAdmin()) return RedirectToAction("AccessDenied", "Account");
+            if (!IsAdmin())
+                return RedirectToAction("AccessDenied", "Account");
 
             var user = _context.Users.Find(id);
-            if (user == null) return NotFound();
+            if (user == null)
+                return NotFound();
 
-            _context.Users.Remove(user);
+            // Perform soft delete
+            user.IsDeleted = true;
+            user.IsActive = false;
+
+            _context.Users.Update(user);
             _context.SaveChanges();
-            return RedirectToAction("UserManagementIndex");
+
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                duration = 3000,
+                message = "Deleting user",
+            });
         }
+
 
     }
 }

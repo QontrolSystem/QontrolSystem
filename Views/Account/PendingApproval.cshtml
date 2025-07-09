@@ -1,0 +1,49 @@
+@{
+    ViewBag.Title = " Account Pending Approval";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Account Pending Approval</title>
+    <link href="~/css/account/pending-user.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="~/Images/logo.png" alt="Qontrol System Logo" />
+        </div>
+
+        <div class="status-icon"></div>
+
+        <div class="subtitle">Account Status</div>
+        <h1>Pending Approval</h1>
+
+        <p>Your account has been successfully created and is currently under review by our system administrators.</p>
+
+        <div class="highlight">
+            <p>You'll receive an email notification once your account has been activated and approved.</p>
+        </div>
+
+        <p>This process typically takes 1-2 business days. Thank you for your patience as we ensure the security and integrity of our platform.</p>
+
+        <div class="contact-section">
+            <p>If you believe this is a mistake or have any questions:</p>
+            <a href="mailto:support@qontrolsystem.com" class="contact-btn">
+                📧 Contact Support
+            </a>
+        </div>
+        <div class="back-btn-cont">
+            <a asp-action="Login" class="action-btn btn-back">Back</a>
+        </div>
+
+        <div class="footer-text">
+            © 2025 QontrolSystem. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+

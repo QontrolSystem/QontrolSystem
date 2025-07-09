@@ -21,6 +21,10 @@
 
         public bool IsActive { get; set; } = true;
 
+        public bool IsApproved { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
+        public bool IsRejected { get; set; } = false;
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

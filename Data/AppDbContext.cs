@@ -1,16 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Models;
 
 namespace QontrolSystem.Data
 {
     public class AppDbContext : DbContext
     {
+        internal object PasswordResetOtp;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Department> Departments { get; set; }
-
+        public DbSet<PasswordResetOtp> PasswordResetOtps { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Seed Roles
@@ -25,10 +28,12 @@ namespace QontrolSystem.Data
             modelBuilder.Entity<Department>().HasData(
                 new Department { DepartmentID = 1, DepartmentName = "Incident Handling" },
                 new Department { DepartmentID = 2, DepartmentName = "Problem Identification" },
-                new Department { DepartmentID = 3, DepartmentName = "Networking" },
-                new Department { DepartmentID = 4, DepartmentName = "Security" },
+                new Department { DepartmentID = 3, DepartmentName = "Change Management" },
+                new Department { DepartmentID = 4, DepartmentName = "Service Request Management" },
                 new Department { DepartmentID = 5, DepartmentName = "Other..eg HR,Finance,Operations" }
             );
+
+            
         }
     }
 }

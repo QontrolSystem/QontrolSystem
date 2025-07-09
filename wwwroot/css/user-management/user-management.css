@@ -1,4 +1,4 @@
-﻿/* User Management Styles */
+/* User Management Styles */
 .user-management-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -259,3 +259,95 @@
         font-size: 0.8rem;
     }
 }
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* First row: horizontally align create + search input + button */
+.top-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Create button style */
+.create-btn {
+    background-color: #1d4ed8; /* blue */
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+    .create-btn:hover {
+        background-color: #2563eb;
+    }
+
+/* Search form input + button */
+.search-form {
+    flex-grow: 1; /* make search input expand */
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    background-color: #2563eb;
+    border: none;
+    color: white;
+    padding: 0.55rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .search-btn:hover {
+        background-color: #1d4ed8;
+    }
+
+/* Second row: filters inline */
+.filter-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Dropdown styles */
+.filter-dropdown {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+/* Filter button */
+.filter-btn {
+    background-color: #2563eb;
+    border: none;
+    color: white;
+    padding: 0.55rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .filter-btn:hover {
+        background-color: #1d4ed8;
+    }
+
