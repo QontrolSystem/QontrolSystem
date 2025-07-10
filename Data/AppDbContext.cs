@@ -40,19 +40,19 @@ namespace QontrolSystem.Data
 
             //Seed Ticket Statuses
             modelBuilder.Entity<TicketStatus>().HasData(
-                new TicketStatus { StatusID = 1, StatusName = "Open" },
-                new TicketStatus { StatusID = 2, StatusName = "In Progress" },
-                new TicketStatus { StatusID = 3, StatusName = "Resolved" },
-                new TicketStatus { StatusID = 4, StatusName = "Closed" }
+                new TicketStatus { TicketStatusID = 1, StatusName = "Open" },
+                new TicketStatus { TicketStatusID = 2, StatusName = "In Progress" },
+                new TicketStatus { TicketStatusID = 3, StatusName = "Resolved" },
+                new TicketStatus { TicketStatusID = 4, StatusName = "Closed" }
             );
 
             //Seed Ticket Categories
             modelBuilder.Entity<TicketCategory>().HasData(
-                new TicketCategory { CategoryID = 1, CategoryName = "Hardware" },
-                new TicketCategory { CategoryID = 2, CategoryName = "Software" },
-                new TicketCategory { CategoryID = 3, CategoryName = "Network" },
-                new TicketCategory { CategoryID = 4, CategoryName = "Security" },
-                new TicketCategory { CategoryID = 5, CategoryName = "Other" }
+                new TicketCategory { TicketCategoryID = 1, CategoryName = "Hardware" },
+                new TicketCategory { TicketCategoryID = 2, CategoryName = "Software" },
+                new TicketCategory { TicketCategoryID = 3, CategoryName = "Network" },
+                new TicketCategory { TicketCategoryID = 4, CategoryName = "Security" },
+                new TicketCategory { TicketCategoryID = 5, CategoryName = "Other" }
             );
 
 
