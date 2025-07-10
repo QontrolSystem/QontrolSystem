@@ -153,7 +153,12 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
+<<<<<<< Updated upstream
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
+=======
+                               .FirstOrDefault(u => u.Email == email);
+
+>>>>>>> Stashed changes
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
