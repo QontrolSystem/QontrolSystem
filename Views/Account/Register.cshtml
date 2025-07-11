@@ -1,6 +1,8 @@
 ﻿@model QontrolSystem.Models.RegisterValidation
 @{
     ViewBag.Title = "Register";
+    var departments = ViewBag.Departments as List<Department>;
+    var itSubDepartments = ViewBag.ITSubDepartments as List<ITSubDepartment>;
 }
 
 @section Styles {
@@ -17,7 +19,6 @@
             <div class="welcome-content">
                 <h1 class="welcome-title">Welcome to QontrolSystem</h1>
                 <p class="welcome-subtitle">Your trusted solution for ticketing systems, support, and comprehensive management</p>
-
                 <ul class="feature-list">
                     <li class="feature-item">Secure User Management</li>
                     <li class="feature-item">Department Organization</li>
@@ -38,6 +39,7 @@
                     <div class="form-group">
                         <label class="form-label">First Name</label>
                         <input asp-for="FirstName" class="form-control" placeholder="Enter your first name" required />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Last Name</label>
@@ -66,13 +68,26 @@
 
                 <div class="form-group">
                     <label class="form-label">Department</label>
-                    <select asp-for="DepartmentID" class="form-control" required>
+                    <select asp-for="DepartmentID" class="form-control" id="departmentSelect" required>
                         <option disabled selected>Select your department</option>
-                        @foreach (var dept in ViewBag.Departments)
+                        @foreach (var dept in departments)
                         {
                             <option value="@dept.DepartmentID">@dept.DepartmentName</option>
                         }
                     </select>
+                    <span asp-validation-for="DepartmentID" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" id="itSubDeptContainer" style="display: none;">
+                    <label class="form-label">IT Sub-Department</label>
+                    <select asp-for="ITSubDepartmentID" class="form-control">
+                        <option value="">-- Select Sub-Department --</option>
+                        @foreach (var sub in itSubDepartments)
+                        {
+                            <option value="@sub.ITSubDepartmentID">@sub.SubDepartmentName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ITSubDepartmentID" class="text-danger"></span>
                 </div>
 
                 <button type="submit" class="btn-register">Create Account</button>
@@ -87,9 +102,22 @@
     </div>
 </div>
 
-// Validation summary and scripts
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        const deptDropdown = document.getElementById("departmentSelect");
+        const itSubDeptContainer = document.getElementById("itSubDeptContainer");
+
+        deptDropdown.addEventListener("change", function () {
+            const selectedText = deptDropdown.options[deptDropdown.selectedIndex].text;
+            if (selectedText === "IT Department") {
+                itSubDeptContainer.style.display = "block";
+            } else {
+                itSubDeptContainer.style.display = "none";
+                const subDropdown = document.querySelector('[name="ITSubDepartmentID"]');
+                if (subDropdown) subDropdown.selectedIndex = 0;
+            }
+        });
+    </script>
 }
