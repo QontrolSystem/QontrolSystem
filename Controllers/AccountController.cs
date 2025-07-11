@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
+using QontrolSystem.Models.ViewModels;
 using QontrolSystem.Services;
 
 namespace QontrolSystem.Controllers
@@ -115,9 +116,53 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
+        }
+
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        private string GenerateOtp(int length)
+        {
+            var random = new Random();
+
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                                         .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPassword model)
+        {
+            var otp = GenerateOtp(6);
+
+            var otpEntity = new PasswordResetOtp
+            {
+                Email = model.Email,
+                OtpCode = otp,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(10)
+            };
+
+            _context.PasswordResetOtps.Add(otpEntity);
+            await _context.SaveChangesAsync();
+
+            await _serviceEmail.SendEmailAsync(
+                model.Email,
+                "User",
+                "Password Reset OTP",
+                $@"
+            <p>Hello,</p>
+            <p>Please use this OTP to reset your password: <strong>{otp}</strong></p>
+            <p>This OTP expires in 10 minutes.</p>"
+            );
+
+            ViewBag.Message = "An OTP has been sent to your email.";
+            return RedirectToAction("ResetPassword");
         }
 
         [HttpPost]
@@ -125,7 +170,12 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
+<<<<<<< Updated upstream
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
+=======
+                               .FirstOrDefault(u => u.Email == email);
+
+>>>>>>> Stashed changes
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
@@ -189,6 +239,50 @@ namespace QontrolSystem.Controllers
 
             return View(user);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            // Check if OTP is valid
+            var otpRecord = await _context.PasswordResetOtps
+                .FirstOrDefaultAsync(x =>
+                    x.Email == model.Email &&
+                    x.OtpCode == model.OtpCode &&
+                    !x.IsUsed &&
+                    x.ExpiresAt > DateTime.UtcNow
+                );
+
+            if (otpRecord == null)
+            {
+                ModelState.AddModelError("", "Invalid or expired OTP.");
+                return View(model);
+            }
+
+            // Mark OTP as used
+            otpRecord.IsUsed = true;
+            await _context.SaveChangesAsync();
+
+            // Update the user's password
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            user.PasswordHash = HashPassword(model.NewPassword);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Password reset successfully!";
+            return RedirectToAction("Login");
+        }
+
+
 
         [HttpPost]
         public IActionResult Profile(User updatedUser, string? NewPassword)
