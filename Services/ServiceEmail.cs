@@ -19,10 +19,10 @@ namespace QontrolSystem.Services
             // Ideally, read these from appsettings.json or secrets
             _smtpServer = "smtp.gmail.com";
             _smtpPort = 587;
-            _smtpUser = "alsonkhanyile69@gmail.com";      // your email address
-            _smtpPass = "nmpt lvyq fnof pxil";                // your app password
-            _senderEmail = "alsonkhanyile69@gmail.com";   // same as user
-            _senderName = "Qontrol System";
+            _smtpUser = "";      // your email address
+            _smtpPass = "";                // your app password
+            _senderEmail = "";   // same as user
+            _senderName = "";
         }
 
         public async Task SendEmailAsync(string recipientEmail, string recipientName, string subject, string htmlMessage)
