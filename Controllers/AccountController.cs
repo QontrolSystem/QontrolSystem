@@ -21,15 +21,21 @@ namespace QontrolSystem.Controllers
         public IActionResult Register()
         {
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterValidation model)
         {
+
+            ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
                 return View(model);
             }
 
@@ -37,6 +43,7 @@ namespace QontrolSystem.Controllers
             {
                 ModelState.AddModelError("Email", "Email already exists.");
                 ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
                 return View(model);
             }
 
@@ -47,6 +54,7 @@ namespace QontrolSystem.Controllers
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 DepartmentID = model.DepartmentID,
+                ITSubDepartmentID = model.ITSubDepartmentID,
                 PasswordHash = HashPassword(model.PasswordHash),
                 RoleID = 1, // Default to Employee
                 CreatedAt = DateTime.Now,
@@ -57,6 +65,15 @@ namespace QontrolSystem.Controllers
 
 
             user.IsActive = false;
+
+            var selectedDept = _context.Departments.FirstOrDefault(d => d.DepartmentID == model.DepartmentID);
+            if (selectedDept != null && selectedDept.DepartmentName == "IT Department" && model.ITSubDepartmentID == null)
+            {
+                ModelState.AddModelError("ITSubDepartmentID", "Please select an IT Sub-Department.");
+                ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+                return View(model); // ✅ Always return RegisterValidation model
+            }
 
 
             _context.Users.Add(user);
@@ -105,6 +122,11 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
         private string GenerateOtp(int length)
         {
             var random = new Random();
@@ -140,7 +162,7 @@ namespace QontrolSystem.Controllers
             );
 
             ViewBag.Message = "An OTP has been sent to your email.";
-            return View();
+            return RedirectToAction("ResetPassword");
         }
 
         [HttpPost]
@@ -148,7 +170,12 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
+<<<<<<< Updated upstream
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
+=======
+                               .FirstOrDefault(u => u.Email == email);
+
+>>>>>>> Stashed changes
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
@@ -212,6 +239,50 @@ namespace QontrolSystem.Controllers
 
             return View(user);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            // Check if OTP is valid
+            var otpRecord = await _context.PasswordResetOtps
+                .FirstOrDefaultAsync(x =>
+                    x.Email == model.Email &&
+                    x.OtpCode == model.OtpCode &&
+                    !x.IsUsed &&
+                    x.ExpiresAt > DateTime.UtcNow
+                );
+
+            if (otpRecord == null)
+            {
+                ModelState.AddModelError("", "Invalid or expired OTP.");
+                return View(model);
+            }
+
+            // Mark OTP as used
+            otpRecord.IsUsed = true;
+            await _context.SaveChangesAsync();
+
+            // Update the user's password
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            user.PasswordHash = HashPassword(model.NewPassword);
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Password reset successfully!";
+            return RedirectToAction("Login");
+        }
+
+
 
         [HttpPost]
         public IActionResult Profile(User updatedUser, string? NewPassword)
