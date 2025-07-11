@@ -21,15 +21,21 @@ namespace QontrolSystem.Controllers
         public IActionResult Register()
         {
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterValidation model)
         {
+
+            ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
                 return View(model);
             }
 
@@ -37,6 +43,7 @@ namespace QontrolSystem.Controllers
             {
                 ModelState.AddModelError("Email", "Email already exists.");
                 ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
                 return View(model);
             }
 
@@ -47,6 +54,7 @@ namespace QontrolSystem.Controllers
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 DepartmentID = model.DepartmentID,
+                ITSubDepartmentID = model.ITSubDepartmentID,
                 PasswordHash = HashPassword(model.PasswordHash),
                 RoleID = 1, // Default to Employee
                 CreatedAt = DateTime.Now,
@@ -57,6 +65,15 @@ namespace QontrolSystem.Controllers
 
 
             user.IsActive = false;
+
+            var selectedDept = _context.Departments.FirstOrDefault(d => d.DepartmentID == model.DepartmentID);
+            if (selectedDept != null && selectedDept.DepartmentName == "IT Department" && model.ITSubDepartmentID == null)
+            {
+                ModelState.AddModelError("ITSubDepartmentID", "Please select an IT Sub-Department.");
+                ViewBag.Departments = _context.Departments.ToList();
+                ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+                return View(model); // ✅ Always return RegisterValidation model
+            }
 
 
             _context.Users.Add(user);
