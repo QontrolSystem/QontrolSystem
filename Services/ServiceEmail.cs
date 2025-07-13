@@ -19,9 +19,9 @@ namespace QontrolSystem.Services
             // Ideally, read these from appsettings.json or secrets
             _smtpServer = "smtp.gmail.com";
             _smtpPort = 587;
-            _smtpUser = "nhlakaniphoradebe337@gmail.com";      // your email address
-            _smtpPass = "wros farc clhb erek";                // your app password
-            _senderEmail = "nhlakaniphoradebe337@gmail.com";   // same as user
+            _smtpUser = "";      // your email address
+            _smtpPass = "";                // your app password
+            _senderEmail = "";   // same as user
             _senderName = "Qontrol System";
         }
 
