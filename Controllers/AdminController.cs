@@ -15,7 +15,14 @@ namespace QontrolSystem.Controllers
 
         public IActionResult Dashboard()
         {
-            var userCount = _context.Users.Count();
+            var filteredUser = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Where(u => u.IsApproved && !u.IsDeleted)
+                .ToList();
+
+            var userCount = filteredUser.Count();
+
             var technicianCount = _context.Users
                 .Include(u => u.Role)
                 .Count(u => u.Role.RoleName == "Technician");
@@ -23,12 +30,11 @@ namespace QontrolSystem.Controllers
 
             var activeUsers = _context.Users.Count(u => u.IsActive);
             var inactiveUsers = _context.Users.Count(u => !u.IsActive);
+            
             ViewBag.PendingUserCount = _context.Users.Count(u => !u.IsApproved && !u.IsRejected);
-
             ViewBag.UserCount = userCount;
             ViewBag.TechnicianCount = technicianCount;
             ViewBag.DepartmentCount = departmentCount;
-
             ViewBag.ActiveUsers = activeUsers;
             ViewBag.InactiveUsers = inactiveUsers;
 

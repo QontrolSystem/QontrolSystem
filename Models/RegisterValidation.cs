@@ -33,5 +33,9 @@ namespace QontrolSystem.Models
 
         [Required(ErrorMessage = "Please select a department.")]
         public int DepartmentID { get; set; }
+
+        [Display(Name = "IT Sub-Department")]
+        public int? ITSubDepartmentID { get; set; }
+
     }
 }
