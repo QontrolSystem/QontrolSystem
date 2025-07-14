@@ -17,13 +17,13 @@ namespace QontrolSystem.Controllers.ControllersApis
     {
         private readonly AppDbContext _context;
         private readonly ServiceEmail _serviceEmail;
-        private readonly IConfiguration _configuration; 
+        private readonly IConfiguration _configuration;
 
         public AccountControllerApi(AppDbContext context, ServiceEmail serviceEmail, IConfiguration configuration)
         {
             _context = context;
             _serviceEmail = serviceEmail;
-            _configuration = configuration; 
+            _configuration = configuration;
         }
 
         // Register endpoint for API 
@@ -76,30 +76,41 @@ namespace QontrolSystem.Controllers.ControllersApis
         {
             var user = _context.Users
                                 .Include(u => u.Role)
-                                .FirstOrDefault(u => u.Email == email && u.IsActive);
+                                .FirstOrDefault(u => u.Email == email);
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
                 return Unauthorized("Invalid email or password.");
             }
-            if (!user.IsActive)
+
+            // Check if user is System Administrator
+            bool isAdmin = user.Role?.RoleName == "System Administrator";
+
+            if (!isAdmin)
             {
-                return Forbid("Account is inactive. Please contact support.");
+                if (!user.IsActive)
+                    return Forbid("Account is inactive. Please contact support.");
+
+                if (!user.IsApproved)
+                    return Forbid("Account not yet approved by admin.");
             }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()), 
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "System Administrator"), 
-            };  
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "System Administrator"),
+    };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"],
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature
@@ -115,6 +126,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 expires = tokenDescriptor.Expires
             });
         }
+
 
         private bool VerifyPassword(string inputPassword, string storedHash)
         {
