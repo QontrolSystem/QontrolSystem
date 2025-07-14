@@ -49,11 +49,10 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "QontrolSystem API", Version = "v1" });
 
-    // ? Add JWT security scheme
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme.  
-                        Enter 'Bearer' [space] and then your token in the text input below.  
+                        Enter 'Bearer' [space] and then your token.  
                         Example: 'Bearer 12345abcdef'",
         Name = "Authorization",
         In = ParameterLocation.Header,
@@ -61,25 +60,22 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    // ? Require the token globally (optional)
-    //c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    //{
-    //    {
-    //        new OpenApiSecurityScheme
-    //        {
-    //            Reference = new OpenApiReference
-    //            {
-    //                Type = ReferenceType.SecurityScheme,
-    //                Id = "Bearer"
-    //            },
-    //            Scheme = "oauth2",
-    //            Name = "Bearer",
-    //            In = ParameterLocation.Header,
-    //        },
-    //        new List<string>()
-    //    }
-    //});
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string>()
+        }
+    });
 });
+
 
 
 var app = builder.Build();
@@ -111,6 +107,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-app.MapControllers(); 
+app.MapControllers();
 
 app.Run();
