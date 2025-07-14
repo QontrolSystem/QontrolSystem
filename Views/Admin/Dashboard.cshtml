@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Text.Json
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 @section Styles {
@@ -54,15 +55,22 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('usersChart').getContext('2d');
+
+    const departmentLabels = @Html.Raw(Json.Serialize(ViewBag.DepartmentLabels));
+    const departmentCounts = @Html.Raw(Json.Serialize(ViewBag.DepartmentCounts));
+
     const usersChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Active Users', 'Inactive Users'],
+            labels: departmentLabels,
             datasets: [{
-                label: 'User Status',
-                data: [@ViewBag.ActiveUsers, @ViewBag.InactiveUsers],
-                backgroundColor: ['#3b82f6', '#e5e7eb'],
-                borderColor: ['#2563eb', '#d1d5db'],
+                label: 'Users per Department',
+                data: departmentCounts,
+                backgroundColor: [
+                    '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#14b8a6',
+                    '#e11d48', '#0ea5e9', '#6366f1', '#84cc16'
+                ],
+                borderColor: '#fff',
                 borderWidth: 2,
                 hoverOffset: 6
             }]
@@ -85,7 +93,7 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
         const counters = document.querySelectorAll('.count');
         const duration = 1000; // 1 second
 
