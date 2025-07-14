@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QontrolSystem.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
@@ -18,11 +19,12 @@ namespace QontrolSystem.Controllers.ControllersApis
 
         // Endpoint to get pending user registrations
         [HttpGet("pending-registrations")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "System Administrator")]
         public IActionResult GetPendingRegistrations()
         {
             var pendingUsers = _context.Users
-                .Where(u => !u.IsApproved && !u.IsRejected && u.IsActive)
+                .Include(u => u.Role)
+                .Where(u => !u.IsApproved && !u.IsRejected)
                 .Select(u => new
                 {
                     u.UserID,
