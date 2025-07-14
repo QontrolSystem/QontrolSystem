@@ -22,7 +22,7 @@ namespace QontrolSystem.Services
             _smtpUser = "";      // your email address
             _smtpPass = "";                // your app password
             _senderEmail = "";   // same as user
-            _senderName = "";
+            _senderName = "Qontrol System";
         }
 
         public async Task SendEmailAsync(string recipientEmail, string recipientName, string subject, string htmlMessage)
