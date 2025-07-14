@@ -2,6 +2,7 @@
 @{
     var isLoggedIn = Context.Session.GetInt32("UserID") != null;
     var userRole = Context.Session.GetString("Role");
+	var userName = Context.Session.GetString("UserName");
 
 }
 
