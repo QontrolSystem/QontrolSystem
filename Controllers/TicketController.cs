@@ -139,6 +139,89 @@ namespace QontrolSystem.Controllers
             }
             return View(ticket);
         }
+
+        // GET
+        public IActionResult Edit(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
+
+        // POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Ticket ticket, List<IFormFile>? NewAttachments)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var existingTicket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == ticket.TicketID && t.CreatedBy == userId);
+
+            if (existingTicket == null)
+            {
+                return NotFound();
+            }
+
+            // Update description
+            existingTicket.Description = ticket.Description;
+            existingTicket.UpdatedAt = DateTime.Now;
+
+            // Handle new attachments
+            if (NewAttachments != null && NewAttachments.Any())
+            {
+                var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                if (!Directory.Exists(uploadsPath))
+                    Directory.CreateDirectory(uploadsPath);
+
+                foreach (var file in NewAttachments)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(uploadsPath, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    var attachment = new TicketAttachment
+                    {
+                        TicketID = existingTicket.TicketID,
+                        FilePath = "/uploads/" + fileName,
+                        UploadedAt = DateTime.Now
+                    };
+
+                    _context.TicketAttachments.Add(attachment);
+                }
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Tickets", "Ticket"),
+                duration = 3000,
+                message = "Updating ticket",
+            });
+        }
+
     }
 }
 
