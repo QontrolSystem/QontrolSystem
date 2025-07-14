@@ -196,6 +196,7 @@ namespace QontrolSystem.Controllers
 
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetString("Role", user.Role.RoleName);
+            HttpContext.Session.SetString("UserName", user.FirstName);
 
             string? targetUrl = user.Role.RoleName switch
             {
