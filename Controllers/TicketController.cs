@@ -119,9 +119,26 @@ namespace QontrolSystem.Controllers
             {
                 returnUrl = Url.Action("Tickets", "Ticket"),
                 duration = 3000,
-                message = "Creating ticket...",
+                message = "Creating ticket",
             });
-        }     
+        }
+
+        public IActionResult TicketDetail(int id)
+        {
+            var ticket = _context.Tickets
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketUrgency)
+                .Include(t => t.TicketAttachments)
+                .Include(t => t.Creator)
+                .Include(t => t.Assignee)
+                .FirstOrDefault(t => t.TicketID == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            return View(ticket);
+        }
     }
 }
 
