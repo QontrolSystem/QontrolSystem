@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="header-right">
-            <a href="@Url.Action("EditTicket", "Ticket", new { id = Model.TicketID })" class="btn btn-primary">
+            <a href="@Url.Action("Edit", "Ticket", new { id = Model.TicketID })" class="btn btn-primary">
                 <i class="icon-edit"></i> Edit Ticket
             </a>
         </div>
@@ -81,18 +81,16 @@
                     </div>
                     <div class="card-body">
                         <div class="attachments-grid">
-                            @foreach (var attachment in Model.TicketAttachments)
-                            {
-                                <div class="attachment-item">
-                                    <div class="attachment-icon">📎</div>
-                                    <div class="attachment-info">
-                                        <span class="attachment-name">@attachment.FilePath</span>
-                                    </div>
-                                    <a href="@Url.Action("DownloadAttachment", "Ticket", new { id = attachment.TicketAttachmentID })" class="attachment-download">
-                                        Download
-                                    </a>
-                                </div>
-                            }
+                            <ul>
+                                @foreach (var attachment in Model.TicketAttachments)
+                                {
+                                    <li>
+                                        <a href="@attachment.FilePath" target="_blank">
+                                            @System.IO.Path.GetFileName(attachment.FilePath)
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>
