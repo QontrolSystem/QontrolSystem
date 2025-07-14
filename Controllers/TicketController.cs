@@ -220,7 +220,7 @@ namespace QontrolSystem.Controllers
                 duration = 3000,
                 message = "Updating ticket",
             });
-        }
+        }     
 
     }
 }
