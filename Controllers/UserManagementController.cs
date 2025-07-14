@@ -13,7 +13,7 @@ namespace QontrolSystem.Controllers
         {
             _context = context;
         }
-
+        
         private bool IsAdmin()
         {
             return HttpContext.Session.GetString("Role") == "System Administrator";
