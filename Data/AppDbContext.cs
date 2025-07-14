@@ -22,10 +22,12 @@ namespace QontrolSystem.Data
         public DbSet<TicketCategory> TicketCategories { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
 
-
+        public DbSet<TicketUrgency> TicketUrgencies { get; set; }
+        public DbSet<TicketFeedback> TicketFeedbacks { get; set; }
+        public DbSet<TicketAttachment> TicketAttachments { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Seed Roles
+            
             modelBuilder.Entity<Role>().HasData(
                 new Role { RoleID = 1, RoleName = "Employee" },
                 new Role { RoleID = 2, RoleName = "Technician" },
@@ -50,7 +52,7 @@ namespace QontrolSystem.Data
 
 
 
-            //Seed Ticket Statuses
+            
             modelBuilder.Entity<TicketStatus>().HasData(
                 new TicketStatus { TicketStatusID = 1, StatusName = "Open" },
                 new TicketStatus { TicketStatusID = 2, StatusName = "In Progress" },
@@ -58,7 +60,7 @@ namespace QontrolSystem.Data
                 new TicketStatus { TicketStatusID = 4, StatusName = "Closed" }
             );
 
-            //Seed Ticket Categories
+            
             modelBuilder.Entity<TicketCategory>().HasData(
                 new TicketCategory { TicketCategoryID = 1, CategoryName = "Hardware" },
                 new TicketCategory { TicketCategoryID = 2, CategoryName = "Software" },
@@ -67,6 +69,14 @@ namespace QontrolSystem.Data
                 new TicketCategory { TicketCategoryID = 5, CategoryName = "Other" }
             );
 
+            modelBuilder.Entity<TicketUrgency>().HasData(
+                new TicketUrgency { TicketUrgencyID = 1, UrgencyLevel = "Low" },
+                new TicketUrgency { TicketUrgencyID = 2, UrgencyLevel = "Medium" },
+                new TicketUrgency { TicketUrgencyID = 3, UrgencyLevel = "High" },
+                new TicketUrgency { TicketUrgencyID = 4, UrgencyLevel = "Critical" }
+            );
+
+            modelBuilder.Entity<TicketFeedback>().HasKey(tf => tf.TicketFeedbackId); 
 
             // Configure User → Role relationship for ticket creation
             modelBuilder.Entity<Ticket>()
