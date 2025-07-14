@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
+using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers
 {
@@ -20,23 +21,20 @@ namespace QontrolSystem.Controllers
         }
 
 
-        public IActionResult UserManagementIndex(string searchString, string roleFilter, string departmentFilter, string isActiveFilter)
+        public IActionResult UserManagementIndex(string searchString, string roleFilter, string departmentFilter, string isActiveFilter, int page = 1, int pageSize = 4)
         {
             if (!IsAdmin())
                 return RedirectToAction("AccessDenied", "Account");
 
-            var users = _context.Users
+            var usersQuery = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
-                .Where(u =>  u.IsActive && u.IsApproved && !u.IsDeleted) 
+                .Where(u => u.IsApproved && !u.IsDeleted)
                 .AsQueryable();
-
-            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
-            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
-
+          
             if (!string.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u =>
+                usersQuery = usersQuery.Where(u =>
                     u.FirstName.Contains(searchString) ||
                     u.LastName.Contains(searchString) ||
                     u.Email.Contains(searchString) ||
@@ -45,22 +43,37 @@ namespace QontrolSystem.Controllers
             }
 
             if (!string.IsNullOrEmpty(roleFilter))
-            {
-                users = users.Where(u => u.Role.RoleName == roleFilter);
-            }
+                usersQuery = usersQuery.Where(u => u.Role.RoleName == roleFilter);
 
             if (!string.IsNullOrEmpty(departmentFilter))
-            {
-                users = users.Where(u => u.Department.DepartmentName == departmentFilter);
-            }
+                usersQuery = usersQuery.Where(u => u.Department.DepartmentName == departmentFilter);
 
-            if (!string.IsNullOrEmpty(isActiveFilter))
-            {
-                bool isActive = bool.Parse(isActiveFilter);
-                users = users.Where(u => u.IsActive == isActive);
-            }
+            if (!string.IsNullOrEmpty(isActiveFilter) && bool.TryParse(isActiveFilter, out bool isActive))
+                usersQuery = usersQuery.Where(u => u.IsActive == isActive);
 
-            return View(users.ToList());
+            // Pagination
+            int totalUsers = usersQuery.Count();
+            var users = usersQuery
+                .OrderBy(u => u.FirstName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
+            ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
+
+            var viewModel = new UserListViewModel
+            {
+                Users = users,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalUsers / (double)pageSize),
+                SearchString = searchString,
+                RoleFilter = roleFilter,
+                DepartmentFilter = departmentFilter,
+                IsActiveFilter = isActiveFilter
+            };
+
+            return View(viewModel);
         }
 
 
