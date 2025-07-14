@@ -18,7 +18,7 @@
 
         // Date Fields
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; } 
         public DateTime? ResolvedAt { get; set; } // Nullable because not every ticket is resolved immediately
 
         // Navigation Properties
@@ -27,12 +27,12 @@
         public TicketStatus TicketStatus { get; set; }
 
         public User Creator { get; set; }    // CreatedBy User
-        public User Assignee { get; set; }   // AssignedTo User
+        public User? Assignee { get; set; }   // AssignedTo User
 
         public Department Department { get; set; }
         public TicketUrgency TicketUrgency { get; set; }
-        public ICollection<TicketAttachment> TicketAttachments { get; set; }
-        public ICollection<TicketFeedback> TicketFeedbacks { get; set; }
+        public ICollection<TicketAttachment> TicketAttachments { get; set; } = new List<TicketAttachment>();
+        public ICollection<TicketFeedback>? TicketFeedbacks { get; set; }
     }
 }
 
