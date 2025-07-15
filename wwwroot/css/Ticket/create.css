@@ -1,0 +1,254 @@
+﻿/* Professional Blue Theme for Ticket Form */
+
+/* Container and Layout */
+.ticket-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e8ed;
+}
+
+/* Form Title */
+.form-title {
+    color: #1e3a8a;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 3px solid #3b82f6;
+    padding-bottom: 1rem;
+}
+
+/* Form Styling */
+.ticket-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Form Groups */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    color: #1e40af;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Input Fields */
+.form-input,
+.form-textarea,
+.form-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+/* Textarea Specific */
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Select Dropdown */
+.form-select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    appearance: none;
+}
+
+/* Radio Button Group */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.radio-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #64748b;
+    border-radius: 50%;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+    .radio-input:checked {
+        border-color: #3b82f6;
+        background-color: #3b82f6;
+    }
+
+        .radio-input:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+.radio-label {
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* File Input */
+.form-file {
+    padding: 0.75rem;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+    .form-file:hover {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+    }
+
+    .form-file:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+    border: 2px solid #3b82f6;
+}
+
+    .btn-primary:hover {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 2px solid #cbd5e1;
+}
+
+    .btn-secondary:hover {
+        background-color: #f8fafc;
+        border-color: #94a3b8;
+        color: #475569;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(148, 163, 184, 0.2);
+    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ticket-form-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .form-title {
+        font-size: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Validation States */
+.form-input:invalid,
+.form-textarea:invalid,
+.form-select:invalid {
+    border-color: #ef4444;
+}
+
+.form-input:valid,
+.form-textarea:valid,
+.form-select:valid {
+    border-color: #3b82f6;
+}
+
+/* Loading State */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+    .btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }

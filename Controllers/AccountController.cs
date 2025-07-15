@@ -170,12 +170,7 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
-<<<<<<< Updated upstream
                                .FirstOrDefault(u => u.Email == email && u.IsActive);
-=======
-                               .FirstOrDefault(u => u.Email == email);
-
->>>>>>> Stashed changes
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
@@ -201,6 +196,7 @@ namespace QontrolSystem.Controllers
 
             HttpContext.Session.SetInt32("UserID", user.UserID);
             HttpContext.Session.SetString("Role", user.Role.RoleName);
+            HttpContext.Session.SetString("UserName", user.FirstName);
 
             string? targetUrl = user.Role.RoleName switch
             {

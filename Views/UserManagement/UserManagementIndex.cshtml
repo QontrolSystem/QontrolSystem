@@ -1,4 +1,4 @@
-@model List<QontrolSystem.Models.User>
+@model QontrolSystem.Models.ViewModels.UserListViewModel
 @{
     ViewBag.Title = "User Management";
 }
@@ -57,7 +57,7 @@
     </div>
          
     <div class="users-table-container">
-        @if (Model != null && Model.Any())
+        @if (Model != null && Model.Users.Any())
         {
             <table class="users-table">
                 <thead class="table-header">
@@ -70,7 +70,7 @@
                     </tr>
                 </thead>
                 <tbody class="table-body">
-                    @foreach (var user in Model)
+                    @foreach (var user in Model.Users)
                     {
                     <tr>
                         <td>@user.FirstName @user.LastName</td>
@@ -94,6 +94,51 @@
                     }
                 </tbody>
             </table>
+            @if (Model.TotalPages > 1)
+            {
+                <div class="pagination">
+                    @* Previous button *@
+                    <a class="page-link @(Model.CurrentPage == 1 ? "disabled" : "")"
+                       href="@Url.Action("UserManagementIndex", new {
+                           page = Model.CurrentPage - 1,
+                           searchString = Model.SearchString,
+                           roleFilter = Model.RoleFilter,
+                           departmentFilter = Model.DepartmentFilter,
+                           isActiveFilter = Model.IsActiveFilter
+                       })"
+                       @(Model.CurrentPage == 1 ? "tabindex='-1' aria-disabled='true'" : "")>
+                        &laquo; Prev
+                    </a>
+
+                    @* Page numbers *@
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        var activeClass = i == Model.CurrentPage ? "active" : "";
+                        <a class="page-link @activeClass"
+                           href="@Url.Action("UserManagementIndex", new {
+                               page = i,
+                               searchString = Model.SearchString,
+                               roleFilter = Model.RoleFilter,
+                               departmentFilter = Model.DepartmentFilter,
+                               isActiveFilter = Model.IsActiveFilter
+                           })">@i</a>
+                    }
+
+                    @* Next button *@
+                    <a class="page-link @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")"
+                       href="@Url.Action("UserManagementIndex", new {
+                           page = Model.CurrentPage + 1,
+                           searchString = Model.SearchString,
+                           roleFilter = Model.RoleFilter,
+                           departmentFilter = Model.DepartmentFilter,
+                           isActiveFilter = Model.IsActiveFilter
+                       })"
+                       @(Model.CurrentPage == Model.TotalPages ? "tabindex='-1' aria-disabled='true'" : "")>
+                        Next &raquo;
+                    </a>
+                </div>
+            }
+
         }
         else
         {

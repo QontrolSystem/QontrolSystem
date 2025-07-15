@@ -23,6 +23,20 @@ namespace QontrolSystem.Controllers
 
             var userCount = filteredUser.Count();
 
+            var departmentData = _context.Users
+                .Where(u => u.IsApproved && u.IsActive)
+                .Include(u => u.Department)
+                .GroupBy(u => u.Department.DepartmentName)
+                .Select(g => new
+                {
+                    DepartmentName = g.Key ?? "Unassigned",
+                    Count = g.Count()
+                })
+                .ToList();
+
+            ViewBag.DepartmentLabels = departmentData.Select(d => d.DepartmentName).ToList();
+            ViewBag.DepartmentCounts = departmentData.Select(d => d.Count).ToList();
+
             var technicianCount = _context.Users
                 .Include(u => u.Role)
                 .Count(u => u.Role.RoleName == "Technician");
@@ -45,6 +59,7 @@ namespace QontrolSystem.Controllers
         {
             var pendingUsers = _context.Users
                 .Include(u => u.Role)
+                .Include(u => u.Department)
                 .Where(u => !u.IsApproved && !u.IsRejected)
                 .ToList();
 

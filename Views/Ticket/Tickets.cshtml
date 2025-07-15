@@ -1,0 +1,83 @@
+﻿@model IEnumerable<QontrolSystem.Models.Ticket.Ticket>
+@{
+    ViewBag.Title = "Tickets";
+}
+
+@section Styles {
+    <link href="~/css/Ticket/details.css" rel="stylesheet" />
+}
+
+<div class="tickets-container">
+    <div class="tickets-header">
+        <h2 class="tickets-title">My Tickets</h2>
+        <div class="tickets-summary">
+            <span class="ticket-count">@Model.Count() tickets</span>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3 class="empty-title">No Tickets Found</h3>
+            <p class="empty-message">You have not created any tickets yet.</p>
+            <a href="@Url.Action("Create", "Ticket")" class="btn btn-primary">Create Your First Ticket</a>
+        </div>
+    }
+    else
+    {
+        <div class="tickets-table-container">
+            <table class="tickets-table">
+                <thead class="table-header">
+                    <tr>
+                        <th class="table-th">Title</th>
+                        <th class="table-th">Description</th>
+                        <th class="table-th">Category</th>
+                        <th class="table-th">Status</th>
+                        <th class="table-th">Urgency</th>
+                        <th class="table-th">Created</th>
+                        <th class="table-th">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    @foreach (var ticket in Model)
+                    {
+                        <tr class="table-row">
+                            <td class="table-td title-cell">
+                                <div class="ticket-title">@ticket.Title</div>
+                            </td>
+                            <td class="table-td description-cell">
+                                <div class="ticket-description">@ticket.Description</div>
+                            </td>
+                            <td class="table-td">
+                                <span class="category-badge">@ticket.TicketCategory.CategoryName</span>
+                            </td>
+                            <td class="table-td">
+                                <span class="status-badge status-@ticket.TicketStatus.StatusName.ToLower().Replace(" ", "-")">
+                                    @ticket.TicketStatus.StatusName
+                                </span>
+                            </td>
+                            <td class="table-td">
+                                <span class="urgency-badge urgency-@ticket.TicketUrgency.UrgencyLevel.ToLower().Replace(" ", "-")">
+                                    @ticket.TicketUrgency.UrgencyLevel
+                                </span>
+                            </td>
+                            <td class="table-td date-cell">
+                                <div class="date-info">
+                                    <span class="date-primary">@ticket.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                    <span class="date-secondary">@ticket.CreatedAt.ToString("HH:mm")</span>
+                                </div>
+                            </td>
+                            <td class="table-td actions-cell">
+                                <div class="ticket-actions">
+                                    <a href="@Url.Action("TicketDetail", "Ticket", new { id = ticket.TicketID })" class="action-btn view-btn">View</a>
+                                    <a href="@Url.Action("Edit", "Ticket", new { id = ticket.TicketID })" class="action-btn edit-btn">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

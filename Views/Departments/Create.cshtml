@@ -1,0 +1,41 @@
+﻿@model Department
+
+@{
+    ViewData["Title"] = "Create Department";
+}
+
+@section Styles {
+    <link href="~/css/departments/create.css" rel="stylesheet" />
+}
+
+<div class="create-department-container">
+    <div class="page-header">
+        <h2 class="page-title">Create New Department</h2>
+        <div class="header-divider"></div>
+    </div>
+
+    <div class="form-container">
+        <form asp-action="Create" method="post" class="department-form">
+            <div class="form-group">
+                <label asp-for="DepartmentName" class="form-label">Department Name</label>
+                <input asp-for="DepartmentName" class="form-input" placeholder="Enter department name" />
+                <span asp-validation-for="DepartmentName" class="validation-error"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-save"></i>
+                    Create Department
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="icon-back"></i>
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
