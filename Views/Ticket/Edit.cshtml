@@ -1,0 +1,60 @@
+﻿@model QontrolSystem.Models.Ticket.Ticket
+
+@{
+    ViewBag.Title = "Edit Ticket";
+
+}
+
+@section Styles {
+    <link href="~/css/Ticket/edit.css" rel="stylesheet" />
+}
+
+<div class="container">
+    <div class="header">
+        <h2>Edit Ticket</h2>
+    </div>
+
+    <div class="form-container">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="TicketID" />
+
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <textarea asp-for="Description" placeholder="Enter ticket description..."></textarea>
+            </div>
+
+            <div class="attachments-section">
+                <label>Existing Attachments</label>
+                @if (Model.TicketAttachments != null && Model.TicketAttachments.Any())
+                {
+                    <ul class="attachments-list">
+                        @foreach (var attachment in Model.TicketAttachments)
+                        {
+                            <li>
+                                <a href="@attachment.FilePath" target="_blank">
+                                    @System.IO.Path.GetFileName(attachment.FilePath)
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No attachments</p>
+                }
+            </div>
+
+            <div class="form-group">
+                <label>Add New Attachments</label>
+                <div class="file-input-wrapper">
+                    <input type="file" name="NewAttachments" multiple />
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a asp-action="Tickets" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>

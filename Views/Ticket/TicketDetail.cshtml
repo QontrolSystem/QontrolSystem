@@ -1,0 +1,154 @@
+﻿@model QontrolSystem.Models.Ticket.Ticket
+@using QontrolSystem.Models
+@using System.Linq
+
+@{
+    ViewBag.Title = "Ticket Detail";
+}
+@section Styles {
+    <link href="~/css/Ticket/ticketDetail.css" rel="stylesheet" />
+}
+
+<div class="ticket-container">
+    <!-- Header Section -->
+    <div class="ticket-header">
+        <div class="header-left">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Tickets", "Ticket")" class="breadcrumb-link">← Back to Tickets</a>
+            </div>
+            <h1 class="ticket-title">@Model.Title</h1>
+            <div class="ticket-meta">
+                <span class="ticket-id">Ticket #@Model.TicketID</span>
+                <span class="separator">•</span>
+                <span class="created-date">Created @Model.CreatedAt.ToString("MMM dd, yyyy 'at' HH:mm")</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="@Url.Action("Edit", "Ticket", new { id = Model.TicketID })" class="btn btn-primary">
+                <i class="icon-edit"></i> Edit Ticket
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+        <!-- Left Column - Main Content -->
+        <div class="main-column">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">Status</span>
+                    <span class="status-badge status-@Model.TicketStatus.StatusName.ToLower().Replace(" ", "-")">
+                        @Model.TicketStatus.StatusName
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Urgency</span>
+                    <span class="urgency-badge urgency-@Model.TicketUrgency.UrgencyLevel.ToLower().Replace(" ", "-")">
+                        @Model.TicketUrgency.UrgencyLevel
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Category</span>
+                    <span class="category-badge">@Model.TicketCategory.CategoryName</span>
+                </div>
+            </div>
+
+            <!-- Description Card -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">Description</h3>
+                </div>
+                <div class="card-body">
+                    <div class="ticket-description">
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            @Html.Raw(Model.Description.Replace("\n", "<br/>"))
+                        }
+                        else
+                        {
+                            <p class="no-description">No description provided</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attachments Card -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h3 class="card-title">Attachments</h3>
+                    @if (Model.TicketAttachments != null && Model.TicketAttachments.Any())
+                    {
+                        <span class="attachment-count-badge">@Model.TicketAttachments.Count()</span>
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="attachments-grid">
+                        @if (Model.TicketAttachments != null && Model.TicketAttachments.Any())
+                        {
+                            <ul>
+                                @foreach (var attachment in Model.TicketAttachments)
+                                {
+                                    <li>
+                                        <a href="@attachment.FilePath" target="_blank">
+                                            @System.IO.Path.GetFileName(attachment.FilePath)
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p>No attachments</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Sidebar -->
+        <div class="sidebar-column">
+            <!-- Ticket Information Card -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h3 class="card-title">Ticket Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="info-list">
+                        <div class="info-item">
+                            <label class="info-label">Created By</label>
+                            <div class="user-info">
+                                <span class="user-name">@Model.Creator.FirstName</span>
+                                <span class="user-email">@Model.Creator.Email</span>
+                            </div>
+                        </div>
+
+                        @if (Model.Assignee != null)
+                        {
+                            <div class="info-item">
+                                <label class="info-label">Assigned To</label>
+                                <div class="user-info">
+                                    <span class="user-name">@Model.Assignee.FirstName</span>
+                                    <span class="user-email">@Model.Assignee.Email</span>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="info-item">
+                            <label class="info-label">Created Date</label>
+                            <span class="info-value">@Model.CreatedAt.ToString("MMM dd, yyyy 'at' HH:mm")</span>
+                        </div>
+
+                        @if (Model.UpdatedAt.HasValue)
+                        {
+                            <div class="info-item">
+                                <label class="info-label">Last Updated</label>
+                                <span class="info-value">@Model.UpdatedAt.Value.ToString("MMM dd, yyyy 'at' HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
