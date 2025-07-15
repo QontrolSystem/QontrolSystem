@@ -205,8 +205,6 @@ namespace QontrolSystem.Controllers
                 message = "Deleting user",
             });
         }
-
-
     }
 }
 
