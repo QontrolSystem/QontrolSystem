@@ -174,6 +174,98 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
 
+        // Endpoint to get the ticket to be edited
+        [HttpGet]
+        [Route("ticket/edit/{id}")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Edit(int id)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(ticket);
+        }
+
+
+        // Endpoint to update a ticket
+        [HttpPost]
+        [Route("ticket/edit")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Edit([FromForm] EditTicketDataTransfer model, [FromForm] List<IFormFile>? NewAttachments)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var existingTicket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == model.TicketID && t.CreatedBy == userId);
+
+            if (existingTicket == null)
+            {
+                return NotFound();
+            }
+
+            // Update only description
+            existingTicket.Description = model.Description;
+            existingTicket.UpdatedAt = DateTime.Now;
+
+            if (NewAttachments != null && NewAttachments.Any())
+            {
+                var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                if (!Directory.Exists(uploadsPath))
+                    Directory.CreateDirectory(uploadsPath);
+
+                foreach (var file in NewAttachments)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(uploadsPath, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    var attachment = new TicketAttachment
+                    {
+                        TicketID = existingTicket.TicketID,
+                        FilePath = "/uploads/" + fileName,
+                        UploadedAt = DateTime.Now
+                    };
+
+                    _context.TicketAttachments.Add(attachment);
+                }
+            }
+
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                message = "Ticket updated successfully.",
+                ticketId = existingTicket.TicketID
+            });
+        }
+
+
+
 
 
     }
