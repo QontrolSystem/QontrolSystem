@@ -98,7 +98,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
         // Get all tickets for the authenticated user
         [HttpGet]
-        [Route("ticket/user")]
+        [Route("user/tickets")]
         [Authorize(Roles = "Employee")]
         public IActionResult Tickets()
         {
@@ -126,11 +126,53 @@ namespace QontrolSystem.Controllers.ControllersApis
           TicketUrgencyID = t.TicketUrgency.TicketUrgencyID,
           CreatedBy = t.CreatedBy,
           CreatedAt = t.CreatedAt
-      })
-      .ToList();
+          })
+          .ToList();
 
             return Ok(tickets);
         }
+
+
+        // Get ticket details by ID
+        [HttpGet]
+        [Route("ticket/{id}")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Ticket(int id)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketUrgency)
+                .Where(t => t.CreatedBy == userId && t.TicketID == id)
+                .Select(t => new TicketDataTransfer
+                {
+                    TicketID = t.TicketID,
+                    Title = t.Title,
+                    Description = t.Description,
+                    TicketCategoryID = t.TicketCategory.TicketCategoryID,
+                    TicketStatusID = t.TicketStatus.TicketStatusID,
+                    TicketUrgencyID = t.TicketUrgency.TicketUrgencyID,
+                    CreatedBy = t.CreatedBy,
+                    CreatedAt = t.CreatedAt
+                })
+                .FirstOrDefault();
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(ticket);
+        }
+
 
 
 
