@@ -4,18 +4,37 @@
     ViewData["Title"] = "Create Department";
 }
 
-<h2>Create New Department</h2>
+@section Styles {
+    <link href="~/css/departments/create.css" rel="stylesheet" />
+}
 
-<form asp-action="Create" method="post" class="mt-4">
-    <div class="form-group">
-        <label asp-for="DepartmentName" class="control-label">Department Name</label>
-        <input asp-for="DepartmentName" class="form-control" placeholder="Enter department name" />
-        <span asp-validation-for="DepartmentName" class="text-danger"></span>
+<div class="create-department-container">
+    <div class="page-header">
+        <h2 class="page-title">Create New Department</h2>
+        <div class="header-divider"></div>
     </div>
 
-    <button type="submit" class="btn btn-success mt-2">Create</button>
-    <a asp-action="Index" class="btn btn-secondary mt-2 ml-2">Back to List</a>
-</form>
+    <div class="form-container">
+        <form asp-action="Create" method="post" class="department-form">
+            <div class="form-group">
+                <label asp-for="DepartmentName" class="form-label">Department Name</label>
+                <input asp-for="DepartmentName" class="form-input" placeholder="Enter department name" />
+                <span asp-validation-for="DepartmentName" class="validation-error"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="icon-save"></i>
+                    Create Department
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="icon-back"></i>
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
