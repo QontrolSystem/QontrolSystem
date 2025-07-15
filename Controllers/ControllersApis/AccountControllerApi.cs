@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
+using QontrolSystem.Models.DataTransferObjectApi;
 using QontrolSystem.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -132,5 +134,72 @@ namespace QontrolSystem.Controllers.ControllersApis
         {
             return BCrypt.Net.BCrypt.Verify(inputPassword, storedHash);
         }
+
+
+        [HttpGet]
+        [Route("profile")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult GetProfile()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound();
+
+            var userProfile = new UserProfileDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return Ok(userProfile);
+        }
+
+
+
+        [HttpPost]
+        [Route("profile")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Profile([FromBody] UpdateProfileDto updatedUser, string? NewPassword)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(updatedUser.FirstName))
+                user.FirstName = updatedUser.FirstName;
+
+            if (!string.IsNullOrEmpty(updatedUser.LastName))
+                user.LastName = updatedUser.LastName;
+
+            if (!string.IsNullOrEmpty(updatedUser.Email))
+                user.Email = updatedUser.Email;
+
+            if (!string.IsNullOrEmpty(updatedUser.PhoneNumber))
+                user.PhoneNumber = updatedUser.PhoneNumber;
+
+            if (!string.IsNullOrEmpty(updatedUser.NewPassword))
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(updatedUser.NewPassword);
+
+
+
+            _context.SaveChanges();
+
+            return Ok(new { message = "Profile updated successfully!" });
+        }
+
     }
 }
