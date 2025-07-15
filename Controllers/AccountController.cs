@@ -111,6 +111,10 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        public IActionResult DeactivatedUser()
+        {
+            return View();
+        }
         public IActionResult Login()
         {
             return View();
@@ -170,7 +174,7 @@ namespace QontrolSystem.Controllers
         {
             var user = _context.Users
                                .Include(u => u.Role)
-                               .FirstOrDefault(u => u.Email == email && u.IsActive);
+                               .FirstOrDefault(u => u.Email == email);
 
             if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
             {
@@ -183,7 +187,7 @@ namespace QontrolSystem.Controllers
 
             if (!isAdmin)
             {
-                if (!user.IsActive || user.IsRejected)
+                if (user.IsRejected)
                 {
                     return RedirectToAction("AccessDenied");
                 }
@@ -191,6 +195,11 @@ namespace QontrolSystem.Controllers
                 if (!user.IsApproved)
                 {
                     return RedirectToAction("PendingApproval");
+                }
+
+                if(!user.IsActive)
+                {
+                    return RedirectToAction("DeactivatedUser");
                 }
             }
 
