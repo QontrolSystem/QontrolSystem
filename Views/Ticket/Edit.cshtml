@@ -25,16 +25,23 @@
 
             <div class="attachments-section">
                 <label>Existing Attachments</label>
-                <ul class="attachments-list">
-                    @foreach (var attachment in Model.TicketAttachments)
-                    {
-                        <li>
-                            <a href="@attachment.FilePath" target="_blank">
-                                @System.IO.Path.GetFileName(attachment.FilePath)
-                            </a>
-                        </li>
-                    }
-                </ul>
+                @if (Model.TicketAttachments != null && Model.TicketAttachments.Any())
+                {
+                    <ul class="attachments-list">
+                        @foreach (var attachment in Model.TicketAttachments)
+                        {
+                            <li>
+                                <a href="@attachment.FilePath" target="_blank">
+                                    @System.IO.Path.GetFileName(attachment.FilePath)
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No attachments</p>
+                }
             </div>
 
             <div class="form-group">
