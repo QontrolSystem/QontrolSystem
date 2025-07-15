@@ -51,6 +51,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
         [HttpGet("api/Viewusers/{id}")]
+        [Authorize(Roles = "System Administrator")]
         public IActionResult GetUserById(int id)
         {
             var user = _context.Users
@@ -80,6 +81,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
         //Update User Details API
         [HttpPut("api/Updateusers")]
+        [Authorize(Roles = "System Administrator")]
         public IActionResult UpdateUser([FromBody] UserEditDto updatedUser)
         {
             var user = _context.Users.Find(updatedUser.UserID);
@@ -106,6 +108,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
         //Soft Delete API
         [HttpDelete("api/DeleteUsers/{id}")]
+        [Authorize(Roles = "System Administrator")]
         public IActionResult SoftDeleteUser(int id)
         {
             // Optional role check for System Admins only
