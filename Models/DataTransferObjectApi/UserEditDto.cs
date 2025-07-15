@@ -1,4 +1,4 @@
-﻿namespace QontrolSystem.DTO_s
+﻿namespace QontrolSystem.Models.DataTransferObjectApi
 {
     public class UserEditDto
     {

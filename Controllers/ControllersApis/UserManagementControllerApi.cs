@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.DTO_s;
+using QontrolSystem.Models.DataTransferObjectApi;
 using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers.ControllersApis
