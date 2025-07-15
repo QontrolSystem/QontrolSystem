@@ -96,6 +96,43 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
 
+        // Get all tickets for the authenticated user
+        [HttpGet]
+        [Route("ticket/user")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Tickets()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            var tickets = _context.Tickets
+          .Include(t => t.TicketCategory)
+          .Include(t => t.TicketStatus)
+          .Include(t => t.TicketUrgency)
+          .Where(t => t.CreatedBy == userId)
+          .OrderByDescending(t => t.CreatedAt)
+          .Select(t => new TicketDataTransfer
+          {
+          TicketID = t.TicketID,
+          Title = t.Title,
+          Description = t.Description,
+          TicketCategoryID = t.TicketCategory.TicketCategoryID,
+          TicketStatusID = t.TicketStatus.TicketStatusID,
+          TicketUrgencyID = t.TicketUrgency.TicketUrgencyID,
+          CreatedBy = t.CreatedBy,
+          CreatedAt = t.CreatedAt
+      })
+      .ToList();
+
+            return Ok(tickets);
+        }
+
+
 
     }
 }
