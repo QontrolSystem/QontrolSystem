@@ -6,20 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
-    public class AdminControllerApi : ControllerBase
+    public class Admin : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public AdminControllerApi(AppDbContext context)
+        public Admin(AppDbContext context)
         {
             _context = context;
         }
 
 
         // Endpoint to get pending user registrations
-        [HttpGet("pending-registrations")]
+        [HttpGet("pending-users")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult GetPendingRegistrations()
         {

@@ -8,13 +8,13 @@ using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
-    public class UserManagementControllerApi : ControllerBase
+    public class UserManagement : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UserManagementControllerApi(AppDbContext context)
+        public UserManagement(AppDbContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         //View Users List
-        [HttpGet("api/usersList")]
+        [HttpGet("view-users")]
         [Authorize(Roles ="System Administrator")]
         public IActionResult GetAllUsers()
         {
@@ -50,7 +50,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
 
-        [HttpGet("api/Viewusers/{id}")]
+        [HttpGet("retrive-user-details-to-edit/{id}")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult GetUserById(int id)
         {
@@ -80,7 +80,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         //Update User Details API
-        [HttpPut("api/Updateusers")]
+        [HttpPut("update-user")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult UpdateUser([FromBody] UserEditDto updatedUser)
         {
@@ -107,7 +107,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
         //Soft Delete API
-        [HttpDelete("api/DeleteUsers/{id}")]
+        [HttpDelete("delete-user/{id}")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult SoftDeleteUser(int id)
         {

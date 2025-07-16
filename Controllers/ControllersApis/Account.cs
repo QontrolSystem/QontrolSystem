@@ -13,15 +13,15 @@ using System.Text;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
-    [Route("api/[controller]")]
+
     [ApiController]
-    public class AccountControllerApi : ControllerBase
+    public class Account : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly ServiceEmail _serviceEmail;
         private readonly IConfiguration _configuration;
 
-        public AccountControllerApi(AppDbContext context, ServiceEmail serviceEmail, IConfiguration configuration)
+        public Account(AppDbContext context, ServiceEmail serviceEmail, IConfiguration configuration)
         {
             _context = context;
             _serviceEmail = serviceEmail;
