@@ -84,6 +84,51 @@ Update-Database
 
 3. Press F5 or click Start to launch locally.
 ---
+
+## 🔍 API Overview
+
+QontrolSystem exposes a RESTful JSON-based API to enable programmatic access to key platform features like user authentication, ticket management, and administrative user control.
+
+### Authentication
+
+●	The API uses JWT (JSON Web Tokens) for securing protected endpoints.
+
+
+●	Clients must obtain a JWT by logging in (POST /api/account/login) and include it in the Authorization header as:
+ Authorization: Bearer <token>
+
+
+●	Role-based access control restricts endpoints to users with appropriate roles such as Employee or System Administrator.
+
+
+### Data Format
+●	The API communicates primarily via JSON for request and response bodies.
+
+●	Endpoints that accept file uploads (e.g., ticket attachments) use multipart/form-data.
+
+
+### Response Codes
+●	Standard HTTP status codes indicate success (200 OK, 201 Created) or errors (400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found).
+
+
+### Usage
+●	This API is intended primarily for internal use by the web application frontend and trusted clients.
+
+●	Developers can test the API with tools like Postman, curl, or Swagger UI if available.
+
+
+#### For detailed API documentation, view the full guide on OneDrive: 
+https://dyndna-my.sharepoint.com/:w:/g/personal/zesuliwe_sinyamba_dynamicdna_co_za/ES9IHvEL0c5Aqb0bf6k-tEcB2IERAhsPc1L0KrmzUVd1SQ?e=fYHK0b
+
+---
+
+## 🧑‍💻 Coding Standards
+
+To ensure consistency, readability, and maintainability across the codebase, all contributors must adhere to the project's coding standards.
+#### View the Coding Standards Document:
+https://1drv.ms/w/c/83408a743f4c04e4/EXwI69xqjFlDvEjcG5Baw64B2LehjLIfWxZ66DE1lf6eoQ?e=VkaqRt
+
+
 ## 👥 Contributors
 - [Mnqobi Ntekere](https://github.com/MnqobiConquer)
 - [Nhlakanipho Radebe](https://github.com/AlsonAfrica)
