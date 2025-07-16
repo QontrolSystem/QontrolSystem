@@ -120,6 +120,8 @@ QontrolSystem exposes a RESTful JSON-based API to enable programmatic access to 
 #### For detailed API documentation, view the full guide on OneDrive: 
 https://dyndna-my.sharepoint.com/:w:/g/personal/zesuliwe_sinyamba_dynamicdna_co_za/ES9IHvEL0c5Aqb0bf6k-tEcB2IERAhsPc1L0KrmzUVd1SQ?e=fYHK0b
 
+https://docs.google.com/document/d/10dXE1BGZXAn6MhTU3BE8Pw4dWcr_5ctjU4X47E9tPKs/edit?usp=sharing
+
 ---
 
 ## 🧑‍💻 Coding Standards
