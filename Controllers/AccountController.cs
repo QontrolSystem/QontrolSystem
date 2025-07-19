@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models;
+using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.ViewModels;
 using QontrolSystem.Services;
 
@@ -246,7 +246,7 @@ namespace QontrolSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(ResetPassword model)
         {
             //if (!ModelState.IsValid)
             //{

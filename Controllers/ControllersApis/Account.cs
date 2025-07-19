@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
-using QontrolSystem.Models.DataTransferObjectApi;
+using QontrolSystem.Models.Accounts;
+using QontrolSystem.Data.TransferObjectApi;
 using QontrolSystem.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -151,7 +152,7 @@ namespace QontrolSystem.Controllers.ControllersApis
             var user = _context.Users.Find(userId);
             if (user == null) return NotFound();
 
-            var userProfile = new UserProfileDto
+            var userProfile = new UserProfile
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -167,7 +168,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         [HttpPost]
         [Route("profile")]
         [Authorize(Roles = "Employee")]
-        public IActionResult Profile([FromBody] UpdateProfileDto updatedUser, string? NewPassword)
+        public IActionResult Profile([FromBody] UpdateUserProfile updatedUser, string? NewPassword)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null)

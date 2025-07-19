@@ -2,6 +2,7 @@
 using QontrolSystem.Models.Ticket;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
+using QontrolSystem.Models.ViewModels;
 
 
 namespace QontrolSystem.Controllers
@@ -50,7 +51,7 @@ namespace QontrolSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateTicketViewModel model)
+        public IActionResult Create(CreateTicket model)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +70,7 @@ namespace QontrolSystem.Controllers
                                .Include(u => u.Department)
                                .FirstOrDefault(u => u.UserID == userId.Value);
 
-            var ticket = new Ticket
+            var ticket = new Tickets
             {
                 Title = model.Title,
                 Description = model.Description,
@@ -103,7 +104,7 @@ namespace QontrolSystem.Controllers
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = ticket.TicketID,
                         FilePath = "/uploads/" + fileName,
@@ -164,7 +165,7 @@ namespace QontrolSystem.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Ticket ticket, List<IFormFile>? NewAttachments)
+        public IActionResult Edit(Tickets ticket, List<IFormFile>? NewAttachments)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
@@ -202,7 +203,7 @@ namespace QontrolSystem.Controllers
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = existingTicket.TicketID,
                         FilePath = "/uploads/" + fileName,

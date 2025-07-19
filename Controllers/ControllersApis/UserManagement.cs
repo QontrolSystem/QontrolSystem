@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models.DataTransferObjectApi;
+using QontrolSystem.Data.TransferObjectApi;
 using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers.ControllersApis
@@ -33,7 +33,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 .Include(u => u.Role)
                 .Include(u => u.Department)
                 .Where(u => u.IsApproved && !u.IsDeleted)
-                .Select(u => new UserListDto
+                .Select(u => new Data.TransferObjectApi.UserList
                 {
                     UserID = u.UserID,
                     FirstName = u.FirstName,
@@ -63,7 +63,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 return NotFound(new { message = "User not found" });
 
             // Map to DTO for safety
-            var userDto = new UserEditDto
+            var userDto = new EditUser
             {
                 UserID = user.UserID,
                 FirstName = user.FirstName,
@@ -82,7 +82,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         //Update User Details API
         [HttpPut("update-user")]
         [Authorize(Roles = "System Administrator")]
-        public IActionResult UpdateUser([FromBody] UserEditDto updatedUser)
+        public IActionResult UpdateUser([FromBody] EditUser updatedUser)
         {
             var user = _context.Users.Find(updatedUser.UserID);
             if (user == null)

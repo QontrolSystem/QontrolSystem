@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models;
+using QontrolSystem.Models.Accounts;
 
 namespace QontrolSystem.Controllers
 {

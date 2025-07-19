@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models.Ticket;
+using QontrolSystem.Data.TransferObjectApi;
+using QontrolSystem.Models.ViewModels;
+
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
@@ -23,7 +26,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         [HttpPost]
         [Route("create-ticket")]
         [Authorize(Roles = "Employee")]
-        public IActionResult Create([FromForm] CreateTicketViewModel model)
+        public IActionResult Create([FromForm] CreateTicket model)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +45,9 @@ namespace QontrolSystem.Controllers.ControllersApis
                                .Include(u => u.Department)
                                .FirstOrDefault(u => u.UserID == userId);
 
-            var ticket = new Models.Ticket.Ticket
+           
+
+            var ticket = new Tickets
             {
                 Title = model.Title,
                 Description = model.Description,
@@ -75,7 +80,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = ticket.TicketID,
                         FilePath = "/uploads/" + fileName,
@@ -116,7 +121,7 @@ namespace QontrolSystem.Controllers.ControllersApis
           .Include(t => t.TicketUrgency)
           .Where(t => t.CreatedBy == userId)
           .OrderByDescending(t => t.CreatedAt)
-          .Select(t => new TicketDataTransfer
+          .Select(t => new Data.TransferObjectApi.Ticket
           {
           TicketID = t.TicketID,
           Title = t.Title,
@@ -137,7 +142,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         [HttpGet]
         [Route("retrive-ticket/{id}")]
         [Authorize(Roles = "Employee")]
-        public IActionResult Ticket(int id)
+        public IActionResult Tickets(int id)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
@@ -152,7 +157,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketUrgency)
                 .Where(t => t.CreatedBy == userId && t.TicketID == id)
-                .Select(t => new TicketDataTransfer
+                .Select(t => new Data.TransferObjectApi.Ticket
                 {
                     TicketID = t.TicketID,
                     Title = t.Title,
@@ -205,7 +210,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         [HttpPost]
         [Route("edit-ticket")]
         [Authorize(Roles = "Employee")]
-        public IActionResult Edit([FromForm] EditTicketDataTransfer model, [FromForm] List<IFormFile>? NewAttachments)
+        public IActionResult Edit([FromForm] Edit model, [FromForm] List<IFormFile>? NewAttachments)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
@@ -244,7 +249,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = existingTicket.TicketID,
                         FilePath = "/uploads/" + fileName,
