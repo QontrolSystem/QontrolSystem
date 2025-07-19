@@ -1,6 +1,8 @@
-﻿namespace QontrolSystem.Models.Ticket
+﻿using QontrolSystem.Models.Accounts;
+
+namespace QontrolSystem.Models.Ticket
 {
-    public class Ticket
+    public class Tickets
     {
         public int TicketID { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -23,16 +25,16 @@
 
         // Navigation Properties
 
-        public TicketCategory TicketCategory { get; set; }
-        public TicketStatus TicketStatus { get; set; }
+        public Category TicketCategory { get; set; }
+        public Status TicketStatus { get; set; }
 
         public User Creator { get; set; }    // CreatedBy User
         public User? Assignee { get; set; }   // AssignedTo User
 
         public Department Department { get; set; }
-        public TicketUrgency TicketUrgency { get; set; }
-        public ICollection<TicketAttachment> TicketAttachments { get; set; } = new List<TicketAttachment>();
-        public ICollection<TicketFeedback>? TicketFeedbacks { get; set; }
+        public Urgency TicketUrgency { get; set; }
+        public ICollection<Attachment> TicketAttachments { get; set; } = new List<Attachment>();
+        public ICollection<Feedback>? TicketFeedbacks { get; set; }
     }
 }
 

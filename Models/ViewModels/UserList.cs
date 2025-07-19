@@ -1,8 +1,8 @@
-﻿using QontrolSystem.Models;
+﻿using QontrolSystem.Models.Accounts;
 
 namespace QontrolSystem.Models.ViewModels
 {
-    public class UserListViewModel
+    public class UserList
     {
         public List<User> Users { get; set; }
         public int CurrentPage { get; set; }

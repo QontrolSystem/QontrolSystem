@@ -1,6 +1,6 @@
-namespace QontrolSystem.Models
+namespace QontrolSystem.Models.ViewModels
 {
-    public class ErrorViewModel
+    public class ErrorView
     {
         public string? RequestId { get; set; }
 

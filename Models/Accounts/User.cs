@@ -1,4 +1,4 @@
-﻿namespace QontrolSystem.Models
+﻿namespace QontrolSystem.Models.Accounts
 {
     public class User
     {

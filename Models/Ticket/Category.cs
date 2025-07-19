@@ -1,11 +1,11 @@
 ﻿namespace QontrolSystem.Models.Ticket
 {
-    public class TicketCategory
+    public class Category
     {
         public int TicketCategoryID { get; set; }
         public string CategoryName { get; set; } = string.Empty;
         // Navigation property for Tickets
-        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public ICollection<Tickets> Tickets { get; set; } = new List<Tickets>();
         
 
     }
