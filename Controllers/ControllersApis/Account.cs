@@ -30,7 +30,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         // Register endpoint for API 
-        [HttpPost("register")]
+        [HttpPost("register-point")]
         public async Task<IActionResult> Register([FromBody] RegisterValidation model)
         {
             if (!ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         // Login endpoint for API
-        [HttpPost("login")]
+        [HttpPost("login-point")]
         public async Task<IActionResult> Login(string email, string password)
         {
             var user = _context.Users

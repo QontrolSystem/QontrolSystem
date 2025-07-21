@@ -18,6 +18,7 @@ namespace QontrolSystem.Controllers
             _serviceEmail = serviceEmail;
         }
 
+        [HttpGet("Register")]
         public IActionResult Register()
         {
             ViewBag.Departments = _context.Departments.ToList();
@@ -25,7 +26,7 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterValidation model)
         {
 
@@ -115,6 +116,8 @@ namespace QontrolSystem.Controllers
         {
             return View();
         }
+
+        [HttpGet("Login")]
         public IActionResult Login()
         {
             return View();
@@ -169,14 +172,14 @@ namespace QontrolSystem.Controllers
             return RedirectToAction("ResetPassword");
         }
 
-        [HttpPost]
-        public IActionResult Login(string email, string password)
+        [HttpPost("Login")]
+        public IActionResult Login(Login model)
         {
             var user = _context.Users
                                .Include(u => u.Role)
-                               .FirstOrDefault(u => u.Email == email);
+                               .FirstOrDefault(u => u.Email == model.Email);
 
-            if (user == null || user.IsDeleted || !VerifyPassword(password, user.PasswordHash))
+            if (user == null || user.IsDeleted || !VerifyPassword(model.Password, user.PasswordHash))
             {
                 ViewBag.Error = "Invalid email or password.";
                 return View();
