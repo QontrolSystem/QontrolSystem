@@ -1,7 +1,10 @@
-﻿namespace QontrolSystem.Models.Ticket
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace QontrolSystem.Models.Ticket
 {
     public class Status
     {
+        [Key]
         public int TicketStatusID { get; set; }
         public string StatusName { get; set; } = string.Empty;
         // Navigation property for Tickets

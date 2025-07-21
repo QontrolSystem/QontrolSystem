@@ -1,9 +1,11 @@
 ﻿using QontrolSystem.Models.Accounts;
+using System.ComponentModel.DataAnnotations;
 
 namespace QontrolSystem.Models.Ticket
 {
     public class Tickets
     {
+        [Key]
         public int TicketID { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
