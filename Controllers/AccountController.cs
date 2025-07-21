@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
+using QontrolSystem.Enums;
 using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.ViewModels;
 using QontrolSystem.Services;
+using QontrolSystem.Utils;
 
 namespace QontrolSystem.Controllers
 {
@@ -185,8 +187,10 @@ namespace QontrolSystem.Controllers
                 return View();
             }
 
-            // Skip approval check for System Administrators
-            bool isAdmin = user.Role.RoleName == "System Administrator";
+            
+            var roleEnum = EnumHelper.GetValueFromDisplayName<UserRole>(user.Role.RoleName);
+            bool isAdmin = roleEnum == UserRole.SystemAdministrator;
+
 
             if (!isAdmin)
             {
