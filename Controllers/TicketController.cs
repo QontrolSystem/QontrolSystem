@@ -17,6 +17,7 @@ namespace QontrolSystem.Controllers
             _context = context;
         }
 
+        [HttpGet("Tickets")]
         public IActionResult Tickets()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -39,7 +40,8 @@ namespace QontrolSystem.Controllers
         }
 
 
-        // GET: Ticket/Create
+      
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             // Preload dropdown data
@@ -49,8 +51,9 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+       
         public IActionResult Create(CreateTicket model)
         {
             if (!ModelState.IsValid)
@@ -124,6 +127,7 @@ namespace QontrolSystem.Controllers
             });
         }
 
+
         public IActionResult TicketDetail(int id)
         {
             var ticket = _context.Tickets
@@ -141,7 +145,7 @@ namespace QontrolSystem.Controllers
             return View(ticket);
         }
 
-        // GET
+        
         public IActionResult Edit(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
