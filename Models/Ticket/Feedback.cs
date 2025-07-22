@@ -2,7 +2,7 @@
 
 namespace QontrolSystem.Models.Ticket
 {
-    public class TicketFeedback
+    public class Feedback
     {
 
         [Key]
@@ -13,6 +13,6 @@ namespace QontrolSystem.Models.Ticket
         public DateTime SubmittedAt { get; set; } = DateTime.Now;
 
 
-        public Ticket Ticket { get; set; }    
+        public Tickets Ticket { get; set; }    
     }
 }

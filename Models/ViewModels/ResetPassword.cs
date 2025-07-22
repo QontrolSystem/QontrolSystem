@@ -2,7 +2,7 @@
 
 namespace QontrolSystem.Models.ViewModels
 {
-    public class ResetPasswordViewModel
+    public class ResetPassword
     {
 
         [Required]

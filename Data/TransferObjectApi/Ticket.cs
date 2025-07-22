@@ -1,6 +1,7 @@
-﻿namespace QontrolSystem.Models.Ticket
+﻿using QontrolSystem.Models.Ticket;
+namespace QontrolSystem.Data.TransferObjectApi
 {
-    public class TicketDataTransfer
+    public class Ticket
     {
         public int TicketID { get; set; }
         public string Title { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QontrolSystem.Models
+namespace QontrolSystem.Models.Accounts
 {
     public class PasswordResetOtp
     {

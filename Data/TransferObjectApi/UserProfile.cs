@@ -1,6 +1,6 @@
-﻿namespace QontrolSystem.Models.DataTransferObjectApi
+﻿namespace QontrolSystem.Data.TransferObjectApi
 {
-    public class UserProfileDto
+    public class UserProfile
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;

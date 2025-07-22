@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using QontrolSystem.Data;
 using QontrolSystem.Models;
-using QontrolSystem.Models.DataTransferObjectApi;
+using QontrolSystem.Models.Accounts;
+using QontrolSystem.Data.TransferObjectApi;
 using QontrolSystem.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,15 +14,15 @@ using System.Text;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
-    [Route("api/[controller]")]
+
     [ApiController]
-    public class AccountControllerApi : ControllerBase
+    public class Account : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly ServiceEmail _serviceEmail;
         private readonly IConfiguration _configuration;
 
-        public AccountControllerApi(AppDbContext context, ServiceEmail serviceEmail, IConfiguration configuration)
+        public Account(AppDbContext context, ServiceEmail serviceEmail, IConfiguration configuration)
         {
             _context = context;
             _serviceEmail = serviceEmail;
@@ -29,7 +30,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         // Register endpoint for API 
-        [HttpPost("register")]
+        [HttpPost("register-point")]
         public async Task<IActionResult> Register([FromBody] RegisterValidation model)
         {
             if (!ModelState.IsValid)
@@ -73,7 +74,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         // Login endpoint for API
-        [HttpPost("login")]
+        [HttpPost("login-point")]
         public async Task<IActionResult> Login(string email, string password)
         {
             var user = _context.Users
@@ -151,7 +152,7 @@ namespace QontrolSystem.Controllers.ControllersApis
             var user = _context.Users.Find(userId);
             if (user == null) return NotFound();
 
-            var userProfile = new UserProfileDto
+            var userProfile = new UserProfile
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -167,7 +168,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         [HttpPost]
         [Route("profile")]
         [Authorize(Roles = "Employee")]
-        public IActionResult Profile([FromBody] UpdateProfileDto updatedUser, string? NewPassword)
+        public IActionResult Profile([FromBody] UpdateUserProfile updatedUser, string? NewPassword)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null)

@@ -1,6 +1,6 @@
-﻿namespace QontrolSystem.Models.DataTransferObjectApi
+﻿namespace QontrolSystem.Data.TransferObjectApi
 {
-    public class UserEditDto
+    public class EditUser
     {
         public int UserID { get; set; }  
         public string FirstName { get; set; } = string.Empty;

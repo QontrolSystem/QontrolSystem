@@ -3,18 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models.DataTransferObjectApi;
+using QontrolSystem.Data.TransferObjectApi;
 using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
-    public class UserManagementControllerApi : ControllerBase
+    public class UserManagement : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public UserManagementControllerApi(AppDbContext context)
+        public UserManagement(AppDbContext context)
         {
             _context = context;
         }
@@ -25,7 +25,7 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         //View Users List
-        [HttpGet("api/usersList")]
+        [HttpGet("view-users")]
         [Authorize(Roles ="System Administrator")]
         public IActionResult GetAllUsers()
         {
@@ -33,7 +33,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 .Include(u => u.Role)
                 .Include(u => u.Department)
                 .Where(u => u.IsApproved && !u.IsDeleted)
-                .Select(u => new UserListDto
+                .Select(u => new Data.TransferObjectApi.UserList
                 {
                     UserID = u.UserID,
                     FirstName = u.FirstName,
@@ -50,7 +50,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
 
-        [HttpGet("api/Viewusers/{id}")]
+        [HttpGet("retrive-user-details-to-edit/{id}")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult GetUserById(int id)
         {
@@ -63,7 +63,7 @@ namespace QontrolSystem.Controllers.ControllersApis
                 return NotFound(new { message = "User not found" });
 
             // Map to DTO for safety
-            var userDto = new UserEditDto
+            var userDto = new EditUser
             {
                 UserID = user.UserID,
                 FirstName = user.FirstName,
@@ -80,9 +80,9 @@ namespace QontrolSystem.Controllers.ControllersApis
         }
 
         //Update User Details API
-        [HttpPut("api/Updateusers")]
+        [HttpPut("update-user")]
         [Authorize(Roles = "System Administrator")]
-        public IActionResult UpdateUser([FromBody] UserEditDto updatedUser)
+        public IActionResult UpdateUser([FromBody] EditUser updatedUser)
         {
             var user = _context.Users.Find(updatedUser.UserID);
             if (user == null)
@@ -107,7 +107,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
         //Soft Delete API
-        [HttpDelete("api/DeleteUsers/{id}")]
+        [HttpDelete("delete-user/{id}")]
         [Authorize(Roles = "System Administrator")]
         public IActionResult SoftDeleteUser(int id)
         {

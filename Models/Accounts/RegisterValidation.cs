@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QontrolSystem.Models
+namespace QontrolSystem.Models.Accounts
 {
     // The model validates input data for user registration when the user registers in the system
     public class RegisterValidation

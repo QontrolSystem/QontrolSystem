@@ -1,6 +1,6 @@
-﻿namespace QontrolSystem.Models.DataTransferObjectApi
+﻿namespace QontrolSystem.Data.TransferObjectApi
 {
-    public class UserListDto
+    public class UserList
     {
         public int UserID { get; set; }
         public string FullName => $"{FirstName} {LastName}";
