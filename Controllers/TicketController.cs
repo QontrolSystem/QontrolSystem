@@ -225,8 +225,70 @@ namespace QontrolSystem.Controllers
                 duration = 3000,
                 message = "Updating ticket",
             });
-        }     
+        }
 
+        [HttpGet("Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketUrgency)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket); 
+        }
+
+        [HttpPost("DeleteConfirmed/{id}")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var attachment in ticket.TicketAttachments)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", attachment.FilePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            _context.TicketAttachments.RemoveRange(ticket.TicketAttachments);
+
+            _context.Tickets.Remove(ticket);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Tickets", "Ticket"),
+                duration = 3000,
+                message = "Deleting ticket"
+            });
+        }
     }
 }
 
