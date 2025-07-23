@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="utf-8" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>@ViewBag.Title - Dashboard</title>  
+    <link rel="stylesheet" href="~/css/dashboardlayout/dashboardgrid.css" />
+    <script src="~/js/dashboard.js"></script>
+</head>  
+<body>  
+    <div class="dashboard-layout">  
+        <header class="dashboard-header">  
+            <partial name="_navbar" />
+        </header>  
+
+        <aside class="dashboard-sidebar">  
+             <partial name="_sidebar"/>
+        </aside>  
+
+        <main class="dashboard-main">  
+            @RenderBody()  
+            <p>Hello</p>  
+        </main>  
+    </div>  
+</body> 
+<script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.dashboard-sidebar');
+        sidebar.classList.toggle('open');
+    }
+</script>
+
+</html>
