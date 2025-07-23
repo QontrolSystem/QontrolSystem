@@ -55,6 +55,7 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
+        [HttpGet("Approve-Users")]
         public IActionResult ApproveUsers()
         {
             var pendingUsers = _context.Users

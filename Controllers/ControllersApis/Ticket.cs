@@ -269,9 +269,44 @@ namespace QontrolSystem.Controllers.ControllersApis
             });
         }
 
+        // Delete ticket by ID
+        [HttpDelete]
+        [Route("delete-ticket/{id}")]
+        [Authorize(Roles = "Employee")]
+        public IActionResult Delete(int id)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return Unauthorized();
+            }
 
+            var userId = int.Parse(userIdClaim.Value);
 
+            var ticket = _context.Tickets
+                                 .Include(t => t.TicketAttachments)
+                                 .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
 
+            if (ticket == null)
+            {
+                return NotFound(new { message = "Ticket not found or access denied." });
+            }
 
+            foreach (var attachment in ticket.TicketAttachments)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", attachment.FilePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            _context.TicketAttachments.RemoveRange(ticket.TicketAttachments);
+
+            _context.Tickets.Remove(ticket);
+            _context.SaveChanges();
+
+            return Ok(new { message = "Ticket deleted successfully." });
+        }
     }
 }
