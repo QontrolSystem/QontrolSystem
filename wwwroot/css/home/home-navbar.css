@@ -28,6 +28,7 @@ header {
 }
 
 .navbar {
+    width:100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -42,7 +43,7 @@ header {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -282,5 +283,50 @@ header {
     :root {
         --navbar-height: 60px;
         --logo-height: 32px;
+    }
+ 
+}
+.sidebar-toggle, .navbar-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle, .navbar-toggle {
+        display: block;
+    }
+}
+/* Both logos hidden initially to avoid flash during load */
+.desktop-logo,
+.mobile-logo {
+    display: none;
+}
+
+/* Large screen: show logo at top, hide dropdown one */
+@media (min-width: 769px) {
+    .desktop-logo {
+        display: block;
+    }
+
+    .mobile-logo {
+        display: none;
+    }
+}
+
+/* Small screen: hide top logo, show inside dropdown */
+@media (max-width: 768px) {
+    .desktop-logo {
+        display: none;
+    }
+
+    .mobile-logo {
+        display: block;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px){
+    .navbar-brand{
+        display:none;
     }
 }

@@ -1,0 +1,36 @@
+﻿.sidebar {
+    background-color: #2C3E50;
+    color: #ecf0f1;
+    padding: 20px;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar-header {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.sidebar-nav {
+    list-style-type: none;
+    padding: 0;
+}
+
+    .sidebar-nav li {
+        margin: 15px 0;
+    }
+
+    .sidebar-nav a {
+        color: #ecf0f1;
+        text-decoration: none;
+        display: block;
+        padding: 10px;
+        border-radius: 6px;
+        transition: background-color 0.3s;
+    }
+
+        .sidebar-nav a:hover {
+            background-color: #34495e;
+        }
