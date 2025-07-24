@@ -1,0 +1,83 @@
+﻿@{  
+    var isLoggedIn = Context.Session.GetInt32("UserID") != null;  
+    var userRole = Context.Session.GetString("Role");  
+    var userName = Context.Session.GetString("UserName");  
+}  
+@{  
+    <link href="~/css/home/home-navbar.css" rel="stylesheet" />
+    <script src="~/js/sidebar.js"></script>
+}  
+@{  
+    var time = DateTime.Now; 
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");   
+    var currentTime = DateTime.Now.ToString("HH:mm:ss");
+    
+}  
+
+<nav class="navbar">  
+    <div class="container-fluid">  
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+        <button class="navbar-toggle" onclick="toggleDropdown()">☰</button>
+
+
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" >  
+            <img src="~/images/logo.png" alt="QontrolSystem" class="navbar-logo">  
+        </a>  
+        <div class="navbar-collapse" id="navbarNav">
+            <a class="navbar-brand mobile-logo" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo.png" alt="QontrolSystem" class="navbar-logo" />
+            </a>
+            <ul class="navbar-nav">  
+               
+                @if (!isLoggedIn)  
+                {  
+                    <li class="nav-item">  
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>  
+                    </li>  
+                    <li class="nav-item">  
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>  
+                    </li>  
+                    <li class="nav-item">  
+                        <a class="nav-link auth-button" asp-controller="Account" asp-action="Register">Register</a>  
+                    </li>  
+                }  
+                else  
+                {  
+                    @if (userRole == "System Administrator")  
+                    {  
+                        <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>  
+                    }  
+                    @if (userRole == "Employee")  
+                    {  
+                        <li class="nav-item">  
+                            <a class="nav-link" asp-controller="Account" asp-action="Profile">My Profile</a>  
+                        </li>  
+                    }  
+                    @if (!string.IsNullOrEmpty(userName))  
+                    { 
+                        <li class="nav-item">
+                            <span class="nav-link welcome-text">@currentTime</span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link welcome-text">@currentDate</span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link welcome-text">Welcome, @userName</span>
+                        </li>
+                    }
+                    <li class="nav-item">  
+                        <a class="nav-link logout-button" asp-controller="Account" asp-action="Logout">Logout</a>  
+                    </li>  
+                }  
+            </ul>  
+        </div>  
+    </div>  
+</nav>
+<script>
+        function toggleDropdown() {
+        var nav = document.getElementById("navbarNav");
+        nav.classList.toggle("show");
+    }
+
+</script>

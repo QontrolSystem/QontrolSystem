@@ -101,6 +101,8 @@ namespace QontrolSystem.Controllers
 
             ViewBag.Roles = _context.Roles.ToList();
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+
             return View();
         }
 
@@ -139,6 +141,7 @@ namespace QontrolSystem.Controllers
 
             ViewBag.Roles = _context.Roles.ToList();
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
 
             return View(user);
         }
