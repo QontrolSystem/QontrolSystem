@@ -1,0 +1,51 @@
+﻿@model QontrolSystem.Models.Ticket.Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details";
+}
+
+<h2>Ticket Details</h2>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>@Model.Title</strong>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Status:</dt>
+            <dd class="col-sm-9">@Model.TicketStatus?.StatusName</dd>
+
+            <dt class="col-sm-3">Category:</dt>
+            <dd class="col-sm-9">@Model.TicketCategory?.CategoryName</dd>
+
+            <dt class="col-sm-3">Urgency:</dt>
+            <dd class="col-sm-9">@Model.TicketUrgency?.UrgencyLevel</dd>
+
+            <dt class="col-sm-3">Creator:</dt>
+            <dd class="col-sm-9">@($"{Model.Creator?.FirstName} {Model.Creator?.LastName}")</dd>
+
+            <dt class="col-sm-3">Assignee:</dt>
+            <dd class="col-sm-9">
+                @(Model.Assignee != null ? $"{Model.Assignee.FirstName} {Model.Assignee.LastName}" : "Unassigned")
+            </dd>
+
+            <dt class="col-sm-3">Department:</dt>
+            <dd class="col-sm-9">@Model.Department?.DepartmentName</dd>
+
+            <dt class="col-sm-3">Created At:</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            @if (Model.ResolvedAt != null)
+            {
+                <dt class="col-sm-3">Resolved At:</dt>
+                <dd class="col-sm-9">@Model.ResolvedAt?.ToString("yyyy-MM-dd HH:mm")</dd>
+            }
+
+            <dt class="col-sm-3">Description:</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+        </dl>
+    </div>
+</div>
+
+<a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+<a asp-action="UpdateStatus" asp-route-id="@Model.TicketID" class="btn btn-primary">Update Status</a>

@@ -78,7 +78,7 @@ namespace QontrolSystem.Controllers
                 CreatedBy = user.UserID,
                 DepartmentID = user.DepartmentID,
                 TicketStatusID = 1, // Open
-                AssignedTo = user.UserID,
+                AssignedTo = null,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };

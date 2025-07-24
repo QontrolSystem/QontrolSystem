@@ -1,8 +1,7 @@
-
 @{
     var isLoggedIn = Context.Session.GetInt32("UserID") != null;
     var userRole = Context.Session.GetString("Role");
-	var userName = Context.Session.GetString("UserName");
+    var userName = Context.Session.GetString("UserName");
 
 }
 
@@ -13,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QontrolSystem</title>
     <script type="importmap"></script>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
     <link rel="stylesheet" href="~/css/home/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home/home.css" asp-append-version="true" />
@@ -22,7 +20,8 @@
 
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/css/technician/technician-dashboard.css" />
+    "
     @* // This line renders css per view *@
 
     @RenderSection("Styles", required: false)
@@ -62,7 +61,7 @@
                         }
                         else
                         {
-                            @if(userRole == "System Administrator")
+                            @if (userRole == "System Administrator")
                             {
                                 <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
                             }
@@ -72,6 +71,34 @@
                                     <a class="nav-link" asp-controller="Account" asp-action="Profile">My Profile</a>
                                 </li>
                             }
+                            @if (userRole == "Technician")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Technician" asp-action="Dashboard">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Technician" asp-action="AssignedTickets">My Tickets</a>
+                                </li>
+
+                            }
+
+                            @if (userRole == "IT Manager")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Manager" asp-action="Dashboard">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Manager" asp-action="AllTickets">All Tickets</a>
+                                </li>
+                                <li class="nav-it
+        em">
+                                    <a class="nav-link" asp-controller="Manager" asp-action="ManageTechnicians">Manage Team</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Manager" asp-action="UnassignedTickets">Unassigned Tickets</a>
+                                </li>
+                            }
+
                             @if (!string.IsNullOrEmpty(userName))
                             {
                                 <li class="nav-item">
