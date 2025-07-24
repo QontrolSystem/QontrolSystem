@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using QontrolSystem.Models;
+using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.Ticket;
 
 namespace QontrolSystem.Data
@@ -18,13 +18,13 @@ namespace QontrolSystem.Data
         public DbSet<ITSubDepartment> ITSubDepartments { get; set; }
 
         public DbSet<PasswordResetOtp> PasswordResetOtps { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<TicketCategory> TicketCategories { get; set; }
-        public DbSet<TicketStatus> TicketStatuses { get; set; }
+        public DbSet<Tickets> Tickets { get; set; }
+        public DbSet<Category> TicketCategories { get; set; }
+        public DbSet<Status> TicketStatuses { get; set; }
 
-        public DbSet<TicketUrgency> TicketUrgencies { get; set; }
-        public DbSet<TicketFeedback> TicketFeedbacks { get; set; }
-        public DbSet<TicketAttachment> TicketAttachments { get; set; } 
+        public DbSet<Urgency> TicketUrgencies { get; set; }
+        public DbSet<Feedback> TicketFeedbacks { get; set; }
+        public DbSet<Attachment> TicketAttachments { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
@@ -53,40 +53,40 @@ namespace QontrolSystem.Data
 
 
             
-            modelBuilder.Entity<TicketStatus>().HasData(
-                new TicketStatus { TicketStatusID = 1, StatusName = "Open" },
-                new TicketStatus { TicketStatusID = 2, StatusName = "In Progress" },
-                new TicketStatus { TicketStatusID = 3, StatusName = "Resolved" },
-                new TicketStatus { TicketStatusID = 4, StatusName = "Closed" }
+            modelBuilder.Entity<Status>().HasData(
+                new Status { TicketStatusID = 1, StatusName = "Open" },
+                new Status { TicketStatusID = 2, StatusName = "In Progress" },
+                new Status { TicketStatusID = 3, StatusName = "Resolved" },
+                new Status { TicketStatusID = 4, StatusName = "Closed" }
             );
 
             
-            modelBuilder.Entity<TicketCategory>().HasData(
-                new TicketCategory { TicketCategoryID = 1, CategoryName = "Hardware" },
-                new TicketCategory { TicketCategoryID = 2, CategoryName = "Software" },
-                new TicketCategory { TicketCategoryID = 3, CategoryName = "Network" },
-                new TicketCategory { TicketCategoryID = 4, CategoryName = "Security" },
-                new TicketCategory { TicketCategoryID = 5, CategoryName = "Other" }
+            modelBuilder.Entity<Category>().HasData(
+                new Category { TicketCategoryID = 1, CategoryName = "Hardware" },
+                new Category { TicketCategoryID = 2, CategoryName = "Software" },
+                new Category { TicketCategoryID = 3, CategoryName = "Network" },
+                new Category { TicketCategoryID = 4, CategoryName = "Security" },
+                new Category { TicketCategoryID = 5, CategoryName = "Other" }
             );
 
-            modelBuilder.Entity<TicketUrgency>().HasData(
-                new TicketUrgency { TicketUrgencyID = 1, UrgencyLevel = "Low" },
-                new TicketUrgency { TicketUrgencyID = 2, UrgencyLevel = "Medium" },
-                new TicketUrgency { TicketUrgencyID = 3, UrgencyLevel = "High" },
-                new TicketUrgency { TicketUrgencyID = 4, UrgencyLevel = "Critical" }
+            modelBuilder.Entity<Urgency>().HasData(
+                new Urgency { TicketUrgencyID = 1, UrgencyLevel = "Low" },
+                new Urgency { TicketUrgencyID = 2, UrgencyLevel = "Medium" },
+                new Urgency { TicketUrgencyID = 3, UrgencyLevel = "High" },
+                new Urgency { TicketUrgencyID = 4, UrgencyLevel = "Critical" }
             );
 
-            modelBuilder.Entity<TicketFeedback>().HasKey(tf => tf.TicketFeedbackId); 
+            modelBuilder.Entity<Feedback>().HasKey(tf => tf.TicketFeedbackId); 
 
             // Configure User → Role relationship for ticket creation
-            modelBuilder.Entity<Ticket>()
+            modelBuilder.Entity<Tickets>()
             .HasOne(t => t.Creator)               // navigation property in Ticket
             .WithMany()                           // no back-reference in User
             .HasForeignKey(t => t.CreatedBy)      // FK in Ticket table
             .OnDelete(DeleteBehavior.Restrict);   // don't delete tickets if user is deleted
 
             // Configure Ticket → User relationship for AssignedTo
-            modelBuilder.Entity<Ticket>()
+            modelBuilder.Entity<Tickets>()
                 .HasOne(t => t.Assignee)            // navigation property in Ticket
                 .WithMany()                           // no back-reference in User
                 .HasForeignKey(t => t.AssignedTo)     // FK in Ticket table

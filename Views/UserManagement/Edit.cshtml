@@ -1,4 +1,5 @@
-﻿@model QontrolSystem.Models.User
+﻿@using QontrolSystem.Models.Accounts
+@model User
 @{
     ViewBag.Title = "Edit User";
 }
@@ -34,17 +35,25 @@
 
         <div class="form-group">
             <label class="form-label">Role</label>
-            <select asp-for="RoleID" class="form-select" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))">
+            <select asp-for="RoleID" id="roleSelect" class="form-select" asp-items="@(new SelectList(ViewBag.Roles, "RoleID", "RoleName"))">
                 <option value="">Select a role...</option>
             </select>
         </div>
 
         <div class="form-group">
             <label class="form-label">Department</label>
-            <select asp-for="DepartmentID" class="form-select" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))">
+            <select asp-for="DepartmentID" id="departmentSelect" class="form-select" asp-items="@(new SelectList(ViewBag.Departments, "DepartmentID", "DepartmentName"))">
                 <option value="">Select a department...</option>
             </select>
         </div>
+
+        <div class="form-group" id="itSubDepartmentDiv" style="display:none;">
+            <label class="form-label">IT Sub-Department</label>
+            <select asp-for="ITSubDepartmentID" class="form-select" asp-items="@(new SelectList(ViewBag.ITSubDepartments, "ITSubDepartmentID", "SubDepartmentName"))">
+                <option value="">Select a sub-department...</option>
+            </select>
+        </div>
+
 
         <div class="form-group">
             <label class="form-label">Status</label>
@@ -66,3 +75,33 @@
         </div>
     </form>
 </div>
+
+<script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const roleSelect = document.getElementById("roleSelect");
+        const deptSelect = document.getElementById("departmentSelect");
+        const subDeptDiv = document.getElementById("itSubDepartmentDiv");
+        const subDeptSelect = document.querySelector('select[name="ITSubDepartmentID"]');
+
+        function toggleSubDepartments() {
+            const roleValue = parseInt(roleSelect.value);
+            const deptValue = parseInt(deptSelect.value);
+
+            const isRoleValid = roleValue === 3 || roleValue === 4;
+            const isDeptValid = deptValue === 4;
+
+            if (isRoleValid && isDeptValid) {
+                subDeptDiv.style.display = "block";
+            } else {
+                subDeptDiv.style.display = "none";
+                if (subDeptSelect) subDeptSelect.value = ""; // Reset selection
+            }
+        }
+
+        roleSelect.addEventListener("change", toggleSubDepartments);
+        deptSelect.addEventListener("change", toggleSubDepartments);
+
+        // Run on load in case of edit form
+        toggleSubDepartments();
+    });
+</script>

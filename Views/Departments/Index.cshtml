@@ -1,4 +1,5 @@
-﻿@model List<Department>
+﻿@using QontrolSystem.Models.Accounts
+@model List<Department>
 @{
     ViewData["Title"] = "Departments";
 }
@@ -28,7 +29,7 @@
         {
             <tr>
                 <td>@dept.DepartmentName</td>
-                <td>@dept.Users?.Count ?? 0</td>
+                <td>@dept.Users?.Count</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-danger" onclick="return confirm('Delete this department?')">Delete</a>

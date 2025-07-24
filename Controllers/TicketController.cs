@@ -2,6 +2,7 @@
 using QontrolSystem.Models.Ticket;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
+using QontrolSystem.Models.ViewModels;
 
 
 namespace QontrolSystem.Controllers
@@ -16,6 +17,7 @@ namespace QontrolSystem.Controllers
             _context = context;
         }
 
+        [HttpGet("Tickets")]
         public IActionResult Tickets()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -38,7 +40,8 @@ namespace QontrolSystem.Controllers
         }
 
 
-        // GET: Ticket/Create
+      
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             // Preload dropdown data
@@ -48,9 +51,10 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateTicketViewModel model)
+       
+        public IActionResult Create(CreateTicket model)
         {
             if (!ModelState.IsValid)
             {
@@ -69,7 +73,7 @@ namespace QontrolSystem.Controllers
                                .Include(u => u.Department)
                                .FirstOrDefault(u => u.UserID == userId.Value);
 
-            var ticket = new Ticket
+            var ticket = new Tickets
             {
                 Title = model.Title,
                 Description = model.Description,
@@ -103,7 +107,7 @@ namespace QontrolSystem.Controllers
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = ticket.TicketID,
                         FilePath = "/uploads/" + fileName,
@@ -123,6 +127,7 @@ namespace QontrolSystem.Controllers
             });
         }
 
+
         public IActionResult TicketDetail(int id)
         {
             var ticket = _context.Tickets
@@ -140,7 +145,7 @@ namespace QontrolSystem.Controllers
             return View(ticket);
         }
 
-        // GET
+        
         public IActionResult Edit(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -164,7 +169,7 @@ namespace QontrolSystem.Controllers
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Ticket ticket, List<IFormFile>? NewAttachments)
+        public IActionResult Edit(Tickets ticket, List<IFormFile>? NewAttachments)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
@@ -202,7 +207,7 @@ namespace QontrolSystem.Controllers
                         file.CopyTo(stream);
                     }
 
-                    var attachment = new TicketAttachment
+                    var attachment = new Attachment
                     {
                         TicketID = existingTicket.TicketID,
                         FilePath = "/uploads/" + fileName,
@@ -220,8 +225,70 @@ namespace QontrolSystem.Controllers
                 duration = 3000,
                 message = "Updating ticket",
             });
-        }     
+        }
 
+        [HttpGet("Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketUrgency)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket); 
+        }
+
+        [HttpPost("DeleteConfirmed/{id}")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var ticket = _context.Tickets
+                .Include(t => t.TicketAttachments)
+                .FirstOrDefault(t => t.TicketID == id && t.CreatedBy == userId);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var attachment in ticket.TicketAttachments)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", attachment.FilePath.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+
+            _context.TicketAttachments.RemoveRange(ticket.TicketAttachments);
+
+            _context.Tickets.Remove(ticket);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Tickets", "Ticket"),
+                duration = 3000,
+                message = "Deleting ticket"
+            });
+        }
     }
 }
 

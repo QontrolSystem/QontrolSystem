@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models;
+using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers
@@ -62,7 +62,7 @@ namespace QontrolSystem.Controllers
             ViewBag.Roles = _context.Roles.Select(r => r.RoleName).Distinct().ToList();
             ViewBag.Departments = _context.Departments.Select(d => d.DepartmentName).Distinct().ToList();
 
-            var viewModel = new UserListViewModel
+            var viewModel = new UserList
             {
                 Users = users,
                 CurrentPage = page,
@@ -101,6 +101,8 @@ namespace QontrolSystem.Controllers
 
             ViewBag.Roles = _context.Roles.ToList();
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
+
             return View();
         }
 
@@ -139,6 +141,7 @@ namespace QontrolSystem.Controllers
 
             ViewBag.Roles = _context.Roles.ToList();
             ViewBag.Departments = _context.Departments.ToList();
+            ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
 
             return View(user);
         }

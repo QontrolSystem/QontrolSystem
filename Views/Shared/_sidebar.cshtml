@@ -1,0 +1,18 @@
+﻿@{
+    <link href="~/css/home/side-bar.css" rel="stylesheet" />
+}
+
+<!-- Sidebar Container -->
+<aside class="sidebar" >
+    <div class="sidebar-header">
+        <h2>Dashboard</h2>
+    </div>
+    <ul class="sidebar-nav">
+        <li><a asp-controller="ManagerDashboard" asp-action="Index">Overview</a></li>
+        <li><a asp-controller="Ticket" asp-action="Create">Create Ticket</a></li>
+        <li><a asp-controller="Ticket" asp-action="List">My Tickets</a></li>
+        <li><a asp-controller="Reports" asp-action="Index">Reports</a></li>
+        <li><a asp-controller="Account" asp-action="Profile">My Profile</a></li>
+        <li><a asp-controller="Account" asp-action="Logout">Logout</a></li>
+    </ul>
+</aside>
