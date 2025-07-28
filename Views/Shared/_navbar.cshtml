@@ -56,19 +56,19 @@
                     }  
                     @if (!string.IsNullOrEmpty(userName))  
                     { 
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <span class="nav-link welcome-text">@currentTime</span>
                         </li>
                         <li class="nav-item">
                             <span class="nav-link welcome-text">@currentDate</span>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
-                            <span class="nav-link welcome-text">Welcome, @userName</span>
+                            <span class="nav-link welcome-text">Profile</span>
                         </li>
                     }
-                    <li class="nav-item">  
+                    @* <li class="nav-item">  
                         <a class="nav-link logout-button" asp-controller="Account" asp-action="Logout">Logout</a>  
-                    </li>  
+                    </li>   *@
                 }  
             </ul>  
         </div>  

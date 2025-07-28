@@ -1,46 +1,52 @@
-﻿
+﻿/* Mobile-first base styles */
 .logo-container {
     margin-bottom: 40px;
 }
 
- .logo-container img {
-     max-width: 200px;
-     height: auto;
-     border-radius: 10px;
+    .logo-container img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 10px;
     }
+
 .register-container {
     min-height: calc(100vh - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
-    margin: -20px -15px;
+    padding: 20px 10px;
+    margin: -15px -10px;
+    box-sizing: border-box;
+    width:80%;
+    margin:0 auto;
 }
 
 .register-card {
     display: flex;
-    max-width: 1000px;
+    flex-direction: column;
+    max-width: 450px;
     width: 100%;
     min-height: 500px;
-    background: white;
+    background: var(--white);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 40px var(--shadow-default);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
-.text-danger{
-    color:red;
-    font-weight:bold;
+.text-danger {
+    color: var(--error-text);
+    font-weight: bold;
 }
 
 .welcome-panel {
     flex: 1;
-    background: linear-gradient(135deg, #5ec8e0 0%, #4f80e1 100%);
-    padding: 50px;
-    display: flex;
+    background: var(--gradient-primary);
+    padding: 30px 25px;
+    display: none;
     flex-direction: column;
     justify-content: center;
-    color: white;
+    color: var(--white);
     position: relative;
 }
 
@@ -51,7 +57,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--overlay-light);
         pointer-events: none;
     }
 
@@ -61,7 +67,7 @@
 }
 
 .welcome-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 300;
     margin-bottom: 15px;
     line-height: 1.2;
@@ -89,7 +95,7 @@
         content: '✓';
         width: 18px;
         height: 18px;
-        background: rgba(255, 255, 255, 0.2);
+        background: var(--overlay-light);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -101,10 +107,11 @@
 
 .form-panel {
     flex: 1;
-    padding: 50px;
+    padding: 30px 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .form-header {
@@ -114,13 +121,13 @@
 
 .form-title {
     font-size: 1.8rem;
-    color: #333;
+    color: var(--text-primary);
     margin-bottom: 8px;
     font-weight: 600;
 }
 
 .form-subtitle {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
@@ -131,7 +138,7 @@
 .form-label {
     display: block;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 0.85rem;
 }
@@ -139,23 +146,25 @@
 .form-control {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid #e1e5e9;
+    border: 2px solid var(--border-default);
     border-radius: 8px;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    background: #f8f9fa;
+    background: var(--background-light-alt);
+    box-sizing: border-box;
 }
 
     .form-control:focus {
         outline: none;
-        border-color: #29b6f6;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(41, 182, 246, 0.1);
+        border-color: var(--border-focus);
+        background: var(--white);
+        box-shadow: 0 0 0 3px var(--shadow-focus);
     }
 
 .form-row {
     display: flex;
-    gap: 15px;
+    flex-direction: column;
+    gap: 0;
 }
 
     .form-row .form-group {
@@ -165,8 +174,8 @@
 .btn-register {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #5ec8e0 0%, #4f80e1 100%);
-    color: white;
+    background: var(--gradient-primary);
+    color: var(--white);
     border: none;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -174,12 +183,13 @@
     cursor: pointer;
     transition: all 0.4s ease;
     margin-top: 10px;
+    box-sizing: border-box;
 }
 
     .btn-register:hover {
         transform: translateY(-1px);
-        box-shadow: 0 8px 16px rgba(41, 182, 246, 0.3);
-        background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+        box-shadow: 0 8px 16px var(--shadow-hover);
+        background: var(--gradient-primary-hover);
     }
 
 .checkmark-icon {
@@ -188,23 +198,23 @@
     right: 25px;
     width: 35px;
     height: 35px;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--overlay-light);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--white);
     font-size: 1rem;
 }
 
 .register-link-container {
     text-align: center;
     font-size: 0.95rem;
-    color: #4a5568;
+    color: var(--text-muted);
 }
 
 .register-link {
-    color: #4299e1;
+    color: var(--link-color);
     text-decoration: none;
     font-weight: 500;
 }
@@ -213,36 +223,56 @@
         text-decoration: underline;
     }
 
-@media (max-width: 768px) {
+/* Medium screens (tablets) - 768px and up */
+@media (min-width: 768px) {
     .register-container {
-        padding: 20px 10px;
+        padding: 30px 20px;
+        
     }
 
     .register-card {
-        flex-direction: column;
-        max-width: 450px;
+        flex-direction: row;
+        max-width: 1000px;
+        min-height: 500px;
     }
 
     .welcome-panel {
-        padding: 30px 25px;
+        padding: 30px 40px;
     }
 
     .form-panel {
-        padding: 30px 25px;
+        padding: 30px 40px;
     }
 
     .welcome-title {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
     }
 
     .form-row {
-        flex-direction: column;
-        gap: 0;
+        flex-direction: row;
+        gap: 15px;
     }
 }
 
-@media (max-width: 480px) {
+/* Large screens (desktops) - 1024px and up */
+@media (min-width: 1024px) {
     .register-container {
-        margin: -15px -10px;
+
+        padding: 40px 20px;
+        max-width: 1200px;
+        margin: -20px auto;
+    }
+
+    .welcome-panel {
+        padding: 40px 50px;
+        display:flex;
+    }
+
+    .form-panel {
+        padding: 40px 50px;
+    }
+
+    .welcome-title {
+        font-size: 2.8rem;
     }
 }
