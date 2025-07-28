@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Dashboard</title>  
     <link rel="stylesheet" href="~/css/dashboardlayout/dashboardgrid.css" />
     <script src="~/js/dashboard.js"></script>
+    @RenderSection("Styles", required: false)
 </head>  
 <body>  
     <div class="dashboard-layout">  
@@ -18,8 +19,7 @@
         </aside>  
 
         <main class="dashboard-main">  
-            @RenderBody()  
-            <p>Hello</p>  
+            @RenderBody() 
         </main>  
     </div>  
 </body> 
