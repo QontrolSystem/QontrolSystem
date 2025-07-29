@@ -13,29 +13,31 @@
             </div>
         </a>
 
-        <a href="/Technician/OpenTickets" class="stat-card-link">
-        <div class="stat-card">
-            <div class="stat-title">Open Tickets</div>
-            <div class="stat-number">@Model.OpenTickets</div>
-        </div>
+        <a asp-controller="Technician" asp-action="OpenTickets" class="stat-card-link">
+            <div class="stat-card">
+                <div class="stat-title">Open Tickets</div>
+                <div class="stat-number">@Model.OpenTickets</div>
+            </div>
         </a>
-        <a href="/Technician/InProgressTickets" class="stat-card-link">        <div class="stat-card">
+
+        <a asp-controller="Technician" asp-action="InProgressTickets" class="stat-card-link">
+            <div class="stat-card">
             <div class="stat-title">In Progress</div>
             <div class="stat-number">@Model.InProgressTickets</div>
         </div>
         </a>
-        <a href="/Technician/ResolvedTickets" class="stat-card-link">
-        <div class="stat-card">
-            <div class="stat-title">Resolved</div>
-            <div class="stat-number">@Model.ResolvedTickets</div>
-        </div>
-        </a> 
-        <a href="/Technician/OverdueTickets" class="stat-card-link">
-        <div class="stat-card">
-            <div class="stat-title">Overdue</div>
-            <div class="stat-number">@Model.OverdueTickets</div>
-        </div>
-        </a> 
+        <a asp-controller="Technician" asp-action="ResolvedTickets" class="stat-card-link">
+            <div class="stat-card">
+                <div class="stat-title">Resolved</div>
+                <div class="stat-number">@Model.ResolvedTickets</div>
+            </div>
+        </a>
+        <a asp-controller="Technician" asp-action="OverdueTickets" class="stat-card-link">
+            <div class="stat-card">
+                <div class="stat-title">Overdue</div>
+                <div class="stat-number">@Model.OverdueTickets</div>
+            </div>
+        </a>
     </div>
 
     <!-- Ticket Table -->
@@ -81,10 +83,10 @@
                 <a href="/Technician/AssignedTickets" class="link-anchor">🗂️ Assigned Tickets</a>
             </div>
             <div class="link-item">
-                <a href="/Ticket/Create" class="link-anchor">➕ Create Ticket</a>
+                <a asp-controller="Ticket" asp-action="Create" class="link-anchor">🆕 Create Ticket</a>
             </div>
             <div class="link-item">
-                <a href="/Account/Profile" class="link-anchor">👤 My Profile</a>
+                <a asp-controller="Technician" asp-action="MyProfile" class="link-anchor">👤 My Profile</a>
             </div>
             <div class="link-item">
                 <a href="/Technician/AuditLogs" class="link-anchor">📋 View Audit Logs</a>

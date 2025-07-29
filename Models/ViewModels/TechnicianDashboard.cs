@@ -12,5 +12,4 @@ namespace QontrolSystem.Models.ViewModels
 
         public List<TechnicianTicket> AssignedTickets { get; set; }
     }
-
 }

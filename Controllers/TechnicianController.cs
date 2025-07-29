@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using QontrolSystem.Models.ViewModels;
+using QontrolSystem.Models.Accounts;
 
 
 namespace QontrolSystem.Controllers
@@ -136,7 +137,7 @@ namespace QontrolSystem.Controllers
 
             return View(ticketList);
         }
-       
+
 
         // GET: Show form to update ticket status
 
@@ -184,6 +185,7 @@ namespace QontrolSystem.Controllers
 
             ticket.TicketStatusID = ticketStatusId;
 
+
             //// Optional: Save work notes to ticket comments or logs
             //if (!string.IsNullOrWhiteSpace(workNotes))
             //{
@@ -210,6 +212,32 @@ namespace QontrolSystem.Controllers
 
             return RedirectToAction(nameof(TicketDetails), new { id });
         }
+
+        // Creating technician's own ticket 
+        public IActionResult Create()
+        {
+            // You can prepare any data needed for the create ticket view here
+
+            return View(); // returns Views/Technician/CreateTicket.cshtml
+        }
+
+
+        // GET: Technician's own profile
+        public IActionResult MyProfile()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .FirstOrDefault(u => u.UserID.ToString() == userId);
+
+            if (user == null)
+                return NotFound();
+
+            return View(user);
+        }
+
 
         //// GET: Show work logs for a ticket
         //[Authorize(Roles = "Technician")]
@@ -259,5 +287,88 @@ namespace QontrolSystem.Controllers
         //    return RedirectToAction(nameof(WorkLogs), new { ticketId = ticketId });
         //}
 
+        // Technician's own Opened Tickets
+        public IActionResult OpenTickets()
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            var now = DateTime.Now;
+
+            // Fetch tickets assigned to the current user that are "Open"
+            var tickets = _context.Tickets
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketUrgency)
+                .Where(t => t.AssignedTo == userId && t.TicketStatus.StatusName == "Open")
+                .ToList();
+
+            var assignedTickets = tickets.Select(t => new TechnicianTicket
+            {
+                TicketID = t.TicketID,
+                Title = t.Title,
+                Status = t.TicketStatus.StatusName,
+                Category = t.TicketCategory?.CategoryName ?? "N/A",
+                Urgency = t.TicketUrgency?.UrgencyLevel ?? "N/A",
+                CreatedAt = t.CreatedAt.ToString("yyyy-MM-dd"),
+                DaysOpen = (now - t.CreatedAt).Days
+            }).ToList();
+
+            return View(assignedTickets);
+        }
+
+
+        //Technician's own In Progress Tickets
+        public async Task<IActionResult> InProgressTickets()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var inProgressTickets = await _context.Tickets
+    .Include(t => t.TicketStatus)
+    .Include(t => t.TicketCategory)
+    .Include(t => t.TicketUrgency)
+    .Where(t => t.AssignedTo == userId && t.TicketStatus.StatusName == "In Progress")
+    .Select(t => new TechnicianTicket
+    {
+        TicketID = t.TicketID,
+        Title = t.Title,
+        Status = t.TicketStatus.StatusName,
+        Category = t.TicketCategory.CategoryName,
+        Urgency = t.TicketUrgency.UrgencyLevel,
+        CreatedAt = t.CreatedAt.ToString("yyyy-MM-dd"),
+        DaysOpen = EF.Functions.DateDiffDay(t.CreatedAt, DateTime.Now)
+    })
+    .ToListAsync();
+
+            return View(inProgressTickets);
+        }
+
+        // Technician's own Resolved Tickets
+        public async Task<IActionResult> ResolvedTickets()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            var resolvedTickets = await _context.Tickets
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketCategory)
+                .Include(t => t.TicketUrgency)
+                .Where(t => t.AssignedTo == userId && t.TicketStatus.StatusName == "Resolved")
+                .Select(t => new TechnicianTicket
+                {
+                    TicketID = t.TicketID,
+                    Title = t.Title,
+                    Status = t.TicketStatus.StatusName,
+                    Category = t.TicketCategory.CategoryName,
+                    Urgency = t.TicketUrgency.UrgencyLevel,
+                    CreatedAt = t.CreatedAt.ToString("yyyy-MM-dd"),
+                    DaysOpen = EF.Functions.DateDiffDay(t.CreatedAt, DateTime.Now)
+                })
+                .ToListAsync();
+
+            return View(resolvedTickets);
+        }
     }
 }

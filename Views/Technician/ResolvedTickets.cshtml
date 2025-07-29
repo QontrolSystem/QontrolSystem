@@ -6,7 +6,7 @@
 
 <h2>Resolved Tickets</h2>
 
-<p>These tickets have been resolved but not yet closed:</p>
+<p>These are all tickets marked as Resolved:</p>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -32,6 +32,7 @@
                 <td>@ticket.CreatedAt</td>
                 <td>
                     <a asp-action="TicketDetails" asp-route-id="@ticket.TicketID" class="btn btn-sm btn-primary">Details</a>
+                    <a asp-action="UpdateStatus" asp-route-id="@ticket.TicketID" class="btn btn-sm btn-warning">Update</a>
                 </td>
             </tr>
         }
