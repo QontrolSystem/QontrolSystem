@@ -134,6 +134,23 @@
     color: #475569;
     border-color: #cbd5e1;
 }
+.back-btn {
+    color: var(--link-color);
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 0;
+}
+
+    .back-btn:hover {
+        text-decoration: underline;
+        color: var(--primary-blue-hover-light);
+    }
+
+    .back-btn::before {
+        content: '‹ ';
+        font-size: 18px;
+        margin-right: 3px;
+    }
 
     .btn-secondary:hover {
         background: #f8fafc;

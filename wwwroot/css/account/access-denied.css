@@ -1,172 +1,253 @@
-﻿/* rejected-user.css */
-* {
+﻿/* Base styles - Mobile first approach */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--gradient-secondary);
     margin: 0;
-    padding: 0;
+    padding: 15px;
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #333;
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 .container {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--shadow-default);
+    max-width: 100%;
+    width: 100%;
     text-align: center;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
     overflow: hidden;
+    padding: 25px 15px;
+    margin: 0 auto;
 }
 
-    .container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 5px;
-        background: linear-gradient(90deg, #1e3c72, #2a5298, #4a90e2);
-    }
-
 .logo {
-    margin-bottom: 30px;
+    margin: 0 auto 24px;
+    text-align: center;
 }
 
     .logo img {
-        max-width: 150px;
-        height: auto;
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--shadow-hover);
+        display: block;
+        margin: 0 auto;
+        object-fit: contain;
     }
 
 .status-icon {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto 20px;
+    background: var(--error-text);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    animation: pulse 2s infinite;
 }
 
-    .status-icon.rejected {
-        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-        box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+    .status-icon::after {
+        content: 'X';
+        font-size: 22px;
+        color: var(--white);
+        font-weight:bold;
     }
 
-        .status-icon.rejected::after {
-            content: '✕';
-            font-size: 36px;
-            color: white;
-            font-weight: bold;
-        }
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
 
-.subtitle {
-    font-size: 14px;
-    color: #2a5298;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
+    50% {
+        transform: scale(1.05);
+    }
 }
 
 h1 {
-    font-size: 28px;
-    color: #1e3c72;
+    color: var(--text-primary);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+.subtitle {
+    color: var(--primary-blue-dark);
+    font-size: 13px;
+    font-weight: 500;
     margin-bottom: 20px;
-    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 p {
-    font-size: 16px;
-    color: #666;
+    color: var(--text-secondary);
+    font-size: 14px;
     line-height: 1.6;
-    margin-bottom: 30px;
+    margin-bottom: 16px;
 }
 
-.contact-section {
-    background: linear-gradient(135deg, #f8fbff, #e3f2fd);
-    border: 1px solid #bbdefb;
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 30px;
+.highlight {
+    background: var(--background-light);
+    border-left: 4px solid var(--primary-blue-dark);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 16px 0;
 }
 
-    .contact-section p {
-        color: #2a5298;
+    .highlight p {
+        margin: 0;
+        color: var(--primary-blue-darker);
         font-weight: 500;
-        margin-bottom: 20px;
     }
 
+.contact-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-default);
+}
+
 .contact-btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gradient-primary);
+    color: var(--white);
     text-decoration: none;
-    padding: 12px 30px;
+    padding: 10px 16px;
     border-radius: 8px;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 13px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+    box-shadow: 0 4px 12px var(--shadow-hover);
 }
 
     .contact-btn:hover {
-        background: linear-gradient(135deg, #2a5298, #4a90e2);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(30, 60, 114, 0.4);
+        box-shadow: 0 6px 20px var(--shadow-hover);
+        background: var(--gradient-primary-hover);
     }
 
 .back-btn-cont {
-    margin-bottom: 30px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-default);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .action-btn {
-    display: inline-block;
-    padding: 10px 25px;
-    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: 500;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .btn-back {
-    background: transparent;
-    color: #2a5298;
-    border-color: #2a5298;
+    background: linear-gradient(135deg, var(--text-secondary), var(--text-muted));
+    color: var(--white);
 }
 
     .btn-back:hover {
-        background: #2a5298;
-        color: white;
-        transform: translateY(-1px);
+        background: linear-gradient(135deg, var(--text-muted), var(--text-primary));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--shadow-default);
+        color: var(--white);
+        text-decoration: none;
     }
 
 .footer-text {
-    font-size: 12px;
-    color: #999;
     margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: var(--text-placeholder);
+    line-height: 1.4;
 }
 
-/* Responsive design */
-@media (max-width: 600px) {
+/* Small tablets and larger phones - 480px and up */
+@media (min-width: 480px) {
+    html {
+        padding: 20px;
+    }
+
     .container {
         padding: 30px 20px;
-        margin: 20px;
+        max-width: 500px;
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+
+    .highlight {
+        padding: 14px;
+        margin: 20px 0;
+    }
+
+    .contact-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .action-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.85rem;
+        min-width: 90px;
+    }
+}
+
+/* Tablets - 768px and up */
+@media (min-width: 768px) {
+    html {
+        padding: 30px;
+    }
+
+    .container {
+        padding: 40px;
+        max-width: 600px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .logo img {
+        width: 70px;
+        height: 70px;
     }
 
     .status-icon {
@@ -174,12 +255,62 @@ p {
         height: 60px;
     }
 
-        .status-icon.rejected::after {
-            font-size: 28px;
+        .status-icon::after {
+            font-size: 24px;
         }
 
+    .highlight {
+        padding: 16px;
+        margin: 24px 0;
+    }
+
+    .contact-section {
+        margin-top: 32px;
+        padding-top: 24px;
+    }
+
     .contact-btn {
-        padding: 10px 20px;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .back-btn-cont {
+        margin-top: 25px;
+        padding-top: 15px;
+    }
+
+    .action-btn {
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        min-width: 120px;
+    }
+
+    .footer-text {
+        margin-top: 24px;
         font-size: 14px;
+    }
+}
+
+/* Large tablets and small desktops - 1024px and up */
+@media (min-width: 1024px) {
+    html {
+        padding: 50px;
+    }
+
+    .container {
+        max-width: 650px;
+        padding: 50px;
+    }
+
+    .logo img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+/* Large desktops - 1200px and up */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 700px;
     }
 }

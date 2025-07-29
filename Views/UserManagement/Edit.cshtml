@@ -7,11 +7,13 @@
     <link href="~/css/user-management/edit-user.css" rel="stylesheet" />
 }
 
+
 <div class="edit-user-container">
     <h2 class="page-title">Edit User</h2>
 
     <form asp-action="Edit" method="post" class="edit-form">
         <input type="hidden" asp-for="UserID" class="hidden-field" />
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
         <div class="form-group">
             <label class="form-label">First Name</label>
@@ -71,7 +73,7 @@
 
         <div class="action-buttons">
             <button type="submit" class="action-btn btn-save">Save Changes</button>
-            <a asp-action="UserManagementIndex" class="action-btn btn-cancel">Cancel</a>
+            <a href="@(ViewBag.ReturnUrl ?? Url.Action("UserManagementIndex"))" class="action-btn btn-cancel">Cancel</a>
         </div>
     </form>
 </div>

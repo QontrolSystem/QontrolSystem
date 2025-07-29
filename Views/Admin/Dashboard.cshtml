@@ -24,12 +24,23 @@
                 <p class="stat-number"><span class="count" data-count="@ViewBag.UserCount">0</span></p>
             </div>
         </a>
-        <div class="stat-card technicians">
-            <h5 class="stat-title">Active Technicians</h5>
-            <p class="stat-number"><span class="count" data-count="@ViewBag.TechnicianCount">0</span></p>
-        </div>
+
+        <a asp-controller="UserManagement" asp-action="Technicians" class="stat-card-link">
+            <div class="stat-card technicians">            
+                <h5 class="stat-title">Active Technicians</h5>
+                <p class="stat-number"><span class="count" data-count="@ViewBag.TechnicianCount">0</span></p>
+            </div>
+        </a>
+
+        <a asp-controller="UserManagement" asp-action="Managers" class="stat-card-link">
+            <div class="stat-card managers">
+                <h5 class="stat-title">Active Managers</h5>
+                <p class="stat-number"><span class="count" data-count="@ViewBag.ManagerCount">0</span></p>
+            </div>
+        </a>
+
         <a asp-controller="Admin" asp-action="ApproveUsers" class="stat-card-link">
-            <div class="stat-card pending-users">
+            <div class="stat-card technicians">
                 <h5 class="stat-title">Pending Users</h5>
                 <p class="stat-number"><span class="count" data-count="@ViewBag.PendingUserCount">0</span></p>
             </div>

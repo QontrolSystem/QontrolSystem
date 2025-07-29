@@ -7,6 +7,10 @@
 }
 
 
+<div>
+    <a href="@Url.Action("Dashboard", "Admin")" class="back-btn"> Back </a>
+</div>
+
 <div class="user-management-container">
     <h2 class="page-title">System Users</h2>
 
@@ -73,16 +77,16 @@
                     @foreach (var user in Model.Users)
                     {
                     <tr>
-                        <td>@user.FirstName @user.LastName</td>
-                        <td>@user.Email</td>
-                        <td>@user.Role.RoleName</td>
-                        <td>@user.Department.DepartmentName</td>
-                        <td>
+                            <td data-label="Name">@user.FirstName @user.LastName</td>
+                            <td data-label="Email">@user.Email</td>
+                            <td data-label="Role">@user.Role.RoleName</td>
+                            <td data-label="Department">@user.Department.DepartmentName</td>
+                            <td data-label="Actions">
                             <div class="action-buttons">
                                 <a class="action-btn btn-details" href="@Url.Action("Details", new { id = user.UserID })">
                                     Details
                                 </a>
-                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID })">
+                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID, returnUrl = Context.Request.Path + Context.Request.QueryString })">
                                     Edit
                                 </a>
                                 <a class="action-btn btn-delete" href="@Url.Action("Delete", new { id = user.UserID })">
