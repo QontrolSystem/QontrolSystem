@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using QontrolSystem.Data;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using QontrolSystem.Data;
+using QontrolSystem.Models.Accounts;
+using QontrolSystem.Models.DataTransferObjectApi;
 
 namespace QontrolSystem.Controllers.ControllersApis
 {
@@ -60,6 +62,42 @@ namespace QontrolSystem.Controllers.ControllersApis
             _context.SaveChanges();
 
             return Ok(new { message = $"User {id} approved successfully." });
+        }
+
+        //Create new user endpoint
+        [HttpPost("create-user")]
+        [Authorize(Roles = "System Administrator")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_context.Users.Any(u => u.Email == model.Email))
+            {
+                return Conflict("A user with this email already exists.");
+            }
+
+            var user = new User
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                DepartmentID = model.DepartmentID,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                RoleID = model.RoleID,
+                CreatedAt = DateTime.Now,
+                IsActive = true,
+                IsApproved = true,
+                IsRejected = false
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User created successfully", userId = user.UserID });
         }
 
 

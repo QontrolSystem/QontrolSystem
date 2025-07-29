@@ -1,0 +1,38 @@
+﻿@model List<QontrolSystem.Models.Ticket.Tickets>
+
+@{
+    ViewData["Title"] = "All Tickets";
+}
+
+<h2 class="mb-4">All Tickets</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Status</th>
+            <th scope="col">Category</th>
+            <th scope="col">Creator</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Department</th>
+            <th scope="col">Urgency</th>
+            <th scope="col">Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Title</td>
+                <td>@ticket.TicketStatus?.StatusName</td>
+                <td>@ticket.TicketCategory?.CategoryName</td>
+                <td>@($"{ticket.Creator?.FirstName} {ticket.Creator?.LastName}")</td>
+                <td>@(ticket.Assignee != null ? $"{ticket.Assignee.FirstName} {ticket.Assignee.LastName}" : "Unassigned")</td>
+                <td>@ticket.Department?.DepartmentName</td>
+                <td>@ticket.TicketUrgency?.UrgencyLevel</td>
+                <td>@ticket.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                <td> <a asp-action="TicketDetails" asp-route-id="@ticket.TicketID">View Details</a> </td>
+            </tr>
+        }
+    </tbody>
+</table>

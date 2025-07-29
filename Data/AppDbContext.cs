@@ -52,15 +52,16 @@ namespace QontrolSystem.Data
 
 
 
-            
-            modelBuilder.Entity<Status>().HasData(
-                new Status { TicketStatusID = 1, StatusName = "Open" },
-                new Status { TicketStatusID = 2, StatusName = "In Progress" },
-                new Status { TicketStatusID = 3, StatusName = "Resolved" },
-                new Status { TicketStatusID = 4, StatusName = "Closed" }
-            );
 
-            
+            modelBuilder.Entity<Status>().HasData(
+     new Status { TicketStatusID = 1, StatusName = "Open" },
+     new Status { TicketStatusID = 2, StatusName = "In Progress" },
+     new Status { TicketStatusID = 3, StatusName = "Resolved" },
+     new Status { TicketStatusID = 4, StatusName = "Closed" }
+ );
+
+
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { TicketCategoryID = 1, CategoryName = "Hardware" },
                 new Category { TicketCategoryID = 2, CategoryName = "Software" },

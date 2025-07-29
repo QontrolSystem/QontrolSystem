@@ -1,0 +1,43 @@
+﻿@model List<QontrolSystem.Models.ViewModels.TechnicianTicket>
+
+@{
+    ViewData["Title"] = "Open Tickets";
+}
+
+<h2>Open Tickets</h2>
+
+<p>These are all tickets currently marked as Open:</p>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Urgency</th>
+            <th>Days Open</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr class="@(ticket.DaysOpen >= 7 ? "table-danger" : (ticket.DaysOpen >= 4 ? "table-warning" : ""))">
+                <td>@ticket.Title</td>
+                <td>@ticket.Status</td>
+                <td>@ticket.Category</td>
+                <td>@ticket.Urgency</td>
+                <td>@ticket.DaysOpen</td>
+                <td>@ticket.CreatedAt</td>
+                <td>
+                    <a asp-action="TicketDetails" asp-route-id="@ticket.TicketID" class="btn btn-sm btn-primary">TicketDetails</a>
+                    <a asp-action="UpdateStatus" asp-route-id="@ticket.TicketID" class="btn btn-sm btn-warning">UpdateStatus</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+

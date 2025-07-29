@@ -1,0 +1,18 @@
+﻿@model QontrolSystem.Models.Accounts.User 
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h2>👤 My Profile</h2>
+
+<div class="profile-card">
+    <p><strong>First Name:</strong> @Model.FirstName</p>
+    <p><strong>Last Name:</strong> @Model.LastName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Department:</strong> @Model.Department?.DepartmentName ?? "N/A"</p>
+    <p><strong>Role:</strong> @Model.Role?.RoleName ?? "Technician"</p>
+    <p><strong>Joined:</strong> @Model.CreatedAt.ToString("dd MMM yyyy")</p>
+</div>
+
+<a asp-action="Dashboard" class="btn btn-secondary mt-3">⬅ Back to Dashboard</a>

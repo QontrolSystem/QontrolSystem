@@ -6,7 +6,9 @@ namespace QontrolSystem.Models.Ticket
     {
         [Key]
         public int TicketStatusID { get; set; }
-        public string StatusName { get; set; } = string.Empty;
+
+        public string StatusName { get; set; }
+
         // Navigation property for Tickets
         public ICollection<Tickets> Tickets { get; set; } = new List<Tickets>();
     }
