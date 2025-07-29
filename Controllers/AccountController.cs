@@ -204,7 +204,7 @@ namespace QontrolSystem.Controllers
                     return RedirectToAction("PendingApproval");
                 }
 
-                if(!user.IsActive)
+                if (!user.IsActive)
                 {
                     return RedirectToAction("DeactivatedUser");
                 }
@@ -217,8 +217,13 @@ namespace QontrolSystem.Controllers
             string? targetUrl = user.Role.RoleName switch
             {
                 "System Administrator" => Url.Action("Dashboard", "Admin"),
+<<<<<<< HEAD
                 "Technician" => Url.Action("Index", "TechnicianDashboard"),
                 "IT Manager" => Url.Action("Dashboard", "ITManager"),
+=======
+                "Technician" => Url.Action("Dashboard", "Technician"),
+                "IT Manager" => Url.Action("Dashboard", "Manager"),
+>>>>>>> 5fc5b1b1bdcf2775665f2dd47de98b8caa897346
                 _ => Url.Action("Index", "Home")
             };
 

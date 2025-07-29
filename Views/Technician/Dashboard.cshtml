@@ -1,0 +1,64 @@
+﻿@model QontrolSystem.Models.ViewModels.TechnicianDashboard
+
+
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Technician Dashboard</h1>
+
+    <!-- Summary Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-title">Total Assigned Tickets</div>
+            <div class="stat-number">@Model.AssignedTickets.Count()</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Open Tickets</div>
+            <div class="stat-number">@Model.OpenTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">In Progress</div>
+            <div class="stat-number">@Model.InProgressTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Resolved</div>
+            <div class="stat-number">@Model.ResolvedTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Overdue</div>
+            <div class="stat-number">@Model.OverdueTickets</div>
+        </div>
+    </div>
+
+    <!-- Ticket Table -->
+    <h2 class="chart-title">Your Assigned Tickets</h2>
+    <div class="chart-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Urgency</th>
+                    <th>Days Open</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model.AssignedTickets)
+                {
+                    <tr>
+                        <td>@ticket.Title</td>
+                        <td>@ticket.Status</td>
+                        <td>@ticket.Category</td>
+                        <td>@ticket.Urgency</td>
+                        <td>@ticket.DaysOpen</td>
+                        <td>@ticket.CreatedAt</td>
+                        <td>
+                            <a href="@Url.Action("TicketDetails", "Technician", new { id = ticket.TicketID })" class="btn btn-primary">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
