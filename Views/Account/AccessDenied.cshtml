@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Account Application Rejected</title>
+    <title>Registration Rejected</title>
     <link href="~/css/account/access-denied.css" rel="stylesheet" />
     <link href="~/css/base/variables.css" rel="stylesheet" />
 </head>
@@ -16,10 +16,14 @@
         <div class="logo">
             <img src="~/Images/logo.png" alt="Qontrol System Logo" />
         </div>
-        <div class="status-icon rejected"></div>
+        <div class="status-icon"></div>
         <div class="subtitle">Account Status</div>
-        <h1>Regestration Rejected</h1>
+        <h1>Registration Rejected</h1>
         <p>Unfortunately, your account application has been rejected after review by our administrators.</p>
+        <div class="highlight">
+            <p>Your registration did not meet our current requirements or approval criteria.</p>
+        </div>
+        <p>This decision may be based on various factors including incomplete information, policy compliance, or current capacity limitations. You may reapply in the future or contact support for clarification.</p>
         <div class="contact-section">
             <p>For more information about this decision or to discuss your application:</p>
             <a href="mailto:support@qontrolsystem.com" class="contact-btn">
@@ -27,7 +31,7 @@
             </a>
         </div>
         <div class="back-btn-cont">
-            <a asp-action="Login" class="action-btn btn-back">Back to Login</a>
+            <a asp-action="Login" class="action-btn btn-back">Back</a>
         </div>
         <div class="footer-text">
             © 2025 QontrolSystem. All rights reserved.

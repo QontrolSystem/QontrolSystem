@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Account Status</title>
+    <title>Account Deactivated</title>
     <link href="~/css/account/deactivated-user.css" rel="stylesheet" />
     <link href="~/css/base/variables.css" rel="stylesheet" />
 </head>
@@ -17,13 +17,14 @@
         <div class="logo">
             <img src="~/Images/logo.png" alt="Qontrol System Logo" />
         </div>
-
         <div class="status-icon"></div>
-
         <div class="subtitle">Account Status</div>
         <h1>Deactivated Account</h1>
-
         <p>Your account has been deactivated by our system administrators.</p>
+        <div class="highlight">
+            <p>Access to your account and all associated services has been temporarily suspended.</p>
+        </div>
+        <p>This action may have been taken due to security concerns or policy violations. Please contact our support team for more information about reactivating your account.</p>
         <div class="contact-section">
             <p>If you believe this is a mistake or have any questions:</p>
             <a href="mailto:support@qontrolsystem.com" class="contact-btn">
@@ -33,7 +34,6 @@
         <div class="back-btn-cont">
             <a asp-action="Login" class="action-btn btn-back">Back</a>
         </div>
-
         <div class="footer-text">
             © 2025 QontrolSystem. All rights reserved.
         </div>
