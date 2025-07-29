@@ -301,7 +301,7 @@ namespace QontrolSystem.Controllers
                 .Include(u => u.Department)
                 .Include(u => u.ITSubDepartment)
                 .Where(u =>
-                    u.Role.RoleName == "IT Managers" &&
+                    u.Role.RoleName == "IT Manager" &&
                     u.IsApproved &&
                     !u.IsDeleted)
                 .ToList();
