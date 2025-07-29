@@ -214,6 +214,10 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.SetString("Role", user.Role.RoleName);
             HttpContext.Session.SetString("UserName", user.FirstName);
 
+            TempData["SuccessMessage"] = "You have successfully logged in!";
+           
+
+
             string? targetUrl = user.Role.RoleName switch
             {
                 "System Administrator" => Url.Action("Dashboard", "Admin"),

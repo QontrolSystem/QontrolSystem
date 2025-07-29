@@ -194,3 +194,15 @@
     font-weight: bold;
     transition: color 0.3s ease;
 }
+
+/*Toaster*/
+#toast-message {
+    transition: opacity 0.5s ease;
+    opacity: 1;
+    z-index: 9999;
+    position: relative;
+}
+
+    #toast-message.fade-out {
+        opacity: 0;
+    }
