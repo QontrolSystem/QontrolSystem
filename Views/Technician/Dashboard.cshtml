@@ -2,38 +2,41 @@
 
 
 <div class="dashboard-container">
-    <h1 class="dashboard-title">Technician Dashboard</h1>
+    <h1 class="dashboard-title">Welcome, Technician</h1>
 
     <!-- Summary Cards -->
+    <!-- Total Assigned Tickets-->
     <div class="stats-grid">
         <a href="/Technician/AssignedTickets" class="stat-card-link">
-            <div class="stat-card">
+            <div class="stat-card stat-assignedtickets">
                 <div class="stat-title">Total Assigned Tickets</div>
                 <div class="stat-number">@Model.AssignedTickets.Count()</div>
             </div>
         </a>
-
+        <!-- Open Tickets-->
         <a asp-controller="Technician" asp-action="OpenTickets" class="stat-card-link">
-            <div class="stat-card">
+            <div class="stat-card stat-open">
                 <div class="stat-title">Open Tickets</div>
                 <div class="stat-number">@Model.OpenTickets</div>
             </div>
         </a>
-
+        <!-- InProgress Tickets-->
         <a asp-controller="Technician" asp-action="InProgressTickets" class="stat-card-link">
-            <div class="stat-card">
+            <div class="stat-card stat-inprogress">
             <div class="stat-title">In Progress</div>
             <div class="stat-number">@Model.InProgressTickets</div>
         </div>
         </a>
+        <!-- Resolved Tickets-->
         <a asp-controller="Technician" asp-action="ResolvedTickets" class="stat-card-link">
-            <div class="stat-card">
+            <div class="stat-card stat-resolved">
                 <div class="stat-title">Resolved</div>
                 <div class="stat-number">@Model.ResolvedTickets</div>
             </div>
         </a>
+        <!-- Overdue Tickets -->
         <a asp-controller="Technician" asp-action="OverdueTickets" class="stat-card-link">
-            <div class="stat-card">
+            <div class="stat-card stat-overdue">
                 <div class="stat-title">Overdue</div>
                 <div class="stat-number">@Model.OverdueTickets</div>
             </div>
@@ -78,7 +81,7 @@
 
     <!-- Audit Logs Section -->
     <div class="chart-card">
-        <h2 class="chart-title">Audit Logs</h2>
+        <h2 class="chart-title">Technician Ticket Overview</h2>
         <div class="chart-container">
             <canvas id="auditLogsChart"></canvas>
         </div>
@@ -115,18 +118,19 @@
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['In Progress', 'Overdue', 'Other'],
+                    labels: ['In Progress', 'Overdue', 'TotalAssigned'],
                     datasets: [{
                         label: 'Ticket Overview',
                         data: [
                             @Model.InProgressTickets,
                             @Model.OverdueTickets,
+                            @Model.TotalAssignedTickets,
                             Math.max(0, @Model.TotalAssignedTickets - @Model.InProgressTickets - @Model.OverdueTickets)
                         ],
                         backgroundColor: [
-                            '#3b82f6', // blue
+                            '#fef9c3', // yellow
                             '#ef4444', // red
-                            '#9ca3af'  // gray
+                            '#2563eb'  // blue
                         ],
                         borderColor: '#ffffff',
                         borderWidth: 2
