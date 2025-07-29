@@ -40,6 +40,11 @@ namespace QontrolSystem.Controllers
             var technicianCount = _context.Users
                 .Include(u => u.Role)
                 .Count(u => u.Role.RoleName == "Technician");
+
+            var managerCount = _context.Users
+                .Include(u => u.Role)
+                .Count(u => u.Role.RoleName == "IT Manager");
+
             var departmentCount = _context.Departments.Count();
 
             var activeUsers = _context.Users.Count(u => u.IsActive);
@@ -48,6 +53,7 @@ namespace QontrolSystem.Controllers
             ViewBag.PendingUserCount = _context.Users.Count(u => !u.IsApproved && !u.IsRejected);
             ViewBag.UserCount = userCount;
             ViewBag.TechnicianCount = technicianCount;
+            ViewBag.ManagerCount = managerCount;
             ViewBag.DepartmentCount = departmentCount;
             ViewBag.ActiveUsers = activeUsers;
             ViewBag.InactiveUsers = inactiveUsers;
