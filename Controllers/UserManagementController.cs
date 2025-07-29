@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
+using QontrolSystem.Enums;
 using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.ViewModels;
 
@@ -131,7 +132,7 @@ namespace QontrolSystem.Controllers
             });
         }
 
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id, string returnUrl = null)
         {
             if (!IsAdmin()) return RedirectToAction("AccessDenied", "Account");
             if (id == null) return NotFound();
@@ -143,11 +144,15 @@ namespace QontrolSystem.Controllers
             ViewBag.Departments = _context.Departments.ToList();
             ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
 
+
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("ApprovedTechnicians"); 
+           
+
             return View(user);
         }
 
         [HttpPost]
-        public IActionResult Edit(User updatedUser, string? NewPassword)
+        public IActionResult Edit(User updatedUser, string? NewPassword, string returnUrl = null)
         {
             var user = _context.Users.Find(updatedUser.UserID);
             if (user == null) return NotFound();
@@ -164,10 +169,10 @@ namespace QontrolSystem.Controllers
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
 
             _context.SaveChanges();
-           
+
             return RedirectToAction("Index", "Loading", new
             {
-                returnUrl = Url.Action("UserManagementIndex", "UserManagement"),
+                returnUrl = returnUrl ?? Url.Action("UserManagementIndex", "UserManagement"),
                 duration = 3000,
                 message = "Saving changes",
             });
@@ -208,6 +213,84 @@ namespace QontrolSystem.Controllers
                 message = "Deleting user",
             });
         }
+
+        [HttpGet("Technicians")]
+        public IActionResult Technicians()
+        {
+            if (!IsAdmin()) return RedirectToAction("AccessDenied", "Account");
+
+            var approvedTechnicians = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.Department)
+                .Include(u => u.ITSubDepartment)
+                .Where(u =>
+                    u.Role.RoleName == "Technician" &&
+                    u.IsApproved &&
+                    !u.IsDeleted)
+                .ToList();
+
+            return View(approvedTechnicians);
+        }
+
+        public IActionResult ApprovedTechnicians(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
+        {
+            int pageSize = 10;
+
+            var query = _context.Users
+                .Include(u => u.ITSubDepartment)
+                .Where(u => u.Role.RoleName == "Technician" && u.IsApproved)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(u =>
+                    u.FirstName.Contains(searchString) ||
+                    u.LastName.Contains(searchString) ||
+                    u.Email.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(departmentFilter))
+            {
+                query = query.Where(u => u.ITSubDepartment.SubDepartmentName == departmentFilter);
+            }
+
+            if (!string.IsNullOrEmpty(isActiveFilter))
+            {
+                bool isActive = isActiveFilter == "true";
+                query = query.Where(u => u.IsActive == isActive);
+            }
+
+            int totalUsers = query.Count();
+            var users = query
+                .OrderBy(u => u.FirstName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var viewModel = new UserList
+            {
+                Users = users,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalUsers / (double)pageSize),
+                SearchString = searchString,
+                DepartmentFilter = departmentFilter,
+                IsActiveFilter = isActiveFilter
+            };
+
+            ViewBag.SearchString = searchString;
+            ViewBag.DepartmentFilter = departmentFilter;
+            ViewBag.IsActiveFilter = isActiveFilter;
+            ViewBag.Departments = _context.ITSubDepartments
+                                         .Select(d => d.SubDepartmentName)
+                                         .Distinct()
+                                         .ToList();
+
+
+            return View(viewModel);
+        }
+
+
+
     }
 }
 

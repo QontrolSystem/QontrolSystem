@@ -1,0 +1,61 @@
+﻿@using QontrolSystem.Models
+@model List<QontrolSystem.Models.Accounts.User>
+
+   
+@{
+    ViewBag.Title = "Technicians";
+}
+
+@section Styles{
+    <link href="~/css/user-management/user-management.css" rel="stylesheet" />
+}
+
+<div>
+    <a href="@Url.Action("Dashboard", "Admin")" class="back-btn"> Back </a>
+</div>
+
+
+
+<h2 class="page-title">Technicians</h2>
+
+<div class="users-table-container">
+    @if (Model != null && Model.Any())
+    {
+        <table class="users-table">
+            <thead class="table-header">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Sub-Department</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>@user.Email</td>
+                        <td>@user.ITSubDepartment?.SubDepartmentName</td>
+                        <td>@(user.IsActive ? "Active" : "Inactive")</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a class="action-btn btn-details" href="@Url.Action("Details", new { id = user.UserID })">Details</a>
+                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID, returnUrl = Context.Request.Path + Context.Request.QueryString })">Edit</a>
+                                <a class="action-btn btn-delete" href="@Url.Action("Delete", new { id = user.UserID })">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <h3>No approved technicians found.</h3>
+            <p>No approved technicians match your search criteria or none exist in the system.</p>
+        </div>
+    }
+</div>

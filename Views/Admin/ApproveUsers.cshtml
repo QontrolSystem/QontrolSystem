@@ -1,8 +1,15 @@
 ﻿@using QontrolSystem.Models.Accounts
 @model List<User>
 
-<link href="~/css/admin/approve-users.css" rel="stylesheet" />
+@section Styles{
+    <link href="~/css/admin/approve-users.css" rel="stylesheet" />
+}
 
+
+
+<div>
+    <a href="@Url.Action("Dashboard", "Admin")" class="back-btn"> Back </a>
+</div>
 <div class="pending-users-container">
     <div class="header-section">
         <h2 class="page-title">Pending User Approvals</h2>

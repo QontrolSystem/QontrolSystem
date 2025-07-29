@@ -7,6 +7,10 @@
 }
 
 
+<div>
+    <a href="@Url.Action("Dashboard", "Admin")" class="back-btn"> Back </a>
+</div>
+
 <div class="user-management-container">
     <h2 class="page-title">System Users</h2>
 
@@ -82,7 +86,7 @@
                                 <a class="action-btn btn-details" href="@Url.Action("Details", new { id = user.UserID })">
                                     Details
                                 </a>
-                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID })">
+                                <a class="action-btn btn-edit" href="@Url.Action("Edit", new { id = user.UserID, returnUrl = Context.Request.Path + Context.Request.QueryString })">
                                     Edit
                                 </a>
                                 <a class="action-btn btn-delete" href="@Url.Action("Delete", new { id = user.UserID })">
