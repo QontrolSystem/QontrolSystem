@@ -22,7 +22,7 @@ namespace QontrolSystem.Controllers
             return View();
         }
 
-        private List<Ticket> GetTeamTickets(int managerId)
+        private List<Tickets> GetTeamTickets(int managerId)
         {
             var manager = _context.Users
                 .Include(u => u.ITSubDepartment)
@@ -30,7 +30,7 @@ namespace QontrolSystem.Controllers
 
             if (manager == null || manager.ITSubDepartmentID == null)
             {
-                return new List<Ticket>(); // No tickets for managers without a sub-department
+                return new List<Tickets>(); // No tickets for managers without a sub-department
             }
 
             var managerSubDeptName = manager.ITSubDepartment.SubDepartmentName;

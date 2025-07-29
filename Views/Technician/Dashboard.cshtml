@@ -6,26 +6,36 @@
 
     <!-- Summary Cards -->
     <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-title">Total Assigned Tickets</div>
-            <div class="stat-number">@Model.AssignedTickets.Count()</div>
-        </div>
+        <a href="/Technician/AssignedTickets" class="stat-card-link">
+            <div class="stat-card">
+                <div class="stat-title">Total Assigned Tickets</div>
+                <div class="stat-number">@Model.AssignedTickets.Count()</div>
+            </div>
+        </a>
+
+        <a href="/Technician/OpenTickets" class="stat-card-link">
         <div class="stat-card">
             <div class="stat-title">Open Tickets</div>
             <div class="stat-number">@Model.OpenTickets</div>
         </div>
-        <div class="stat-card">
+        </a>
+        <a href="/Technician/InProgressTickets" class="stat-card-link">        <div class="stat-card">
             <div class="stat-title">In Progress</div>
             <div class="stat-number">@Model.InProgressTickets</div>
         </div>
+        </a>
+        <a href="/Technician/ResolvedTickets" class="stat-card-link">
         <div class="stat-card">
             <div class="stat-title">Resolved</div>
             <div class="stat-number">@Model.ResolvedTickets</div>
         </div>
+        </a> 
+        <a href="/Technician/OverdueTickets" class="stat-card-link">
         <div class="stat-card">
             <div class="stat-title">Overdue</div>
             <div class="stat-number">@Model.OverdueTickets</div>
         </div>
+        </a> 
     </div>
 
     <!-- Ticket Table -->

@@ -1,4 +1,4 @@
-﻿@model QontrolSystem.Models.Ticket.Ticket
+﻿@model QontrolSystem.Models.Ticket.Tickets
 
 @{
     ViewData["Title"] = "Ticket Details";
@@ -48,4 +48,4 @@
 </div>
 
 <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
-<a asp-action="UpdateStatus" asp-route-id="@Model.TicketID" class="btn btn-primary">Update Status</a>
+<a asp-action="UpdateStatus" asp-route-id="@Model.TicketID" class="btn btn-primary">Update</a>

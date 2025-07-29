@@ -11,7 +11,7 @@
     font-weight: 700;
     margin-bottom: 2rem;
     text-align: center;
-    border-bottom: 3px solid #10b981;
+    border-bottom: 3px solid #3b82f6;
     padding-bottom: 1rem;
 }
 
@@ -23,7 +23,7 @@
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #10b981, #047857);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
     padding: 2rem;
     border-radius: 12px;
@@ -42,12 +42,12 @@
         height: 100px;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
-        transform: translate(30px, -30px);
+        transform: translate(30px, -30px)
     }
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
     }
 
 .stat-title {
@@ -72,12 +72,40 @@
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
     }
 
+/* No assigned tickets message */
+.no-tickets-message {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f8fbff, #e3f2fd);
+    border-radius: 15px;
+    border: 2px dashed #bbdefb;
+    margin: 20px 0;
+}
+
+.no-tickets-icon {
+    color: #2a5298;
+    margin-bottom: 20px;
+}
+
+.no-tickets-message h3 {
+    color: #1e3c72;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.no-tickets-message p {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
 /* Table Styling */
 .chart-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #047857;
+    color: #1e3c72;
 }
 
 .chart-card {
@@ -99,9 +127,13 @@
     }
 
     .table th {
-        background-color: #ecfdf5;
-        color: #065f46;
+        padding: 20px 15px;
+        text-align: left;
         font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: none;
     }
 
     .table tr:hover {

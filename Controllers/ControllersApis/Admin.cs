@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
-using QontrolSystem.Models;
+using QontrolSystem.Models.Accounts;
 using QontrolSystem.Models.DataTransferObjectApi;
 
 namespace QontrolSystem.Controllers.ControllersApis

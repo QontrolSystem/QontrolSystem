@@ -34,24 +34,24 @@ namespace QontrolSystem.Controllers
             // If no tickets found, create dummy tickets for testing
             if (!tickets.Any())
             {
-                tickets = new List<Models.Ticket.Ticket>
+                tickets = new List<Models.Ticket.Tickets>
         {
-            new Models.Ticket.Ticket
+            new Models.Ticket.Tickets
             {
                 TicketID = 1,
                 Title = "Dummy Ticket 1",
-                TicketStatus = new Models.Ticket.TicketStatus { StatusName = "Open" },
-                TicketCategory = new Models.Ticket.TicketCategory { CategoryName = "Software" },
-                TicketUrgency = new Models.Ticket.TicketUrgency { UrgencyLevel = "High" },
+                TicketStatus = new Models.Ticket.Status { StatusName = "Open" },
+                TicketCategory = new Models.Ticket.Category { CategoryName = "Software" },
+                TicketUrgency = new Models.Ticket.Urgency { UrgencyLevel = "High" },
                 CreatedAt = now.AddDays(-2),
             },
-            new Models.Ticket.Ticket
+            new Models.Ticket.Tickets
             {
                 TicketID = 2,
                 Title = "Dummy Ticket 2",
-                TicketStatus = new Models.Ticket.TicketStatus { StatusName = "In Progress" },
-                TicketCategory = new Models.Ticket.TicketCategory { CategoryName = "Hardware" },
-                TicketUrgency = new Models.Ticket.TicketUrgency { UrgencyLevel = "Medium" },
+                TicketStatus = new Models.Ticket.Status { StatusName = "In Progress" },
+                TicketCategory = new Models.Ticket.Category { CategoryName = "Hardware" },
+                TicketUrgency = new Models.Ticket.Urgency { UrgencyLevel = "Medium" },
                 CreatedAt = now.AddDays(-5),
             }
         };
@@ -106,7 +106,7 @@ namespace QontrolSystem.Controllers
         }
 
 
-        public IActionResult AssignedTickets()
+        public IActionResult AssignedTickets(string? status, bool? overdue)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
             var now = DateTime.Now;
@@ -118,7 +118,12 @@ namespace QontrolSystem.Controllers
                 .Where(t => t.AssignedTo == userId)
                 .ToList();
 
-            var ticketList = tickets.Select(t => new TechnicianTicket
+            var filtered = tickets.Where(t =>
+                (string.IsNullOrEmpty(status) || t.TicketStatus.StatusName == status) &&
+                (!overdue.HasValue || (now - t.CreatedAt).Days > 7)
+            ).ToList();
+
+            var ticketList = filtered.Select(t => new TechnicianTicket
             {
                 TicketID = t.TicketID,
                 Title = t.Title,
@@ -131,7 +136,7 @@ namespace QontrolSystem.Controllers
 
             return View(ticketList);
         }
-
+       
 
         // GET: Show form to update ticket status
 
