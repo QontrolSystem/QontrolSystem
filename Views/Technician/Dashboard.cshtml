@@ -74,6 +74,16 @@
         </table>
     </div>
 
+
+
+    <!-- Audit Logs Section -->
+    <div class="chart-card">
+        <h2 class="chart-title">Audit Logs</h2>
+        <div class="chart-container">
+            <canvas id="auditLogsChart"></canvas>
+        </div>
+    </div>
+
     <!-- Quick Links Section -->
     <div class="quick-links-section">
         <h2 class="section-title">Quick Links</h2>
@@ -93,3 +103,76 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('auditLogsChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['In Progress', 'Overdue', 'Other'],
+                    datasets: [{
+                        label: 'Ticket Overview',
+                        data: [
+                            @Model.InProgressTickets,
+                            @Model.OverdueTickets,
+                            Math.max(0, @Model.TotalAssignedTickets - @Model.InProgressTickets - @Model.OverdueTickets)
+                        ],
+                        backgroundColor: [
+                            '#3b82f6', // blue
+                            '#ef4444', // red
+                            '#9ca3af'  // gray
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#374151',
+                                font: {
+                                    size: 14,
+                                    weight: '600'
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Technician Ticket Overview',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            color: '#2563eb'
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0,0,0,0.7)',
+                            titleFont: { weight: 'bold' },
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    let value = context.parsed || 0;
+                                    return `${label}: ${value} tickets`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+   
