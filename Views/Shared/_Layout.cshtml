@@ -13,6 +13,7 @@
     <title>QontrolSystem</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/css/home/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base/variables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/QontrolSystem.styles.css" asp-append-version="true" />
@@ -59,7 +60,9 @@
                                     <a class="nav-link" asp-controller="Account" asp-action="Profile">My Profile</a>
                                 </li>
                             }
-                            @if (userRole == "Technician")
+
+                            @if(userRole == "Technician")
+
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Technician" asp-action="Dashboard">Dashboard</a>
@@ -70,7 +73,9 @@
 
                             }
 
-                            @if (userRole == "IT Manager")
+
+                            @if(userRole == "IT Manager")
+
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Manager" asp-action="Dashboard">Dashboard</a>
@@ -78,8 +83,8 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Manager" asp-action="AllTickets">All Tickets</a>
                                 </li>
-                                <li class="nav-it
-        em">
+                                <li class="nav-item">
+
                                     <a class="nav-link" asp-controller="Manager" asp-action="ManageTechnicians">Manage Team</a>
                                 </li>
                                 <li class="nav-item">
