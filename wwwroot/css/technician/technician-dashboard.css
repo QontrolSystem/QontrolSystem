@@ -23,13 +23,12 @@
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
     position: relative;
+    border-radius: 12px;
+    padding: 1.5rem;
+    color: #111827;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
 }
 
@@ -47,9 +46,9 @@
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
     }
-
+/* Stat title and number styling */
 .stat-title {
     font-size: 1.125rem;
     font-weight: 600;
@@ -63,17 +62,33 @@
     line-height: 1;
 }
 
-/* Overdue (Red) */
-.stat-card.overdue {
-    background: linear-gradient(135deg, #ef4444, #b91c1c);
+/*  Summary Cards */
+.stat-assignedtickets {
+    background-color: #2563eb;
+    border-top: 4px solid #2563eb;
+}
+    .stat-open {
+    background-color: #fef9c3;
+    border-top: 4px solid #facc15; 
 }
 
-    .stat-card.overdue:hover {
-        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-    }
+.stat-inprogress {
+    background-color: #fef9c3;
+    border-top: 4px solid #facc15; 
+}
 
-/* No assigned tickets message */
-.no-tickets-message {
+.stat-resolved {
+    background-color: #d1fae5; 
+    border-top: 4px solid #10b981; 
+}
+
+.stat-overdue {
+    background-color: #fee2e2;
+    border-top: 4px solid #ef4444;
+}
+
+    /* No assigned tickets message */
+    .no-tickets-message {
     text-align: center;
     padding: 60px 20px;
     background: linear-gradient(135deg, #f8fbff, #e3f2fd);
