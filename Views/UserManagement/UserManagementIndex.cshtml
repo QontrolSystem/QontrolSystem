@@ -1,15 +1,16 @@
 @model QontrolSystem.Models.ViewModels.UserList
 @{
     ViewBag.Title = "User Management";
+    Layout = "~/Views/Shared/_DashboardGrid.cshtml";
 }
 @section Styles {
     <link href="~/css/user-management/user-management.css" rel="stylesheet" />
 }
 
-
+@* 
 <div>
     <a href="@Url.Action("Dashboard", "Admin")" class="back-btn"> Back </a>
-</div>
+</div> *@
 
 <div class="user-management-container">
     <h2 class="page-title">System Users</h2>
