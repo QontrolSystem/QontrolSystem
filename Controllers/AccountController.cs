@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
@@ -214,6 +215,7 @@ namespace QontrolSystem.Controllers
             HttpContext.Session.SetString("Role", user.Role.RoleName);
             HttpContext.Session.SetString("UserName", user.FirstName);
 
+
             TempData["SuccessMessage"] = "You have successfully logged in!";
            
 
@@ -245,6 +247,8 @@ namespace QontrolSystem.Controllers
             });
         }
 
+        [HttpGet("Account/Profile")]
+      
         public IActionResult Profile()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -254,6 +258,34 @@ namespace QontrolSystem.Controllers
             if (user == null) return NotFound();
 
             return View(user);
+        }
+
+        [HttpPost("Account/Profile")]
+        public IActionResult Profile(User updatedUser, string? NewPassword)
+        {            
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null) return RedirectToAction("Login");
+
+            var user = _context.Users.Find(userId);
+            if (user == null) return NotFound();
+
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.Email = updatedUser.Email;
+            user.PhoneNumber = updatedUser.PhoneNumber;
+
+            if (!string.IsNullOrEmpty(NewPassword))
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
+
+            _context.SaveChanges();
+
+            TempData["Success"] = "Profile updated successfully!";
+            return RedirectToAction("Index", "Loading", new
+            {
+                returnUrl = Url.Action("Profile", "Account"),
+                duration = 3000,
+                message = "Loading your profile",
+            });
         }
 
         [HttpPost]
@@ -300,33 +332,7 @@ namespace QontrolSystem.Controllers
 
 
 
-        [HttpPost]
-        public IActionResult Profile(User updatedUser, string? NewPassword)
-        {
-            var userId = HttpContext.Session.GetInt32("UserID");
-            if (userId == null) return RedirectToAction("Login");
-
-            var user = _context.Users.Find(userId);
-            if (user == null) return NotFound();
-
-            user.FirstName = updatedUser.FirstName;
-            user.LastName = updatedUser.LastName;
-            user.Email = updatedUser.Email;
-            user.PhoneNumber = updatedUser.PhoneNumber;
-
-            if (!string.IsNullOrEmpty(NewPassword))
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(NewPassword);
-
-            _context.SaveChanges();
-
-            TempData["Success"] = "Profile updated successfully!";
-            return RedirectToAction("Index", "Loading", new
-            {
-                returnUrl = Url.Action("Profile", "Account"),
-                duration = 3000,
-                message = "Loading your profile",
-            });
-        }
+       
 
         private string HashPassword(string password)
         {

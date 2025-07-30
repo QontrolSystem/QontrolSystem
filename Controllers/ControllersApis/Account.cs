@@ -138,7 +138,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
         [HttpGet]
-        [Route("profile")]
+        [Route("api/profile")]
         [Authorize(Roles = "Employee")]
         public IActionResult GetProfile()
         {
@@ -166,7 +166,7 @@ namespace QontrolSystem.Controllers.ControllersApis
 
 
         [HttpPost]
-        [Route("profile")]
+        [Route("api/profile")]
         [Authorize(Roles = "Employee")]
         public IActionResult Profile([FromBody] UpdateUserProfile updatedUser, string? NewPassword)
         {
