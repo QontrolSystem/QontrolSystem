@@ -289,6 +289,7 @@ namespace QontrolSystem.Controllers
                 message = "Deleting ticket"
             });
         }
+
     }
 }
 
