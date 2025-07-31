@@ -26,7 +26,7 @@
         public bool IsRejected { get; set; } = false;
 
         public int? ITSubDepartmentID { get; set; }
-        public ITSubDepartment ITSubDepartment { get; set; }
+        public ITSubDepartment? ITSubDepartment { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
