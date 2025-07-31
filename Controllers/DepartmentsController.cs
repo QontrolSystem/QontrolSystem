@@ -41,13 +41,52 @@ namespace QontrolSystem.Controllers
 
         public IActionResult Create() => View();
 
+        
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create(Department department)
         {
-            if (!ModelState.IsValid) return View(department);
-            _context.Departments.Add(department);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("ModelState is NOT valid. Errors:");
+
+                foreach (var state in ModelState)
+                {
+                    var key = state.Key;
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Field: {key} — Error: {error.ErrorMessage}");
+                    }
+                }
+
+                return View(department);
+            }
+
+            else
+            {
+                bool departmentExists = _context.Departments
+     .Any(d => d.DepartmentName.Trim().ToLower() == department.DepartmentName.Trim().ToLower());
+
+
+                if (departmentExists)
+                {
+                    // Add a validation error to ModelState so it displays in the view
+                    ModelState.AddModelError("DepartmentName", "A department with this name already exists.");
+                    return View(department);
+                }
+
+                // ✅ Add new department
+                _context.Departments.Add(department);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Loading", new
+                {
+                    returnUrl = Url.Action("Index", "Departments"),
+                    duration = 3000,
+                    message = "Creating department",
+                });
+            }
+                
         }
 
         public IActionResult Edit(int id)

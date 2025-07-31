@@ -35,12 +35,7 @@ namespace QontrolSystem.Data
                 new Role { RoleID = 4, RoleName = "System Administrator" }
             );
 
-            modelBuilder.Entity<Department>().HasData(
-                new Department { DepartmentID = 1, DepartmentName = "HR" },
-                new Department { DepartmentID = 2, DepartmentName = "Finance" },
-                new Department { DepartmentID = 3, DepartmentName = "Operations" },
-                new Department { DepartmentID = 4, DepartmentName = "IT Department" }
-            );
+           
 
 
             modelBuilder.Entity<ITSubDepartment>().HasData(

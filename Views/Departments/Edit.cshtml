@@ -1,8 +1,7 @@
-﻿@using QontrolSystem.Models.Accounts
-@model Department
+﻿@model QontrolSystem.Models.Accounts.Department
 
 @{
-    ViewData["Title"] = "Create Department";
+    ViewData["Title"] = "Edit Department";
 }
 
 @section Styles {
@@ -10,18 +9,22 @@
 }
 
 <div>
-    <a href="@Url.Action("Index", "Departments")" class="back-btn"> Back </a>
+    <a href="@Url.Action("Index", "Departments")" class="back-btn">Back</a>
 </div>
 
 <div class="department-container">
     <div class="page-header">
-        <h2 class="page-title">Create New Department</h2>
+        <h2 class="page-title">Edit Department</h2>
         <div class="header-divider"></div>
     </div>
 
     <div class="form-container">
-        <form asp-action="Create" method="post" class="department-form">
+        <form asp-action="Edit" method="post">
             @Html.AntiForgeryToken()
+
+            <!-- Hidden field for Department ID -->
+            <input type="hidden" asp-for="DepartmentID" />
+
             <div class="form-group">
                 <label asp-for="DepartmentName" class="form-label">Department Name</label>
                 <input asp-for="DepartmentName" class="form-input" placeholder="Enter department name" />
@@ -31,11 +34,11 @@
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">
                     <i class="icon-save"></i>
-                    Create Department
+                    Save Changes
                 </button>
                 <a asp-action="Index" class="btn btn-secondary">
                     <i class="icon-back"></i>
-                    Back to List
+                    Cancel
                 </a>
             </div>
         </form>
