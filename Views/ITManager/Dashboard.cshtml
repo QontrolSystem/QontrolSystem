@@ -1,4 +1,71 @@
-﻿@{
+﻿@model List<QontrolSystem.Models.Ticket.Tickets>
+
+@{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No tickets found for your department.</div>
+}
+else
+{
+    <table class="table table-sm table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Urgency</th>
+                <th>Created By</th>
+                <th>Assigned To</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr>
+                    <td>@t.TicketID</td>
+                    <td>@t.Title</td>
+                    <td>@t.TicketCategory?.CategoryName</td>
+                    @* <td>@t.TicketStatus?.Name</td> <!-- adjust if property is different --> *@
+                    @* <td>@t.TicketUrgency?.Name</td> *@
+                    <td>
+                        @if (t.Creator != null)
+                        {
+                            @($"{t.Creator.FirstName} {t.Creator.LastName}")
+                        }
+                    </td>
+                    <td>
+                        @if (t.Assignee != null)
+                        {
+                            @($"{t.Assignee.FirstName} {t.Assignee.LastName}")
+                        }
+                        else
+                        {
+                            <span class="text-muted">Unassigned</span>
+                        }
+                    </td>
+                    <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
+                        @if (t.Assignee == null)
+                        {
+                            <a asp-action="Assign" asp-route-id="@t.TicketID" class="btn btn-sm btn-success">Assign</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Reassign" asp-route-id="@t.TicketID" class="btn btn-sm btn-warning">Reassign</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
