@@ -57,8 +57,8 @@ namespace QontrolSystem.Controllers
         }
 
 
-        [Route("ITManager/ManageTechnicians")]
-        public IActionResult ManageTechnicians()
+        [Route("ITManager/_AssignTicketPopup")]
+        public IActionResult _AssignTicketPopup(int ticketId)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
@@ -92,8 +92,113 @@ namespace QontrolSystem.Controllers
                     CreatedAt = u.CreatedAt
                 })
                 .ToList();
+     
 
-            return View(teamUsers);
+            return PartialView("_AssignTicketPopup");
         }
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> AssignPopup(int ticketId)
+        {
+            var managerId = HttpContext.Session.GetInt32("UserID");
+            if (managerId == null)
+                return RedirectToAction("Login", "Account");
+
+            var manager = await _context.Users
+                .Include(u => u.ITSubDepartment)
+                .FirstOrDefaultAsync(u => u.UserID == managerId.Value);
+
+            if (manager == null || manager.ITSubDepartmentID == null)
+                return Forbid();
+
+            var ticket = await _context.Tickets
+                .Include(t => t.TicketCategory)
+                .Include(t => t.Assignee)
+                .FirstOrDefaultAsync(t => t.TicketID == ticketId);
+
+            if (ticket == null)
+                return NotFound();
+
+            if (ticket.TicketCategory == null || ticket.TicketCategory.SubDepartmentID != manager.ITSubDepartmentID)
+                return Forbid();
+
+            var teamUsers = await _context.Users
+                .Include(u => u.ITSubDepartment)
+                .Where(u => u.ITSubDepartmentID == manager.ITSubDepartmentID)
+                .OrderBy(u => u.FirstName)
+                .Select(u => new ManageTechnicians
+                {
+                    UserID = u.UserID,
+                    FullName = u.FirstName + " " + u.LastName,
+                    Email = u.Email,
+                    Team = u.ITSubDepartment != null ? u.ITSubDepartment.SubDepartmentName : "Unassigned",
+                    IsActive = u.IsActive,
+                    IsApproved = u.IsApproved,
+                    CreatedAt = u.CreatedAt
+                })
+                .ToListAsync();
+
+            var vm = new AssignTicket
+            {
+                TicketID = ticket.TicketID,
+                CurrentAssigneeId = ticket.AssignedTo,
+                AssignmentDate = DateTime.Today, // or map from some existing field if applicable
+                TeamUsers = teamUsers
+            };
+
+            return PartialView("_AssignTicketPopup", vm);
+        }
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignTicket(AssignTicketInput input)
+        {
+            var managerId = HttpContext.Session.GetInt32("UserID");
+            if (managerId == null)
+                return RedirectToAction("Login", "Account");
+
+            var manager = await _context.Users
+                .Include(u => u.ITSubDepartment)
+                .FirstOrDefaultAsync(u => u.UserID == managerId.Value);
+
+            if (manager == null || manager.ITSubDepartmentID == null)
+                return Forbid();
+
+            var ticket = await _context.Tickets
+                .Include(t => t.TicketCategory)
+                .FirstOrDefaultAsync(t => t.TicketID == input.TicketID);
+
+            if (ticket == null)
+                return NotFound();
+
+            if (ticket.TicketCategory == null || ticket.TicketCategory.SubDepartmentID != manager.ITSubDepartmentID)
+                return Forbid();
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserID == input.UserID);
+            if (user == null || user.ITSubDepartmentID != manager.ITSubDepartmentID)
+            {
+                TempData["Error"] = "Selected user is not valid for assignment.";
+                return RedirectToAction("Dashboard");
+            }
+
+            // Assign
+            ticket.AssignedTo = user.UserID;
+            // Optionally store the assignment date somewhere. If you want a dedicated field, consider adding one like ScheduledDate.
+            // Example: ticket.UpdatedAt = input.AssignmentDate; // only if that fits your semantics
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = $"Ticket #{ticket.TicketID} assigned to {user.FirstName} {user.LastName} for {input.AssignmentDate:yyyy-MM-dd}";
+
+            return RedirectToAction("Dashboard");
+        }
+
     }
 }
+
