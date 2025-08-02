@@ -1,0 +1,130 @@
+﻿@model QontrolSystem.Models.ViewModels.AssignTicket
+
+<style>
+    /* Simple custom modal styling */
+    .custom-modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .custom-modal {
+        background: #fff;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 1000px;
+        max-height: 90%;
+        overflow: auto;
+        padding: 1rem 1.25rem;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .custom-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .custom-close-btn {
+        background: transparent;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+    }
+
+    .highlight-current {
+        background: #fff3cd;
+    }
+</style>
+
+<div id="assignTicketModalWrapper" class="custom-modal-backdrop">
+    <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="assignTicketModalLabel">
+        <div class="custom-modal-header">
+            <h2 id="assignTicketModalLabel">Assign Ticket #@Model.TicketID</h2>
+            <button class="custom-close-btn" onclick="closeAssignTicketModal()">✕</button>
+        </div>
+
+        <form asp-action="AssignTicket" method="post" id="assignTicketForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="TicketID" value="@Model.TicketID" />
+
+            <div style="margin-bottom:1rem;">
+                <label for="assignmentDate">Assignment Date:</label>
+                <input type="date" id="assignmentDate" name="AssignmentDate"
+                       value="@(Model.AssignmentDate?.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString("yyyy-MM-dd"))" required />
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse;" border="1">
+                    <thead style="background:#333; color:#fff;">
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Team</th>
+                            <th>Active</th>
+                            <th>Assign</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.TeamUsers)
+                        {
+                            var isCurrent = user.UserID == Model.CurrentAssigneeId;
+                            <tr class="@(isCurrent ? "highlight-current" : "")">
+                                <td>@user.FullName</td>
+                                <td>@user.Email</td>
+                                <td>@user.Team</td>
+                                <td>
+                                    @if (user.IsActive)
+                                    {
+                                        <span style="color:green;">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:gray;">No</span>
+                                    }
+                                </td>
+                                <td>
+                                    <button type="submit" name="UserID" value="@user.UserID" style="padding:4px 8px; cursor:pointer;">
+                                        Assign
+                                    </button>
+                                    @if (isCurrent)
+                                    {
+                                        <span style="margin-left:6px; font-size:0.9em; color:#555;">(Current)</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </form>
+
+        <div style="margin-top:1rem; text-align:right;">
+            <button onclick="closeAssignTicketModal()" style="padding:6px 12px; cursor:pointer;">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function closeAssignTicketModal() {
+        const wrapper = document.getElementById('assignTicketModalWrapper');
+        if (wrapper) wrapper.remove();
+    }
+
+    // Optional: intercept form submit to disable assign buttons to avoid double-submit
+    document.getElementById('assignTicketForm')?.addEventListener('submit', function (e) {
+        // simple disable of submit buttons
+        const buttons = this.querySelectorAll('button[type="submit"]');
+        buttons.forEach(b => b.disabled = true);
+    });
+</script>
