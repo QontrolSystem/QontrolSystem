@@ -3,9 +3,12 @@
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
+    // <script src="~/js/ticketassignmentpopup.js"></script>
 }
 
 <h2>@ViewBag.Title</h2>
+
+@* <partial name="ManageTechnicians" /> *@
 
 @if (Model == null || !Model.Any())
 {
@@ -57,11 +60,11 @@ else
                         <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
                         @if (t.Assignee == null)
                         {
-                            <a asp-action="Assign" asp-route-id="@t.TicketID" class="btn btn-sm btn-success">Assign</a>
+                            <a asp-action="ManageTechnicians" asp-controller="ITManager" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#teamUsersModal">Assign</a>
                         }
                         else
                         {
-                            <a asp-action="Reassign" asp-route-id="@t.TicketID" class="btn btn-sm btn-warning">Reassign</a>
+                            <a  asp-action="Reassign" asp-route-id="@t.TicketID" class="btn btn-sm btn-warning">Reassign</a>
                         }
                     </td>
                 </tr>

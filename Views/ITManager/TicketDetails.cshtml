@@ -1,0 +1,62 @@
+﻿@model QontrolSystem.Models.Ticket.Tickets
+
+@{
+    Layout = "~/Views/Shared/_DashboardGrid.cshtml";
+    ViewBag.Title = "Ticket Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Ticket ID</dt>
+            <dd class="col-sm-9">@Model.TicketID</dd>
+
+            <dt class="col-sm-3">Title</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Category</dt>
+            <dd class="col-sm-9">@Model.TicketCategory?.CategoryName</dd>
+
+            @* <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">@Model.TicketStatus?</dd> *@
+
+            <dt class="col-sm-3">Urgency</dt>
+            <dd class="col-sm-9">@Model.TicketUrgency</dd>
+
+            <dt class="col-sm-3">Created By</dt>
+            <dd class="col-sm-9">
+                @if (Model.Creator != null)
+                {
+                    @($"{Model.Creator.FirstName} {Model.Creator.LastName}")
+                }
+            </dd>
+
+            <dt class="col-sm-3">Assigned To</dt>
+            <dd class="col-sm-9">
+                @if (Model.Assignee != null)
+                {
+                    @($"{Model.Assignee.FirstName} {Model.Assignee.LastName}")
+                }
+                else
+                {
+                    <span class="text-muted">Unassigned</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Created At</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            @* Add any other fields like comments, history, attachments, etc. *@
+        </dl>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.TicketID" class="btn btn-primary">Edit</a>
+            <a asp-action="Index21" class="btn btn-secondary">Back to list</a>
+        </div>
+    </div>
+</div>
