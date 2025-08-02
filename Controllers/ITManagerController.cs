@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models.Ticket;
+using QontrolSystem.Models.ViewModels;
 
 namespace QontrolSystem.Controllers
 {
@@ -54,5 +56,44 @@ namespace QontrolSystem.Controllers
             return tickets;
         }
 
+
+        [Route("ITManager/ManageTechnicians")]
+        public IActionResult ManageTechnicians()
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var manager = _context.Users
+                .Include(u => u.ITSubDepartment)
+                .FirstOrDefault(u => u.UserID == userId.Value);
+
+            if (manager == null || manager.ITSubDepartmentID == null)
+            {
+                return Forbid();
+            }
+
+            var managerSubDeptId = manager.ITSubDepartmentID;
+
+            var teamUsers = _context.Users
+                .Include(u => u.ITSubDepartment)
+                .Where(u => u.ITSubDepartmentID == managerSubDeptId)
+                .OrderBy(u => u.FirstName)
+                .Select(u => new ManageTechnicians
+                {
+                    UserID = u.UserID,
+                    FullName = u.FirstName + " " + u.LastName,
+                    Email = u.Email,
+                    Team = u.ITSubDepartment != null ? u.ITSubDepartment.SubDepartmentName : "Unassigned",
+                    IsActive = u.IsActive,
+                    IsApproved = u.IsApproved,
+                    CreatedAt = u.CreatedAt
+                })
+                .ToList();
+
+            return View(teamUsers);
+        }
     }
 }
