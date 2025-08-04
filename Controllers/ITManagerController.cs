@@ -58,7 +58,7 @@ namespace QontrolSystem.Controllers
 
 
         [Route("ITManager/_AssignTicketPopup")]
-        public IActionResult _AssignTicketPopup(int ticketId)
+        public IActionResult _AssignTicketPopup(int ticketId , string search = null)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
             if (userId == null)
@@ -77,9 +77,23 @@ namespace QontrolSystem.Controllers
 
             var managerSubDeptId = manager.ITSubDepartmentID;
 
-            var teamUsers = _context.Users
+            var query = _context.Users
                 .Include(u => u.ITSubDepartment)
-                .Where(u => u.ITSubDepartmentID == managerSubDeptId)
+                .Where(u => u.ITSubDepartmentID == managerSubDeptId);
+           
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim().ToLower();
+                query = query.Where(u =>
+                    u.FirstName.ToLower().Contains(search) ||
+                    u.LastName.ToLower().Contains(search) ||
+                    u.Email.ToLower().Contains(search));
+
+            }
+
+            var teamUsers = query
+                //.Include(u => u.ITSubDepartment)
+                //.Where(u => u.ITSubDepartmentID == managerSubDeptId)
                 .OrderBy(u => u.FirstName)
                 .Select(u => new ManageTechnicians
                 {
@@ -199,6 +213,10 @@ namespace QontrolSystem.Controllers
             return RedirectToAction("Dashboard");
         }
 
+        //Search for users in the pop up:
+        // Search users by name rather filter the existing users..
+
+      
     }
 }
 
