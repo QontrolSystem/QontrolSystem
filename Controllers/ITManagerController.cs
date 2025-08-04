@@ -145,7 +145,7 @@ namespace QontrolSystem.Controllers
             {
                 TicketID = ticket.TicketID,
                 CurrentAssigneeId = ticket.AssignedTo,
-                AssignmentDate = DateTime.Today, // or map from some existing field if applicable
+                AssignmentDate = DateTime.Today, 
                 TeamUsers = teamUsers
             };
 

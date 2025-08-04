@@ -116,15 +116,11 @@
 </div>
 
 <script>
-    function closeAssignTicketModal() {
-        const wrapper = document.getElementById('assignTicketModalWrapper');
-        if (wrapper) wrapper.remove();
-    }
-
     // Optional: intercept form submit to disable assign buttons to avoid double-submit
     document.getElementById('assignTicketForm')?.addEventListener('submit', function (e) {
         // simple disable of submit buttons
         const buttons = this.querySelectorAll('button[type="submit"]');
         buttons.forEach(b => b.disabled = true);
     });
+
 </script>

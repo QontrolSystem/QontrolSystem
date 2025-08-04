@@ -3,12 +3,12 @@
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
-    // <script src="~/js/ticketassignmentpopup.js"></script>
+   
 }
 
 <h2>@ViewBag.Title</h2>
 
-@* <partial name="ManageTechnicians" /> *@
+
 
 @if (Model == null || !Model.Any())
 {
@@ -92,7 +92,7 @@ else
                     .then(html => {
                         const container = document.getElementById("assignPopupContainer");
                         container.innerHTML = html;
-                        // modal markup in partial auto-renders; no extra show logic needed
+                        setMinDateForAssignment(); // <-- Call this after rendering the popup
                     })
                     .catch(err => {
                         console.error(err);
@@ -102,5 +102,21 @@ else
         });
     });
 
+    function closeAssignTicketModal() {
+        const wrapper = document.getElementById('assignTicketModalWrapper');
+        if (wrapper) wrapper.remove();
+    }
+
+    function setMinDateForAssignment() {
+        var dateInput = document.getElementById('assignmentDate');
+        if (dateInput) {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            var minDate = yyyy + '-' + mm + '-' + dd;
+            dateInput.setAttribute('min', minDate);
+        }
+    }
 
 </script>
