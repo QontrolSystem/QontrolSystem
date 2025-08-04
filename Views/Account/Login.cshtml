@@ -52,10 +52,14 @@
                         <input type="email" name="email" asp-for="Email" class="form-input" placeholder="Enter your email" required />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group password-wrapper">
                         <label class="form-label" asp-for="Password">Password</label>
                         <input asp-for="Password" type="password" name="password" class="form-input" placeholder="Enter your password" required />
+                        <button type="button" class="toggle-password" aria-label="Show password"></button>
                     </div>
+
+
+
 
                     <button type="submit" class="login-button">Login</button>
 
@@ -77,3 +81,22 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const togglePassword = document.querySelector(".toggle-password");
+            const passwordInput = document.querySelector("input[name='password']");
+
+            togglePassword.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                togglePassword.classList.toggle("show", isPassword);
+
+                // Update aria-label for accessibility
+                togglePassword.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+            });
+        });
+    </script>
+}

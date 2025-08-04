@@ -264,12 +264,12 @@
 }
 
 .btn-details {
-    background: linear-gradient(135deg, var(--accent-teal), #2c7a7b);
+    background: var(--gradient-primary);
     color: var(--white);
 }
 
     .btn-details:hover {
-        background: linear-gradient(135deg, #2c7a7b, #285e61);
+        background: var(--gradient-primary-hover);
         transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(56, 178, 172, 0.4);
         color: var(--white);

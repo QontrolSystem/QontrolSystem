@@ -145,7 +145,7 @@ namespace QontrolSystem.Controllers
             ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
 
 
-            ViewBag.ReturnUrl = returnUrl ?? Url.Action("ApprovedTechnicians"); 
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Dashboard", "Admin"); 
            
 
             return View(user);
@@ -232,7 +232,7 @@ namespace QontrolSystem.Controllers
             return View(approvedTechnicians);
         }
 
-        public IActionResult ApprovedTechnicians(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
+        public IActionResult Technicians(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
         {
             int pageSize = 10;
 
@@ -309,7 +309,7 @@ namespace QontrolSystem.Controllers
             return View(approvedManagers);
         }
 
-        public IActionResult ApprovedManagers(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
+        public IActionResult Managers(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
         {
             int pageSize = 10;
 
