@@ -1,4 +1,122 @@
-﻿@{
+﻿@model List<QontrolSystem.Models.Ticket.Tickets>
+
+@{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
+   
 }
+
+<h2>@ViewBag.Title</h2>
+
+
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No tickets found for your department.</div>
+}
+else
+{
+    <table class="table table-sm table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Urgency</th>
+                <th>Created By</th>
+                <th>Assigned To</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model)
+            {
+                <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
+                    <td>@t.TicketID</td>
+                    <td>@t.Title</td>
+                    <td>@t.TicketCategory?.CategoryName</td>
+                    @* <td>@t.TicketStatus?.Name</td> <!-- adjust if property is different --> *@
+                    @* <td>@t.TicketUrgency?.Name</td> *@
+                    <td>
+                        @if (t.Creator != null)
+                        {
+                            @($"{t.Creator.FirstName} {t.Creator.LastName}")
+                        }
+                    </td>
+                    <td>
+                        @if (t.Assignee != null)
+                        {
+                            @($"{t.Assignee.FirstName} {t.Assignee.LastName}")
+                        }
+                        else
+                        {
+                            <span class="text-muted">Unassigned</span>
+                        }
+                    </td>
+                    <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
+                        @if (t.Assignee == null)
+                        {
+                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">                         
+                                Assign
+                            </button>
+                        }
+                        else
+                        {
+                            <a  asp-action="Reassign" asp-route-id="@t.TicketID" class="btn btn-sm btn-warning">Reassign</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div id="assignPopupContainer"></div>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".open-assign-popup").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const ticketId = this.getAttribute("data-ticket-id");
+                const url = '@Url.Action("AssignPopup", "ITManager")' + '?ticketId=' + encodeURIComponent(ticketId);
+
+                fetch(url, {
+                    credentials: "same-origin"
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to load assignment popup.");
+                        return response.text();
+                    })
+                    .then(html => {
+                        const container = document.getElementById("assignPopupContainer");
+                        container.innerHTML = html;
+                        setMinDateForAssignment(); // <-- Call this after rendering the popup
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Could not open assignment popup.");
+                    });
+            });
+        });
+    });
+
+    function closeAssignTicketModal() {
+        const wrapper = document.getElementById('assignTicketModalWrapper');
+        if (wrapper) wrapper.remove();
+    }
+
+    function setMinDateForAssignment() {
+        var dateInput = document.getElementById('assignmentDate');
+        if (dateInput) {
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            var minDate = yyyy + '-' + mm + '-' + dd;
+            dateInput.setAttribute('min', minDate);
+        }
+    }
+
+</script>
