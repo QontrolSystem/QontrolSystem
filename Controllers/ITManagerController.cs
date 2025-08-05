@@ -16,14 +16,15 @@ namespace QontrolSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Dashboard()
+        [HttpGet("ITManager/Dashboard")]
+        public async Task<IActionResult> Dashboard(string? urgency)
         {
             var managerId = HttpContext.Session.GetInt32("UserID");
             if (managerId == null)
                 return RedirectToAction("Login", "Account");
 
-            var assigned = await GetTeamTicketsAsync (managerId.Value, true);
-            var unassigned = await GetTeamTicketsAsync(managerId.Value,false);
+            var assigned = await GetTeamTicketsAsync (managerId.Value, true,urgency);
+            var unassigned = await GetTeamTicketsAsync(managerId.Value,false,urgency);
             //var tickets = await GetTeamTicketsAsync(managerId.Value);
 
             var viewModel = new TicketStatusManager
@@ -37,7 +38,7 @@ namespace QontrolSystem.Controllers
 
 
 
-        private async Task<List<Tickets>> GetTeamTicketsAsync(int managerId, bool assigned)
+        private async Task<List<Tickets>> GetTeamTicketsAsync(int managerId, bool assigned,string urgency = null)
         {
             var manager = await _context.Users
                 .Include(u => u.ITSubDepartment)
@@ -65,6 +66,10 @@ namespace QontrolSystem.Controllers
             else
             {
                 query = query.Where(t => t.AssignedTo == null);
+            }
+            if(!string.IsNullOrEmpty(urgency))
+            {
+                query = query.Where(t => t.TicketUrgency != null && t.TicketUrgency.UrgencyLevel == urgency);
             }
 
             return await query.OrderByDescending(t => t.CreatedAt).ToListAsync();
