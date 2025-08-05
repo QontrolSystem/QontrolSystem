@@ -1,4 +1,5 @@
-﻿@model QontrolSystem.Models.ViewModels.TicketStatusManager
+﻿@using Azure.Core
+@model QontrolSystem.Models.ViewModels.TicketStatusManager
 
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
@@ -11,13 +12,31 @@
 
 
 <h4>Unassigned Tickets</h4>
+
+
 @if (Model.UnassignedTickets == null || !Model.UnassignedTickets.Any())
 {
     <div class="alert alert-warning">No unassigned tickets found.</div>
 }
 else
+
 {
+    @* <form method="get" asp-action="Dashboard" class="mb-3">
+        <div class="form-group">
+            <label for="urgencyFilter">Filter by Urgency:</label>
+            <select id="urgencyFilter" name="urgency" class="form-control" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="Low" selected="@(Context.Request.Query["urgency"] == "Low" ? "selected" : "")">Low</option>
+                <option value="Medium" selected="@(Context.Request.Query["urgency"] == "Medium" ? "selected" : "")">Medium</option>
+                <option value="High" selected="@(Context.Request.Query["urgency"] == "High" ? "selected" : "")">High</option>
+                <option value="Critical" selected="@(Context.Request.Query["urgency"] == "Critical" ? "selected" : "")">Critical</option>
+            </select>
+        </div>
+    </form> *@
+
+
     <table class="table table-sm table-bordered">
+
         <thead class="table-light">
             <tr>
                 <th>#</th>
@@ -64,6 +83,28 @@ else
     }
     else
     {
+    <form method="get" asp-action="Dashboard" class="mb-3">
+        <div class="form-group">
+            <label for="urgencyFilter">Filter by Urgency:</label>
+            <select id="urgencyFilter" name="urgency" class="form-control" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="Low" selected="@(Context.Request.Query["urgency"] == "Low" ? "selected" : "")">Low</option>
+                <option value="Medium" selected="@(Context.Request.Query["urgency"] == "Medium" ? "selected" : "")">Medium</option>
+                <option value="High" selected="@(Context.Request.Query["urgency"] == "High" ? "selected" : "")">High</option>
+                <option value="Critical" selected="@(Context.Request.Query["urgency"] == "Critical" ? "selected" : "")">Critical</option>
+            </select>
+        </div>
+    </form>
+    <p>Total Assigned Tickets: @Model.AssignedTickets?.Count()</p>
+
+
+    @* @if (!string.IsNullOrEmpty(Context.Request.Query["urgency"]))
+    {
+        <p class="text-info">
+            Filtering by urgency: <strong>@Context.Request.Query["urgency"]</strong>
+        </p>
+    } *@
+
         <table class="table table-sm table-bordered">
             <thead class="table-light">
                 <tr>
