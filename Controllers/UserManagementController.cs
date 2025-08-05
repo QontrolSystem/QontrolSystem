@@ -155,6 +155,11 @@ namespace QontrolSystem.Controllers
         [HttpPost]
         public IActionResult Edit(User updatedUser, string? NewPassword, string returnUrl = null)
         {
+            if (updatedUser.DepartmentID != 4) 
+            {
+                updatedUser.ITSubDepartmentID = null; 
+            }
+
             var user = _context.Users.Find(updatedUser.UserID);
             if (user == null) return NotFound();
 
@@ -164,6 +169,7 @@ namespace QontrolSystem.Controllers
             user.PhoneNumber = updatedUser.PhoneNumber;
             user.RoleID = updatedUser.RoleID;
             user.DepartmentID = updatedUser.DepartmentID;
+            user.ITSubDepartmentID = updatedUser.ITSubDepartmentID;
             user.IsActive = updatedUser.IsActive;
 
             if (!string.IsNullOrEmpty(NewPassword))
