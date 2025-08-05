@@ -43,40 +43,6 @@
         </a>
     </div>
 
-    <!-- Ticket Table -->
-    <h2 class="chart-title">Your Assigned Tickets</h2>
-    <div class="chart-card">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Status</th>
-                    <th>Category</th>
-                    <th>Urgency</th>
-                    <th>Days Open</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var ticket in Model.AssignedTickets)
-                {
-                    <tr>
-                        <td>@ticket.Title</td>
-                        <td>@ticket.Status</td>
-                        <td>@ticket.Category</td>
-                        <td>@ticket.Urgency</td>
-                        <td>@ticket.DaysOpen</td>
-                        <td>@ticket.CreatedAt</td>
-                        <td>
-                            <a href="@Url.Action("TicketDetails", "Technician", new { id = ticket.TicketID })" class="btn btn-primary">Details</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
 
 
     <!-- Audit Logs Section -->
