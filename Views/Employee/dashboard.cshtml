@@ -1,0 +1,29 @@
+﻿@model QontrolSystem.Models.ViewModels.EmployeeDashboard
+
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Employee Dashboard</h1>
+    <hr class="dashboard-divider" />
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-title">Total Tickets Logged</div>
+            <div class="stat-number">@Model.TotalTicketsLogged</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Open Tickets</div>
+            <div class="stat-number">@Model.OpenTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">In Progress</div>
+            <div class="stat-number">@Model.InProgressTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Resolved</div>
+            <div class="stat-number">@Model.ResolvedTickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Closed</div>
+            <div class="stat-number">@Model.ClosedTickets</div>
+        </div>
+    </div>
+</div>
