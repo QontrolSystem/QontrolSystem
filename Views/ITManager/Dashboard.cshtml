@@ -66,7 +66,9 @@ else
                         }
                         else
                         {
-                            <a  asp-action="Reassign" asp-route-id="@t.TicketID" class="btn btn-sm btn-warning">Reassign</a>
+                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">
+                                Reassign 
+                            </button>
                         }
                     </td>
                 </tr>
@@ -75,29 +77,35 @@ else
     </table>
     <div id="assignPopupContainer"></div>
 }
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".open-assign-popup").forEach(btn => {
-            btn.addEventListener("click", function () {
+            btn.addEventListener("click", function (e) {
+                e.stopPropagation(); // you had this inline before
                 const ticketId = this.getAttribute("data-ticket-id");
                 const url = '@Url.Action("AssignPopup", "ITManager")' + '?ticketId=' + encodeURIComponent(ticketId);
 
                 fetch(url, {
                     credentials: "same-origin"
                 })
-                    .then(response => {
-                        if (!response.ok) throw new Error("Failed to load assignment popup.");
-                        return response.text();
-                    })
-                    .then(html => {
-                        const container = document.getElementById("assignPopupContainer");
-                        container.innerHTML = html;
-                        setMinDateForAssignment(); // <-- Call this after rendering the popup
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert("Could not open assignment popup.");
-                    });
+                .then(response => {
+                    if (!response.ok) throw new Error("Failed to load assignment popup.");
+                    return response.text();
+                })
+                .then(html => {
+                    const container = document.getElementById("assignPopupContainer");
+                    container.innerHTML = html;
+                    setMinDateForAssignment();
+                    if (typeof window.initAssignPopupSearch === "function") {
+                        window.initAssignPopupSearch();
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Could not open assignment popup.");
+                });
             });
         });
     });
@@ -108,15 +116,80 @@ else
     }
 
     function setMinDateForAssignment() {
-        var dateInput = document.getElementById('assignmentDate');
+        const dateInput = document.getElementById('assignmentDate');
         if (dateInput) {
-            var today = new Date();
-            var yyyy = today.getFullYear();
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var dd = String(today.getDate()).padStart(2, '0');
-            var minDate = yyyy + '-' + mm + '-' + dd;
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const minDate = `${yyyy}-${mm}-${dd}`;
             dateInput.setAttribute('min', minDate);
         }
     }
 
+         window.initAssignPopupSearch = function () {
+        // scope to the popup wrapper so we don't hit dashboard elements
+        const popup = document.getElementById("assignTicketModalWrapper") || document.getElementById("assignPopupContainer");
+        if (!popup) {
+            console.warn("[DEBUG] popup container not found for search scoping");
+            return;
+        }
+
+        const input = popup.querySelector("#searchBox");
+        const searchBtn = popup.querySelector("#searchBtn");
+        const clearBtn = popup.querySelector("#clearBtn");
+        const tableBody = popup.querySelector("table tbody");
+
+        console.log("[DEBUG] initAssignPopupSearch scoped:", { input, searchBtn, clearBtn, tableBody });
+
+        if (!input) {
+            console.error("[DEBUG] searchBox input not found in popup");
+            return;
+        }
+        if (!tableBody) {
+            console.error("[DEBUG] table tbody not found in popup");
+            return;
+        }
+
+        function filterRows(query) {
+            const q = (query || "").trim().toLowerCase();
+            const rows = tableBody.querySelectorAll("tr");
+            rows.forEach(row => {
+                const nameCell = row.cells[0]?.textContent.toLowerCase() || "";
+                const emailCell = row.cells[1]?.textContent.toLowerCase() || "";
+                const matches = nameCell.includes(q) || emailCell.includes(q);
+                row.style.display = q === "" || matches ? "" : "none";
+            });
+        }
+
+        if (searchBtn) {
+            searchBtn.onclick = function (e) {
+                e.preventDefault();
+                filterRows(input.value);
+            };
+        }
+
+        if (clearBtn) {
+            clearBtn.onclick = function (e) {
+                e.preventDefault();
+                input.value = "";
+                filterRows("");
+            };
+        }
+
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                filterRows(input.value);
+            }
+        });
+
+        if (input.value) {
+            filterRows(input.value);
+        }
+    };
+  
+
+
 </script>
+
