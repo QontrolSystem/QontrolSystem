@@ -1,35 +1,40 @@
-﻿@{
-    <link href="~/css/home/side-bar.css" rel="stylesheet" />
-    var userRole = Context.Session.GetString("Role");
-    var userName = Context.Session.GetString("UserName");
-}
+﻿@using QontrolSystem.Utils;  
+@using QontrolSystem.Enums;  
+@{  
+    <link href="~/css/home/side-bar.css" rel="stylesheet" />  
+    var userRoleString = Context.Session.GetString("Role");  
+    var userName = Context.Session.GetString("UserName"); 
+    var userRole = EnumHelper.GetValueFromDisplayName<UserRole>(userRoleString);
+}  
 
-@{
-    var time = DateTime.Now;
-    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-    var currentTime = DateTime.Now.ToString("HH:mm:ss");
+@{  
+    var time = DateTime.Now;  
+    var currentDate = DateTime.Now.ToString("yyyy-MM-dd");  
+    var currentTime = DateTime.Now.ToString("HH:mm:ss");  
+}  
 
-}
-
-<!-- Sidebar Container -->
-<aside class="sidebar" >
-    <div class="sidebar-header">
-        <h2>Qontrol</h2>
-    </div>
-    <ul class="sidebar-nav">
-        @if (userRole == "System Administrator")
-        {
-            <li><a asp-area="" area-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Reports" asp-action="Index">Ticket History</a></li>
-            <li><a asp-controller="Account" asp-action="Profile">My Profile</a></li>
-            <li><a>Time: @currentTime</a></li>
-            <li><a>Date: @currentDate</a></li>
+<!-- Sidebar Container -->  
+<aside class="sidebar">  
+    <div class="sidebar-header">  
+        <h2>Qontrol</h2>  
+    </div>  
+    <ul class="sidebar-nav">  
+        @if (userRole == UserRole.SystemAdministrator)
+        {  
+            <li><a asp-area="" area-controller="Home" asp-action="Index">Home</a></li>  
+            <li><a asp-controller="Reports" asp-action="Index">Ticket History</a></li>  
+            <li><a asp-controller="Account" asp-action="Profile">My Profile</a></li>  
+            <li><a>Time: @currentTime</a></li>  
+            <li><a>Date: @currentDate</a></li>  
             <li><a class="nav-link logout-button" asp-controller="Account" asp-action="Logout">Logout</a></li>
         }
-        //  asp-area="" asp-controller="Home" asp-action="Index"
-        @* <li><a asp-controller="Ticket" asp-action="Create">Create Ticket</a></li> *@
-        @* <li><a asp-controller="Ticket" asp-action="List">My Tickets</a></li> *@
-        @* <li><a asp-controller="Reports" asp-action="Index">Reports</a></li> *@
-        
-    </ul>
+        @if (userRole == UserRole.ITManager)
+        {
+            <li><a asp-area="" area-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-controller="Reports" asp-action="Index">Manage Agents</a></li>
+            <li><a asp-controller="Account" asp-action="Profile">Knowledge Base</a></li>
+            <li><a asp-controller="Account" asp-action="Profile">Settings</a></li>
+            <li><a class="nav-link logout-button" asp-controller="Account" asp-action="Logout">Logout</a></li>
+        }
+    </ul>  
 </aside>
