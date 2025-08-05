@@ -1,4 +1,4 @@
-﻿@model List<QontrolSystem.Models.Ticket.Tickets>
+﻿@model QontrolSystem.Models.ViewModels.TicketStatusManager
 
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
@@ -10,9 +10,10 @@
 
 
 
-@if (Model == null || !Model.Any())
+<h4>Unassigned Tickets</h4>
+@if (Model.UnassignedTickets == null || !Model.UnassignedTickets.Any())
 {
-    <div class="alert alert-info">No tickets found for your department.</div>
+    <div class="alert alert-warning">No unassigned tickets found.</div>
 }
 else
 {
@@ -31,52 +32,88 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var t in Model)
+            @foreach (var t in Model.UnassignedTickets)
             {
                 <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
                     <td>@t.TicketID</td>
                     <td>@t.Title</td>
                     <td>@t.TicketCategory?.CategoryName</td>
-                    @* <td>@t.TicketStatus?.Name</td> <!-- adjust if property is different --> *@
-                    @* <td>@t.TicketUrgency?.Name</td> *@
-                    <td>
-                        @if (t.Creator != null)
-                        {
-                            @($"{t.Creator.FirstName} {t.Creator.LastName}")
-                        }
-                    </td>
-                    <td>
-                        @if (t.Assignee != null)
-                        {
-                            @($"{t.Assignee.FirstName} {t.Assignee.LastName}")
-                        }
-                        else
-                        {
-                            <span class="text-muted">Unassigned</span>
-                        }
-                    </td>
+                    <td>@t.TicketStatus.StatusName</td>
+                    <td>@t.TicketUrgency.UrgencyLevel</td>
+                    <td>@($"{t.Creator?.FirstName} {t.Creator?.LastName}")</td>
+                    <td><span class="text-muted">Unassigned</span></td>
                     <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
-                        @if (t.Assignee == null)
-                        {
-                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">                         
-                                Assign
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">
-                                Reassign 
-                            </button>
-                        }
+                        <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">Assign</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <div id="assignPopupContainer"></div>
 }
+
+
+
+
+
+    <h4>Assigned Tickets</h4>
+    @if (Model.AssignedTickets == null || !Model.AssignedTickets.Any())
+    {
+        <div class="alert alert-info">No assigned tickets found.</div>
+    }
+    else
+    {
+        <table class="table table-sm table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Urgency</th>
+                    <th>Created By</th>
+                    <th>Assigned To</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.AssignedTickets)
+                {
+                    <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
+                        <td>@t.TicketID</td>
+                        <td>@t.Title</td>
+                        <td>@t.TicketCategory?.CategoryName</td>
+                        <td>@t.TicketStatus.StatusName</td>
+                        <td>@t.TicketUrgency.UrgencyLevel</td>
+                        <td>@($"{t.Creator?.FirstName} {t.Creator?.LastName}")</td>
+                        <td>@($"{t.Assignee?.FirstName} {t.Assignee?.LastName}")</td>
+                        <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
+                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">Reassign</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div id="assignPopupContainer"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
