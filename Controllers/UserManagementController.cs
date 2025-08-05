@@ -88,6 +88,7 @@ namespace QontrolSystem.Controllers
             var user = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Include(u => u.ITSubDepartment)
                 .Where(u => !u.IsDeleted)
                 .FirstOrDefault(u => u.UserID == id);
 

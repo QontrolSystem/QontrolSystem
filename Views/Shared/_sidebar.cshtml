@@ -19,7 +19,7 @@
     <ul class="sidebar-nav">
         @if (userRole == "System Administrator")
         {
-            <li><a asp-area="" area-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
             <li><a asp-controller="Reports" asp-action="Index">Ticket History</a></li>
             <li><a asp-controller="Account" asp-action="Profile">My Profile</a></li>
             <li><a>Time: @currentTime</a></li>

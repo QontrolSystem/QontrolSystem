@@ -41,6 +41,18 @@
                 </dd>
             </div>
 
+            @if (Model.ITSubDepartment != null &&
+                        !string.IsNullOrWhiteSpace(Model.ITSubDepartment.SubDepartmentName))
+            {
+                <div class="detail-row">
+                    <dt class="detail-label department">Sub-Department</dt>
+                    <dd class="detail-value">
+                        <span class="detail-value department">@Model.ITSubDepartment.SubDepartmentName</span>
+                    </dd>
+                </div>
+            }
+
+
             <div class="detail-row">
                 <dt class="detail-label active">Status</dt>
                 <dd class="detail-value">
