@@ -1,4 +1,4 @@
-﻿@using QontrolSystem.Utils;  
+@using QontrolSystem.Utils;  
 @using QontrolSystem.Enums;  
 @{  
     <link href="~/css/home/side-bar.css" rel="stylesheet" />  
@@ -34,7 +34,28 @@
             <li><a asp-controller="Reports" asp-action="Index">Manage Agents</a></li>
             <li><a asp-controller="Account" asp-action="Profile">Knowledge Base</a></li>
             <li><a asp-controller="Account" asp-action="Profile">Settings</a></li>
+            <li><a asp-controller="Admin" asp-action="Dashboard">Dashboard</a></li>
+      
+            <li><a asp-controller="Reports" asp-action="Index">Ticket History</a></li>
+            <li><a asp-controller="Account" asp-action="Profile">My Profile</a></li>
+            <li><a id="currentTime"></a></li>
+            <li><a>Date: @currentDate</a></l
             <li><a class="nav-link logout-button" asp-controller="Account" asp-action="Logout">Logout</a></li>
         }
     </ul>  
 </aside>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById("currentTime").textContent = `Time: ${hours}:${minutes}:${seconds}`;
+    }
+
+    // Run immediately
+    updateTime();
+    // Update every second
+    setInterval(updateTime, 1000);
+</script>

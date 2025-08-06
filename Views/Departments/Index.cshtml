@@ -3,9 +3,8 @@
 @{
     ViewData["Title"] = "Departments";
 }
-
 @section Styles {
-	<link href="~/css/departments/index.css" rel="stylesheet" />
+    <link href="~/css/departments/index.css" rel="stylesheet" />
 }
 
 <div>
@@ -20,32 +19,99 @@
     <a asp-action="Create" class="btn btn-success ml-3">+ Add Department</a>
 </form>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>User Count</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var dept in Model)
+@if (Model != null && Model.Any())
+{
+    <div class="mt-4">
+        <!-- Custom Tab Navigation -->
+        <ul class="custom-tabs" id="departmentTabs">
+            <li class="tab-item active" data-tab="overview-tab">Overview</li>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var dept = Model[i];
+                <li class="tab-item" data-tab="dept-@dept.DepartmentID">
+                    @dept.DepartmentName
+                    <span class="tab-badge">@(dept.Users?.Count ?? 0)</span>
+                </li>
+            }
+        </ul>
+
+        <!-- Overview Tab Panel -->
+        <div class="tab-panel active" id="overview-tab">
+            <h5>Departments Overview</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>User Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var dept in Model)
+                    {
+                        <tr>
+                            <td>@dept.DepartmentName</td>
+                            <td>@dept.Users?.Count</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-danger" onclick="return confirm('Delete this department?')">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Department Tabs Content -->
+        @for (int i = 0; i < Model.Count; i++)
         {
-            <tr>
-                <td>@dept.DepartmentName</td>
-                <td>@dept.Users?.Count</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-danger" onclick="return confirm('Delete this department?')">Delete</a>
-                </td>
-            </tr>
+            var dept = Model[i];
+            <div class="tab-panel" id="dept-@dept.DepartmentID">
+                <h5>@dept.DepartmentName Users</h5>
+
+                @if (dept.Users != null && dept.Users.Any())
+                {
+                    <div class="row">
+                        @foreach (var user in dept.Users)
+                        {
+                            <div class="col-md-6 col-lg-4">
+                                <div class="user-card">
+                                    <div class="user-info">
+                                        <div class="user-details">
+                                            <h6>@user.FirstName @user.LastName</h6>
+                                            <small>@user.Email</small><br>
+                                            <small> @user.Role.RoleName</small><br />
+                                            @if (!string.IsNullOrEmpty(user.PhoneNumber))
+                                            {
+                                                <small>📞 @user.PhoneNumber</small>
+                                            }
+                                        </div>
+                                        @* <div class="user-actions">
+                                            <a href="@Url.Action("Details", new { id = user.UserID })"
+                                               class="btn btn-sm btn-outline-primary">View</a>
+                                        </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-department">
+                        <i class="fas fa-users fa-3x mb-3" style="color: #dee2e6;"></i>
+                        <h6>No users in this department</h6>
+                        <p>This department doesn't have any users assigned yet.</p>
+                    </div>
+                }
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+}
 
 @if (ViewBag.TotalPages > 1)
 {
-    <nav>
+    <nav class="mt-4">
         <ul class="pagination">
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
@@ -55,4 +121,23 @@
             }
         </ul>
     </nav>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-item');
+            const panels = document.querySelectorAll('.tab-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+        });
+    </script>
 }
