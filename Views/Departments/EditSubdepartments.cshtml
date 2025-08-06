@@ -1,0 +1,37 @@
+﻿@using QontrolSystem.Models.Accounts
+@model ITSubDepartment
+@{
+    ViewData["Title"] = $"Edit Sub-Department - {ViewBag.DepartmentName}";
+}
+
+@section Styles {
+    <link href="~/css/departments/create.css" rel="stylesheet" />
+}
+
+<div>
+    <a href="@Url.Action("SubDepartments", "Departments", new { departmentId = ViewBag.DepartmentId })" class="back-btn"> ← Back to Sub-Departments </a>
+</div>
+
+<h2>Edit Sub-Department for @ViewBag.DepartmentName</h2>
+
+<form asp-action="EditSubDepartment" method="post" class="form-container">
+    <input type="hidden" asp-for="ITSubDepartmentID" />
+    <input type="hidden" asp-for="DepartmentID" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="SubDepartmentName" class="form-label">Sub-Department Name</label>
+        <input asp-for="SubDepartmentName" class="form-control" placeholder="Enter sub-department name" />
+        <span asp-validation-for="SubDepartmentName" class="text-danger"></span>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Update Sub-Department</button>
+        <a href="@Url.Action("SubDepartments", "Departments", new { departmentId = ViewBag.DepartmentId })" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"   />
+}

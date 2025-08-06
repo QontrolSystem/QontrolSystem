@@ -35,18 +35,6 @@ namespace QontrolSystem.Data
                 new Role { RoleID = 4, RoleName = "System Administrator" }
             );
 
-           
-
-
-            modelBuilder.Entity<ITSubDepartment>().HasData(
-                new ITSubDepartment { ITSubDepartmentID = 1, SubDepartmentName = "Software", DepartmentID = 4 },
-                new ITSubDepartment { ITSubDepartmentID = 2, SubDepartmentName = "Hardware", DepartmentID = 4 },
-                new ITSubDepartment { ITSubDepartmentID = 3, SubDepartmentName = "Network", DepartmentID = 4 },
-                new ITSubDepartment { ITSubDepartmentID = 4, SubDepartmentName = "Security", DepartmentID = 4 }
-            );
-
-
-
 
             modelBuilder.Entity<Status>().HasData(
      new Status { TicketStatusID = 1, StatusName = "Open" },

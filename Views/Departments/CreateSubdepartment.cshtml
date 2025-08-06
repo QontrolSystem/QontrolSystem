@@ -1,0 +1,26 @@
+﻿@model QontrolSystem.Models.Accounts.ITSubDepartmentCreateViewModel
+
+@{
+    ViewData["Title"] = $"Create Sub-Department - {ViewBag.DepartmentName}";
+}
+
+<form asp-action="CreateSubDepartment" method="post" class="form-container">
+    <input type="hidden" asp-for="DepartmentID" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="SubDepartmentName" class="form-label">Sub-Department Name</label>
+        <input asp-for="SubDepartmentName" class="form-control" placeholder="Enter sub-department name" />
+        <span asp-validation-for="SubDepartmentName" class="text-danger"></span>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">Create Sub-Department</button>
+        <a href="@Url.Action("SubDepartments", "Departments", new { departmentId = ViewBag.DepartmentId })" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

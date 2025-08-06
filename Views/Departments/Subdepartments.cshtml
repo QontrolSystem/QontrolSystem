@@ -1,0 +1,50 @@
+﻿@using QontrolSystem.Models.Accounts
+@model List<ITSubDepartment>
+@{
+    ViewData["Title"] = $"Sub-Departments - {ViewBag.DepartmentName}";
+}
+
+@section Styles {
+    <link href="~/css/departments/index.css" rel="stylesheet" />
+}
+
+<div>
+    <a href="@Url.Action("Index", "Departments")" class="back-btn"> ← Back to Departments </a>
+</div>
+
+<h2>Sub-Departments for @ViewBag.DepartmentName</h2>
+
+<div class="mb-3">
+    <a asp-action="CreateSubDepartment" asp-route-departmentId="@ViewBag.DepartmentId" class="btn btn-success">+ Add Sub-Department</a>
+</div>
+
+@if (Model.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Sub-Department Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subDept in Model)
+            {
+                <tr>
+                    <td>@subDept.SubDepartmentName</td>
+                    <td>
+                        <a asp-action="EditSubDepartment" asp-route-id="@subDept.ITSubDepartmentID" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="DeleteSubDepartment" asp-route-id="@subDept.ITSubDepartmentID" class="btn btn-sm btn-danger" onclick="return confirm('Delete this sub-department?')">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        <h4>No Sub-Departments</h4>
+        <p>This department doesn't have any sub-departments yet. Click the "Add Sub-Department" button above to create one.</p>
+    </div>
+}
