@@ -356,3 +356,14 @@ nav {
     ::-webkit-scrollbar-thumb:hover {
         background: #2563eb;
     }
+.btn-secondary {
+    background-color: #6b7280; /* Gray-500 */
+    color: white;
+}
+
+    .btn-secondary:hover {
+        background-color: #4b5563; /* Gray-600 */
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+

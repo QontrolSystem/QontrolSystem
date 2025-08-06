@@ -3,9 +3,8 @@
 @{
     ViewData["Title"] = "Departments";
 }
-
 @section Styles {
-	<link href="~/css/departments/index.css" rel="stylesheet" />
+    <link href="~/css/departments/index.css" rel="stylesheet" />
 }
 
 <div>
@@ -13,7 +12,6 @@
 </div>
 
 <h2>Departments</h2>
-
 
 <form asp-action="Index" method="get" class="form-inline mb-3">
     <input type="text" name="search" value="@ViewBag.Search" placeholder="Search..." class="form-control" />
@@ -38,6 +36,10 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@dept.DepartmentID" class="btn btn-sm btn-danger" onclick="return confirm('Delete this department?')">Delete</a>
+                    @if (dept.DepartmentName.ToLower().Contains("it") || dept.DepartmentName.ToLower().Contains("information"))
+                    {
+                        <a asp-action="SubDepartments" asp-route-departmentId="@dept.DepartmentID" class="btn btn-sm btn-secondary">Manage Sub-Depts</a>
+                    }
                 </td>
             </tr>
         }
