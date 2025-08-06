@@ -88,6 +88,7 @@ namespace QontrolSystem.Controllers
             var user = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.Department)
+                .Include(u => u.ITSubDepartment)
                 .Where(u => !u.IsDeleted)
                 .FirstOrDefault(u => u.UserID == id);
 
@@ -145,7 +146,7 @@ namespace QontrolSystem.Controllers
             ViewBag.ITSubDepartments = _context.ITSubDepartments.ToList();
 
 
-            ViewBag.ReturnUrl = returnUrl ?? Url.Action("ApprovedTechnicians"); 
+            ViewBag.ReturnUrl = returnUrl ?? Url.Action("Dashboard", "Admin"); 
            
 
             return View(user);
@@ -154,6 +155,11 @@ namespace QontrolSystem.Controllers
         [HttpPost]
         public IActionResult Edit(User updatedUser, string? NewPassword, string returnUrl = null)
         {
+            if (updatedUser.DepartmentID != 4) 
+            {
+                updatedUser.ITSubDepartmentID = null; 
+            }
+
             var user = _context.Users.Find(updatedUser.UserID);
             if (user == null) return NotFound();
 
@@ -163,6 +169,7 @@ namespace QontrolSystem.Controllers
             user.PhoneNumber = updatedUser.PhoneNumber;
             user.RoleID = updatedUser.RoleID;
             user.DepartmentID = updatedUser.DepartmentID;
+            user.ITSubDepartmentID = updatedUser.ITSubDepartmentID;
             user.IsActive = updatedUser.IsActive;
 
             if (!string.IsNullOrEmpty(NewPassword))
@@ -232,7 +239,7 @@ namespace QontrolSystem.Controllers
             return View(approvedTechnicians);
         }
 
-        public IActionResult ApprovedTechnicians(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
+        public IActionResult Technicians(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
         {
             int pageSize = 10;
 
@@ -309,7 +316,7 @@ namespace QontrolSystem.Controllers
             return View(approvedManagers);
         }
 
-        public IActionResult ApprovedManagers(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
+        public IActionResult Managers(string searchString, string departmentFilter, string isActiveFilter, int page = 1)
         {
             int pageSize = 10;
 

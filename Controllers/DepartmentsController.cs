@@ -16,8 +16,10 @@ namespace QontrolSystem.Controllers
 
         public IActionResult Index(string search, int page = 1, int pageSize = 10)
         {
+
             var query = _context.Departments
                 .Include(d => d.Users)
+                .ThenInclude(u => u.Role)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
