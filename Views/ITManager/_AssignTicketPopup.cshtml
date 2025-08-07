@@ -55,9 +55,10 @@
                                     }
                                 </td>
                                 <td>
-                                    <button type="submit" name="UserID" value="@user.UserID">
+                                    <button type="submit" class="assign-confirm-btn" name="UserID" value="@user.UserID" data-username="@user.FullName">
                                         Assign
                                     </button>
+
                                     @if (isCurrent)
                                     {
                                         <span style="margin-left:6px; font-size:0.9em; color:#555;">(Current)</span>
