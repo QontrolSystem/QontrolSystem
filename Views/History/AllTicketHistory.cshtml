@@ -1,0 +1,40 @@
+﻿@model List<QontrolSystem.Models.Ticket.History>
+@{
+    ViewData["Title"] = "Ticket History";
+    Layout = "~/Views/Shared/_DashboardGrid.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!Model.Any())
+{
+    <p>No ticket history records found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>History ID</th>
+                <th>Ticket ID</th>
+                <th>Action</th>
+                <th>Action Date</th>
+                <th>Performed By</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.HistoryID</td>
+                    <td>@item.TicketID</td>
+                    <td>@item.Action</td>
+                    <td>@item.ActionDate.ToString("g")</td>
+                    <td>@item.PerformedBy</td>
+                    <td>@item.Details</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -5,6 +5,7 @@ using QontrolSystem.Data;
 using QontrolSystem.Models.ViewModels;
 
 
+
 namespace QontrolSystem.Controllers
 {
     //[Authorize]
@@ -90,6 +91,18 @@ namespace QontrolSystem.Controllers
             _context.Tickets.Add(ticket);
             _context.SaveChanges();
 
+            var history = new History
+            {
+                TicketID = ticket.TicketID,
+                Action = "Ticket created",
+                PerformedBy = user.FirstName ?? "Unknown",  // Adjust depending on your user model
+                ActionDate = DateTime.Now,
+                Details = $"Ticket '{ticket.Title}' was created."
+            };
+
+            _context.TicketHistories.Add(history);
+            _context.SaveChanges();
+
             // Save attachments
             if (model.Attachments != null && model.Attachments.Any())
             {
@@ -118,6 +131,7 @@ namespace QontrolSystem.Controllers
                 }
                 _context.SaveChanges();
             }
+
 
             return RedirectToAction("Index", "Loading", new
             {
@@ -186,8 +200,14 @@ namespace QontrolSystem.Controllers
                 return NotFound();
             }
 
-            // Update description
-            existingTicket.Description = ticket.Description;
+            // Keep track of changes (simple example: description changed)
+            var changes = new List<string>();
+            if (existingTicket.Description != ticket.Description)
+            {
+                changes.Add($"Description changed.");
+                existingTicket.Description = ticket.Description;
+            }
+
             existingTicket.UpdatedAt = DateTime.Now;
 
             // Handle new attachments
@@ -216,9 +236,21 @@ namespace QontrolSystem.Controllers
 
                     _context.TicketAttachments.Add(attachment);
                 }
+                changes.Add($"{NewAttachments.Count} attachment(s) added.");
             }
 
             _context.SaveChanges();
+
+            // Log changes in history if any
+            if (changes.Any())
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserID == userId);
+                var performedBy = $"{user.FirstName} {user.LastName}".Trim();
+
+                var details = string.Join(" ", changes);
+                LogTicketHistory(existingTicket.TicketID, "Ticket updated", performedBy, details);
+            }
+
             return RedirectToAction("Index", "Loading", new
             {
                 returnUrl = Url.Action("Tickets", "Ticket"),
@@ -226,6 +258,7 @@ namespace QontrolSystem.Controllers
                 message = "Updating ticket",
             });
         }
+
 
         [HttpGet("Delete/{id}")]
         public IActionResult Delete(int id)
@@ -289,6 +322,21 @@ namespace QontrolSystem.Controllers
                 message = "Deleting ticket"
             });
         }
+
+        private void LogTicketHistory(int ticketId, string action, string performedBy, string? details = null)
+        {
+            var history = new History
+            {
+                TicketID = ticketId,
+                Action = action,
+                PerformedBy = performedBy,
+                ActionDate = DateTime.Now,
+                Details = details
+            };
+            _context.TicketHistories.Add(history);
+            _context.SaveChanges();
+        }
+
 
     }
 }
