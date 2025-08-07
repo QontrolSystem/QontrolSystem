@@ -1,50 +1,8 @@
 ﻿@model QontrolSystem.Models.ViewModels.AssignTicket
 
-<style>
-    /* Simple custom modal styling */
-    .custom-modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .custom-modal {
-        background: #fff;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 1000px;
-        max-height: 90%;
-        overflow: auto;
-        padding: 1rem 1.25rem;
-        position: relative;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .custom-modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.75rem;
-    }
-
-    .custom-close-btn {
-        background: transparent;
-        border: none;
-        font-size: 1.25rem;
-        cursor: pointer;
-    }
-
-    .highlight-current {
-        background: #fff3cd;
-    }
-</style>
+@{
+    <link href="~/css/manager-dashboard/assignticketpopup.css" rel="stylesheet" />
+}
 
 <div id="assignTicketModalWrapper" class="custom-modal-backdrop">
     <div class="custom-modal" role="dialog" aria-modal="true" aria-labelledby="assignTicketModalLabel">
@@ -57,21 +15,19 @@
             @Html.AntiForgeryToken()
             <input type="hidden" name="TicketID" value="@Model.TicketID" />
 
-            <div style="margin-bottom:1rem;">
+            <div class="search-date">
                 <label for="assignmentDate">Assignment Date:</label>
                 <input type="date" id="assignmentDate" name="AssignmentDate"
                        value="@(Model.AssignmentDate?.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString("yyyy-MM-dd"))" required />
+
+                <input type="text" id="searchBox" placeholder="Search by name or email" value="@Model.SearchTerm" class="form-control" autocomplete="off" />
+                <button type="button" id="searchBtn">Search</button>
+                <button type="button" id="clearBtn">Clear</button>
             </div>
-            
-
-            <input type="text" id="searchBox" placeholder="Search by name or email" value="@Model.SearchTerm" class="form-control" autocomplete="off" />
-            <button type="button" id="searchBtn">Search</button>
-            <button type="button" id="clearBtn">Clear</button>
-
 
             <div style="overflow-x:auto;">
-                <table style="width:100%; border-collapse:collapse;" border="1">
-                    <thead style="background:#333; color:#fff;">
+                <table>
+                    <thead>
                         <tr>
                             <th>User</th>
                             <th>Email</th>
@@ -99,7 +55,7 @@
                                     }
                                 </td>
                                 <td>
-                                    <button type="submit" name="UserID" value="@user.UserID" style="padding:4px 8px; cursor:pointer;">
+                                    <button type="submit" name="UserID" value="@user.UserID">
                                         Assign
                                     </button>
                                     @if (isCurrent)
@@ -112,12 +68,7 @@
                     </tbody>
                 </table>
             </div>
-
         </form>
-
-        <div style="margin-top:1rem; text-align:right;">
-            <button onclick="closeAssignTicketModal()" style="padding:6px 12px; cursor:pointer;">Close</button>
-        </div>
     </div>
 </div>
 
