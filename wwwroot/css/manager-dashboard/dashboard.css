@@ -10,9 +10,14 @@
     --status-pending: #ffc107;
     --status-closed: #6c757d;
 }
-.heading{
+.heading-container{
     text-align:center;
+    margin-bottom:20px;
 
+}
+h1 {
+    color: burlywood;
+    text-align:center;
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -138,7 +143,7 @@ body {
 }
 
 .table-header {
-    background-color: var(--primary-accent);
+    background-color: rgb(49,130,206);
     color: white;
     padding: 15px 20px;
     margin: 0;
