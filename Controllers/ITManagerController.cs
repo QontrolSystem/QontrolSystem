@@ -16,31 +16,40 @@ namespace QontrolSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Dashboard()
+        [HttpGet("ITManager/Dashboard")]
+        public async Task<IActionResult> Dashboard(string? urgency)
         {
             var managerId = HttpContext.Session.GetInt32("UserID");
             if (managerId == null)
                 return RedirectToAction("Login", "Account");
 
-            var tickets = await GetTeamTicketsAsync(managerId.Value);
+            var assigned = await GetTeamTicketsAsync (managerId.Value, true,urgency);
+            var unassigned = await GetTeamTicketsAsync(managerId.Value,false,urgency);
+            //var tickets = await GetTeamTicketsAsync(managerId.Value);
 
-            return View(tickets); 
+            var viewModel = new TicketStatusManager
+            {
+                AssignedTickets = assigned,
+                UnassignedTickets = unassigned
+            };  
+
+            return View(viewModel); 
         }
 
-        private async Task<List<Tickets>> GetTeamTicketsAsync(int managerId)
+
+
+        private async Task<List<Tickets>> GetTeamTicketsAsync(int managerId, bool assigned,string urgency = null)
         {
             var manager = await _context.Users
                 .Include(u => u.ITSubDepartment)
                 .FirstOrDefaultAsync(u => u.UserID == managerId);
 
             if (manager == null || manager.ITSubDepartmentID == null)
-            {
                 return new List<Tickets>();
-            }
 
             var subDeptId = manager.ITSubDepartmentID.Value;
 
-            var tickets = await _context.Tickets
+            var query = _context.Tickets
                 .AsNoTracking()
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketCategory)
@@ -48,13 +57,24 @@ namespace QontrolSystem.Controllers
                 .Include(t => t.Assignee)
                 .Include(t => t.Department)
                 .Include(t => t.TicketUrgency)
-                .Where(t => t.TicketCategory != null
-                            && t.TicketCategory.SubDepartmentID == subDeptId) 
-                .OrderByDescending(t => t.CreatedAt)
-                .ToListAsync();
+                .Where(t => t.TicketCategory != null && t.TicketCategory.SubDepartmentID == subDeptId);
 
-            return tickets;
+            if (assigned)
+            {
+                query = query.Where(t => t.AssignedTo != null);
+            }
+            else
+            {
+                query = query.Where(t => t.AssignedTo == null);
+            }
+            if(!string.IsNullOrEmpty(urgency))
+            {
+                query = query.Where(t => t.TicketUrgency != null && t.TicketUrgency.UrgencyLevel == urgency);
+            }
+
+            return await query.OrderByDescending(t => t.CreatedAt).ToListAsync();
         }
+
 
 
         [Route("ITManager/_AssignTicketPopup")]

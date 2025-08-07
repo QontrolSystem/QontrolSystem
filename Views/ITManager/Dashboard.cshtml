@@ -1,82 +1,196 @@
-﻿@model List<QontrolSystem.Models.Ticket.Tickets>
+﻿@using Azure.Core
+@model QontrolSystem.Models.ViewModels.TicketStatusManager
 
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
+    <link href="~/css/manager-dashboard/dashboard.css" rel="stylesheet" />
    
 }
 
-<h2>@ViewBag.Title</h2>
+<div className="heading-container">
+    <h2 className="heading">@ViewBag.Title</h2>
+</div>
 
 
 
-@if (Model == null || !Model.Any())
-{
-    <div class="alert alert-info">No tickets found for your department.</div>
-}
-else
-{
-    <table class="table table-sm table-bordered">
-        <thead class="table-light">
-            <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Urgency</th>
-                <th>Created By</th>
-                <th>Assigned To</th>
-                <th>Created At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model)
-            {
-                <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
-                    <td>@t.TicketID</td>
-                    <td>@t.Title</td>
-                    <td>@t.TicketCategory?.CategoryName</td>
-                    @* <td>@t.TicketStatus?.Name</td> <!-- adjust if property is different --> *@
-                    @* <td>@t.TicketUrgency?.Name</td> *@
-                    <td>
-                        @if (t.Creator != null)
-                        {
-                            @($"{t.Creator.FirstName} {t.Creator.LastName}")
-                        }
-                    </td>
-                    <td>
-                        @if (t.Assignee != null)
-                        {
-                            @($"{t.Assignee.FirstName} {t.Assignee.LastName}")
-                        }
-                        else
-                        {
-                            <span class="text-muted">Unassigned</span>
-                        }
-                    </td>
-                    <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>
-                        @if (t.Assignee == null)
-                        {
-                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">                         
-                                Assign
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">
-                                Reassign 
-                            </button>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <div id="assignPopupContainer"></div>
-}
+<div class="dashboard-container">
+
+    <section class="top-stats">
+        <div class="stat-box">
+            <div class="stat-label">Assigned Tickets</div>
+            <div class="stat-value">@Model.AssignedTickets?.Count()</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Total Agents</div>
+            <div class="stat-value">30</div>
+        </div>
+        <div class="stat-box clock-box">
+            <div class="stat-label">Current Time</div>
+            <div class="stat-value" id="current-time"></div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Unassigned Tickets</div>
+            <div class="stat-value">@Model.UnassignedTickets?.Count()</div>
+        </div>
+        <div class="stat-box calendar-box">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="current-date">@DateTime.Now.ToString("MMM dd")</div>
+        </div>
+    </section>
+
+    <section class="performance-metrics">
+        <div class="metric-container">
+            <div class="metric-item">
+                <div class="metric-label">Avg Response Time</div>
+                <div class="metric-value">2h 15m</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-label">Satisfaction Rate</div>
+                <div class="metric-value">92%</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-label">Resolved Tickets</div>
+                <div class="metric-value">80</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-label">Resolution Rate</div>
+                <div class="metric-value">85%</div>
+            </div>
+        </div>
+    </section>
+
+    <div className="table-section">
+
+        <div class="tables-container">
+            <!-- Unassigned Tickets Table -->
+            <div class="table-wrapper">
+                <h4 class="table-header">Unassigned Tickets</h4>
+                <div class="table-content">
+                     @if (Model.UnassignedTickets == null || !Model.UnassignedTickets.Any()) 
+                     {
+                        
+                        <div class="alert alert-warning">No unassigned tickets found.</div>
+                     } 
+                     else 
+                     { 
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Urgency</th>
+                                <th>Created By</th>
+                                <th>Assigned To</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in Model.UnassignedTickets)
+                                                     {
+                                   
+                             <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
+                                 <td>@t.TicketID</td> 
+                                 <td>@t.Title</td> 
+                                 <td>@t.TicketCategory?.CategoryName</td> 
+                                 <td>@t.TicketStatus.StatusName</td>
+                                 <td>@t.TicketUrgency.UrgencyLevel</td> 
+                                 <td>@($"{t.Creator?.FirstName} {t.Creator?.LastName}")</td> 
+                                 <td><span class="text-muted">Unassigned</span></td> 
+                                 <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td> 
+                                 <td> 
+                                     @* <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a>  *@
+                                     <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">Assign</button> 
+                                 </td> 
+                             </tr>
+                             } 
+                        </tbody>
+                    </table>
+                    } 
+                </div>
+            </div>
+
+                                <!-- Assigned Tickets Table -->
+            <div class="table-wrapper">
+                <h4 class="table-header">Assigned Tickets</h4>
+                 <div class="table-content">
+                  @if (Model.AssignedTickets == null || !Model.AssignedTickets.Any()) 
+                    {              
+                       <div class="alert alert-info">No assigned tickets found.</div> 
+                    } 
+                    else 
+                     { 
+                    <form method="get" asp-action="Dashboard" class="mb-3">
+                        <div class="filter-container">
+                            <label for="urgencyFilter">Filter by Urgency:</label>
+                            <select id="urgencyFilter" name="urgency" class="form-control" onchange="this.form.submit()">
+                                <option value="">All</option>
+                                <option value="Low" selected="@(Context.Request.Query["urgency"] == "Low" ? "selected" : "")">Low</option>
+                                <option value="Medium" selected="@(Context.Request.Query["urgency"] == "Medium" ? "selected" : "")">Medium</option>
+                                <option value="High" selected="@(Context.Request.Query["urgency"] == "High" ? "selected" : "")">High</option>
+                                <option value="Critical" selected="@(Context.Request.Query["urgency"] == "Critical" ? "selected" : "")">Critical</option>
+                            </select>
+                        </div>
+                    </form>
+
+
+                    <table class="table table-sm table-bordered">
+                          <thead class="table-light">
+                               <tr>
+                                 <th>#</th>
+                                 <th>Title</th>
+                                 <th>Category</th>
+                                 <th>Status</th>
+                                 <th>Urgency</th>
+                                 <th>Created By</th>
+                                 <th>Assigned To</th>
+                                 <th>Created At</th>
+                                 <th>Actions</th>
+                               </tr>
+                          </thead>
+                        <tbody>
+                           @foreach (var t in Model.AssignedTickets) 
+                           {
+                                            
+                            <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
+                             <td>@t.TicketID</td> 
+                                 <td>@t.Title</td>
+                             <td>@t.TicketCategory?.CategoryName</td> 
+                                <td>@t.TicketStatus.StatusName</td> 
+                                <td>@t.TicketUrgency.UrgencyLevel</td> 
+                                <td>@($"{t.Creator?.FirstName} {t.Creator?.LastName}")</td> 
+                              <td>@($"{t.Assignee?.FirstName} {t.Assignee?.LastName}")</td> 
+                               <td>@t.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td> 
+                                <td> 
+                                    @* <a asp-action="Details" asp-route-id="@t.TicketID" class="btn btn-sm btn-outline-primary">View</a> *@
+                                     <button type="button" class="open-assign-popup" data-ticket-id="@t.TicketID" onclick="event.stopPropagation()">Reassign</button> 
+                                 </td> 
+                               </tr> 
+                             } 
+                        </tbody>
+                    </table>
+                    } 
+                </div>
+            </div>
+        </div>
+
+       <div id="assignPopupContainer"></div> 
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
@@ -190,6 +304,16 @@ else
     };
   
 
+
+    //Dashboard Time//
+      function updateTime() {
+        const now = new Date();
+        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        document.getElementById('current-time').textContent = now.toLocaleTimeString([], timeOptions);
+    }
+
+    setInterval(updateTime, 1000); // updates every second
+    updateTime(); // initial call
 
 </script>
 
