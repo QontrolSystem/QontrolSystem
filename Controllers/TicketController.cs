@@ -145,7 +145,7 @@ namespace QontrolSystem.Controllers
             return View(ticket);
         }
 
-        
+        [HttpGet("Ticket/Edit/{id}")]
         public IActionResult Edit(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -167,7 +167,7 @@ namespace QontrolSystem.Controllers
         }
 
         // POST
-        [HttpPost]
+        [HttpPost("Ticket/Edit/{id}")]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Tickets ticket, List<IFormFile>? NewAttachments)
         {

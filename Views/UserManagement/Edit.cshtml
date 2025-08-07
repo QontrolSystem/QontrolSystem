@@ -79,31 +79,28 @@
 </div>
 
 <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const roleSelect = document.getElementById("roleSelect");
+         document.addEventListener("DOMContentLoaded", function () {
         const deptSelect = document.getElementById("departmentSelect");
         const subDeptDiv = document.getElementById("itSubDepartmentDiv");
         const subDeptSelect = document.querySelector('select[name="ITSubDepartmentID"]');
 
+       
+        const IT_DEPARTMENT_ID = 4;
+
         function toggleSubDepartments() {
-            const roleValue = parseInt(roleSelect.value);
             const deptValue = parseInt(deptSelect.value);
 
-            const isRoleValid = roleValue === 3 || roleValue === 4;
-            const isDeptValid = deptValue === 4;
-
-            if (isRoleValid && isDeptValid) {
+            if (deptValue === IT_DEPARTMENT_ID) {
                 subDeptDiv.style.display = "block";
             } else {
                 subDeptDiv.style.display = "none";
-                if (subDeptSelect) subDeptSelect.value = ""; // Reset selection
+                if (subDeptSelect) subDeptSelect.value = ""; 
             }
         }
 
-        roleSelect.addEventListener("change", toggleSubDepartments);
         deptSelect.addEventListener("change", toggleSubDepartments);
 
-        // Run on load in case of edit form
+        
         toggleSubDepartments();
     });
 </script>
