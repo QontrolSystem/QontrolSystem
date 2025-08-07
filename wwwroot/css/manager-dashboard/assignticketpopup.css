@@ -1,0 +1,337 @@
+﻿.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(30,30,60,0.7));
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-30px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.custom-modal {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    width: 95%;
+    max-width: 1100px;
+    max-height: 90%;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.6);
+    animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.custom-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+    .custom-modal-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        pointer-events: none;
+    }
+
+    .custom-modal-header h2 {
+        color: white;
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        letter-spacing: 0.5px;
+    }
+
+.custom-close-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+    .custom-close-btn:hover {
+        background: rgba(255,255,255,0.25);
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+.custom-modal form {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 100px);
+}
+
+.search-date {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-radius: 16px;
+    border: 1px solid rgba(203, 213, 225, 0.5);
+    flex-wrap: wrap;
+}
+
+    .search-date label {
+        font-weight: 600;
+        color: #475569;
+        white-space: nowrap;
+        font-size: 0.95rem;
+    }
+
+    .search-date input[type="date"],
+    .search-date input[type="text"] {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        min-width: 200px;
+    }
+
+        .search-date input[type="date"]:focus,
+        .search-date input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+    .search-date button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+#searchBtn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+    #searchBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+#clearBtn {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
+    box-shadow: 0 4px 14px rgba(107, 114, 128, 0.3);
+}
+
+    #clearBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+    }
+
+.custom-modal table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    background: white;
+}
+
+    .custom-modal table thead {
+        background: linear-gradient(135deg, #1f2937, #374151);
+    }
+
+        .custom-modal table thead th {
+            padding: 1rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+    .custom-modal table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+        .custom-modal table tbody tr:hover {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+    .custom-modal table tbody td {
+        padding: 1rem 1.25rem;
+        border: none;
+        vertical-align: middle;
+        font-size: 0.95rem;
+        color: #475569;
+    }
+
+    .custom-modal table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+.highlight-current {
+    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+    border-left: 4px solid #f59e0b;
+}
+
+    .highlight-current:hover {
+        background: linear-gradient(135deg, #fde68a, #fcd34d) !important;
+    }
+
+.custom-modal table tbody tr button[type="submit"] {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+}
+
+    .custom-modal table tbody tr button[type="submit"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+.highlight-current button[type="submit"] {
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3);
+}
+
+    .highlight-current button[type="submit"]:hover {
+        background: linear-gradient(135deg, #047857, #065f46);
+        box-shadow: 0 5px 15px rgba(5, 150, 105, 0.4);
+    }
+
+.highlight-current span {
+    color: #065f46 !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .custom-modal {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .search-date {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+        .search-date input[type="date"],
+        .search-date input[type="text"] {
+            min-width: auto;
+            width: 100%;
+        }
+
+    .custom-modal table {
+        font-size: 0.85rem;
+    }
+
+        .custom-modal table thead th,
+        .custom-modal table tbody td {
+            padding: 0.75rem 0.5rem;
+        }
+
+    .custom-modal-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .custom-modal form {
+        padding: 1.5rem;
+    }
+}
+
+/* Additional hover effects for active status */
+.custom-modal table tbody td span {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+    .custom-modal table tbody td span[style*="color:green"] {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        color: #047857 !important;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .custom-modal table tbody td span[style*="color:gray"] {
+        background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        color: #6b7280 !important;
+        border: 1px solid rgba(107, 114, 128, 0.2);
+    }
+
