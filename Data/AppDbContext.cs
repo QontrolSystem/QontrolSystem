@@ -24,7 +24,9 @@ namespace QontrolSystem.Data
 
         public DbSet<Urgency> TicketUrgencies { get; set; }
         public DbSet<Feedback> TicketFeedbacks { get; set; }
-        public DbSet<Attachment> TicketAttachments { get; set; } 
+        public DbSet<Attachment> TicketAttachments { get; set; }
+        
+        public DbSet<History> TicketHistories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
@@ -54,11 +56,11 @@ namespace QontrolSystem.Data
 
 
             modelBuilder.Entity<Status>().HasData(
-     new Status { TicketStatusID = 1, StatusName = "Open" },
-     new Status { TicketStatusID = 2, StatusName = "In Progress" },
-     new Status { TicketStatusID = 3, StatusName = "Resolved" },
-     new Status { TicketStatusID = 4, StatusName = "Closed" }
- );
+                 new Status { TicketStatusID = 1, StatusName = "Open" },
+                 new Status { TicketStatusID = 2, StatusName = "In Progress" },
+                 new Status { TicketStatusID = 3, StatusName = "Resolved" },
+                 new Status { TicketStatusID = 4, StatusName = "Closed" }
+             );
 
 
 
