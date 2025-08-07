@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>401 - Unauthorized Access</title>
+    <link rel="stylesheet" href="~/css/home/unauthorized.css" />
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="error-container">
+        <div class="lock-icon"></div>
+
+        <div class="error-code">401</div>
+
+        <h1 class="error-title">Unauthorized Access</h1>
+
+        <p class="error-message">
+            Sorry, you don't have permission to access this resource.
+            Please check your credentials or contact the administrator for assistance.
+        </p>
+
+        <div class="action-buttons">
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                ← Go Back
+            </a>
+            <a href="/" class="btn btn-primary">
+                🏠 Home Page
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive feedback
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockIcon = document.querySelector('.lock-icon');
+
+            lockIcon.addEventListener('click', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'pulse 2s infinite';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

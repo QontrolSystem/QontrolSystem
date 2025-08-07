@@ -17,11 +17,17 @@ namespace QontrolSystem.Controllers
         }
 
         [HttpGet("ITManager/Dashboard")]
+        
         public async Task<IActionResult> Dashboard(string? urgency)
         {
             var managerId = HttpContext.Session.GetInt32("UserID");
-            if (managerId == null)
-                return RedirectToAction("Login", "Account");
+            var role = HttpContext.Session.GetString("Role");
+
+            if (managerId == null || role != "IT Manager")
+            {
+
+                return RedirectToAction("UnauthorizedPage", "Shared");
+            }
 
             var assigned = await GetTeamTicketsAsync (managerId.Value, true,urgency);
             var unassigned = await GetTeamTicketsAsync(managerId.Value,false,urgency);
@@ -36,8 +42,12 @@ namespace QontrolSystem.Controllers
             return View(viewModel); 
         }
 
-
-
+        [HttpGet("Shared/UnauthorizedPage")]
+        public IActionResult UnauthorizedPage()
+        {
+            return View("UnauthorizedPage");
+        }
+    
         private async Task<List<Tickets>> GetTeamTicketsAsync(int managerId, bool assigned,string urgency = null)
         {
             var manager = await _context.Users
@@ -78,6 +88,7 @@ namespace QontrolSystem.Controllers
 
 
         [Route("ITManager/_AssignTicketPopup")]
+      
         public IActionResult _AssignTicketPopup(int ticketId , string search = null)
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -135,6 +146,7 @@ namespace QontrolSystem.Controllers
 
 
         [HttpGet]
+      
         public async Task<IActionResult> AssignPopup(int ticketId)
         {
             var managerId = HttpContext.Session.GetInt32("UserID");
@@ -186,7 +198,17 @@ namespace QontrolSystem.Controllers
             return PartialView("_AssignTicketPopup", vm);
         }
 
+        public IActionResult TicketDetails(int id)
+        {
+            var ticket = _context.Tickets.FirstOrDefault(t => t.TicketID == id);
 
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
 
 
         [HttpPost]
