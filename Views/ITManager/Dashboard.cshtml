@@ -224,6 +224,25 @@
         });
     });
 
+        document.addEventListener("DOMContentLoaded", function () {
+        // Delegation to handle dynamically loaded assign buttons
+        document.body.addEventListener("click", function (e) {
+            if (e.target && e.target.matches(".assign-confirm-btn")) {
+                e.preventDefault(); // Stop default submit for now
+
+                const form = e.target.closest("form"); // get parent form
+                const userName = e.target.getAttribute("data-username") || "the selected user";
+                const isConfirmed = confirm(`Are you sure you want to assign the ticket to ${userName}?`);
+
+                if (isConfirmed && form) {
+                    form.submit(); // Submit only if confirmed
+                }
+            }
+        });
+    });
+
+
+
     function closeAssignTicketModal() {
         const wrapper = document.getElementById('assignTicketModalWrapper');
         if (wrapper) wrapper.remove();
