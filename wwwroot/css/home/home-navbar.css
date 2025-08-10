@@ -28,13 +28,13 @@ header {
 }
 
 .navbar {
-    width:100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     min-height: var(--navbar-height);
     padding: 0;
-    background: var(--navbar-bg);
+    background: #3182ce;
     position: relative;
 }
 

@@ -31,9 +31,9 @@
 
 .dashboard-sidebar {
     grid-area: sidebar;
-    background-color: #169fb9;
+    background-color: #f8fafb;
     color: white;
-/*    padding: 1rem;*/
+    /*    padding: 1rem;*/
 }
 
 .sidebar-nav ul {
