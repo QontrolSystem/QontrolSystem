@@ -1,29 +1,104 @@
-﻿@model QontrolSystem.Models.ViewModels.EmployeeDashboard
+﻿@model QontrolSystem.Models.ViewModels.EmployeeDashboardViewModel
+@{
+    ViewData["Title"] = "Employee Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/employee/employee-dashboard.css" />
+}
+<div class="employee-dashboard-container">
 
-<div class="dashboard-container">
-    <h1 class="dashboard-title">Employee Dashboard</h1>
-    <hr class="dashboard-divider" />
+    <!-- Header -->
+    <div class="dashboard-title">
+        Employee Dashboard
+    </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-title">Total Tickets Logged</div>
-            <div class="stat-number">@Model.TotalTicketsLogged</div>
+    <!-- Summary Cards -->
+    <div class="employee-stats-grid">
+        <div class="employee-stat-card total">
+            <div class="stat-title">Total Tickets</div>
+            <div class="stat-number">@Model.TotalTickets</div>
         </div>
-        <div class="stat-card">
-            <div class="stat-title">Open Tickets</div>
-            <div class="stat-number">@Model.OpenTickets</div>
-        </div>
-        <div class="stat-card">
+        <div class="employee-stat-card in-progress">
             <div class="stat-title">In Progress</div>
             <div class="stat-number">@Model.InProgressTickets</div>
         </div>
-        <div class="stat-card">
+        <div class="employee-stat-card resolved">
             <div class="stat-title">Resolved</div>
             <div class="stat-number">@Model.ResolvedTickets</div>
         </div>
-        <div class="stat-card">
+        <div class="employee-stat-card closed">
             <div class="stat-title">Closed</div>
             <div class="stat-number">@Model.ClosedTickets</div>
         </div>
     </div>
+
+    <!-- Create Ticket CTA -->
+    <div class="card shadow mt-4">
+        <div class="card-body text-center">
+            <a asp-controller="Ticket" asp-action="Create" class="btn btn-primary">Create New Ticket</a>
+        </div>
+    </div>
+
+    <!-- Urgency Level Tips -->
+    <div class="urgency-tips">
+        <div class="urgency-note high-priority">
+            <h4>High Priority</h4>
+            <p class="urgency-desc">(Requires immediate attention)</p>
+            <ul>
+                <li>Stops you or your team from doing critical work.</li>
+                <li>Affects a key system used by many people.</li>
+                <li>Involves suspected security risks or potential data loss.</li>
+            </ul>
+        </div>
+
+        <div class="urgency-note medium-priority">
+            <h4>Medium Priority</h4>
+            <p class="urgency-desc">(Important, but not urgent)</p>
+            <ul>
+                <li>Affects work but a temporary workaround exists.</li>
+                <li>Impacts a limited number of people or functions.</li>
+                <li>Should be fixed soon but does not require same-day resolution.</li>
+            </ul>
+        </div>
+
+        <div class="urgency-note low-priority">
+            <h4>Low Priority</h4>
+            <p class="urgency-desc">(Routine request or minor issue)</p>
+            <ul>
+                <li>Minor or cosmetic issues with little impact.</li>
+                <li>Requests that can be scheduled during normal support windows.</li>
+                <li>Improvement suggestions or future-timed changes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="employee-content-grid">
+        <!-- Left: Chart -->
+        <div class="employee-chart-card">
+            <div class="chart-title">Ticket Status Overview</div>
+            <canvas id="ticketStatusChart"></canvas>
+        </div>
+
+        <!-- Right: Quick Links -->
+        <div class="employee-quick-links">
+            <div class="quick-links-title">Quick Actions</div>
+            <ul class="links-list">
+                <li class="link-item">
+                    <a href="/Employee/Dashboard" class="link-anchor"> 🗂️ My Tickets</a>
+                </li>
+                <li class="link-item">
+                    <a asp-controller="Ticket" asp-action="Create" class="link-anchor"> 🆕 Create New Ticket</a>
+                </li>
+                <li class="link-item">
+                    <a asp-controller="Account" asp-action="Profile" class="link-anchor"> 👤 My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/employee-dashboard.js"></script>
+}

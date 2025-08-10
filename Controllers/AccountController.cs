@@ -219,6 +219,7 @@ namespace QontrolSystem.Controllers
                 "System Administrator" => Url.Action("Dashboard", "Admin"),
                 "Technician" => Url.Action("Dashboard", "Technician"),
                 "IT Manager" => Url.Action("Dashboard", "Manager"),
+                "Employee" => Url.Action("Dashboard", "Employee"),
                 _ => Url.Action("Index", "Home")
             };
 

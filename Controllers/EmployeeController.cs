@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using QontrolSystem.Data;
 using QontrolSystem.Models.ViewModels;
+using QontrolSystem.Models.Ticket;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace QontrolSystem.Controllers
 {
@@ -15,6 +18,7 @@ namespace QontrolSystem.Controllers
             _context = context;
         }
 
+        // GET: /Employee/Dashboard
         public IActionResult Dashboard()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -24,21 +28,24 @@ namespace QontrolSystem.Controllers
             }
 
             var tickets = _context.Tickets
+                .Where(t => t.AssignedTo == userId)
                 .Include(t => t.TicketStatus)
-                .Where(t => t.CreatedBy == userId)
+                .OrderByDescending(t => t.CreatedAt)
                 .ToList();
 
-            var dashboard = new EmployeeDashboard
+            var viewModel = new EmployeeDashboardViewModel
             {
-                TotalTicketsLogged = tickets.Count,
-                OpenTickets = tickets.Count(t => t.TicketStatus.StatusName == "Open"),
+                TotalTickets = tickets.Count,
                 InProgressTickets = tickets.Count(t => t.TicketStatus.StatusName == "In Progress"),
                 ResolvedTickets = tickets.Count(t => t.TicketStatus.StatusName == "Resolved"),
-                ClosedTickets = tickets.Count(t => t.TicketStatus.StatusName == "Closed")
+                ClosedTickets = tickets.Count(t => t.TicketStatus.StatusName == "Closed"),
+                RecentTickets = tickets.Take(5).ToList(),
+                TicketStatusCounts = tickets
+                    .GroupBy(t => t.TicketStatus.StatusName)
+                    .ToDictionary(g => g.Key, g => g.Count())
             };
 
-            return View(dashboard); // View: Views/Employee/Dashboard.cshtml
+            return View(viewModel);
         }
     }
 }
-

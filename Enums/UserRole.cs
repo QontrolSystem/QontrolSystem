@@ -15,6 +15,6 @@ namespace QontrolSystem.Enums
         Agent, 
 
         [Display(Name = "Employee")]
-        Employee
+        Employee,
     }
 }
