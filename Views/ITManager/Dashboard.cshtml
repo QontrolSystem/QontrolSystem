@@ -5,18 +5,24 @@
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "IT Manager Dashboard";
     <link href="~/css/manager-dashboard/dashboard.css" rel="stylesheet" />
-   
+}
+@if (TempData["Success"] != null)
+{
+    <div class="success-message">
+        @TempData["Success"]
+    </div>
 }
 
 <div className="heading-container">
-    <h2 className="heading">@ViewBag.Title</h2>
+    <h1 className="heading">Welcome Back: Mananger</h1>
 </div>
 
-
-
 <div class="dashboard-container">
-
     <section class="top-stats">
+        <div class="stat-box">
+            <div class="stat-label">Unassigned Tickets</div>
+            <div class="stat-value">@Model.UnassignedTickets?.Count()</div>
+        </div>
         <div class="stat-box">
             <div class="stat-label">Assigned Tickets</div>
             <div class="stat-value">@Model.AssignedTickets?.Count()</div>
@@ -29,10 +35,7 @@
             <div class="stat-label">Current Time</div>
             <div class="stat-value" id="current-time"></div>
         </div>
-        <div class="stat-box">
-            <div class="stat-label">Unassigned Tickets</div>
-            <div class="stat-value">@Model.UnassignedTickets?.Count()</div>
-        </div>
+        
         <div class="stat-box calendar-box">
             <div class="stat-label">Today</div>
             <div class="stat-value" id="current-date">@DateTime.Now.ToString("MMM dd")</div>
@@ -155,7 +158,7 @@
                            @foreach (var t in Model.AssignedTickets) 
                            {
                                             
-                            <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails", new { id = t.TicketID })'">
+                            <tr style="cursor:pointer;" onclick="window.location='@Url.Action("TicketDetails","ITManager", new { id = t.TicketID })'">
                              <td>@t.TicketID</td> 
                                  <td>@t.Title</td>
                              <td>@t.TicketCategory?.CategoryName</td> 
@@ -224,22 +227,56 @@
         });
     });
 
-        document.addEventListener("DOMContentLoaded", function () {
-        // Delegation to handle dynamically loaded assign buttons
+  
+       document.addEventListener("DOMContentLoaded", function () {
+        let pendingForm = null;
+        let selectedUserID = null;
+
+        // Delegated event listener for Assign button clicks
         document.body.addEventListener("click", function (e) {
-            if (e.target && e.target.matches(".assign-confirm-btn")) {
-                e.preventDefault(); // Stop default submit for now
+            const target = e.target;
 
-                const form = e.target.closest("form"); // get parent form
-                const userName = e.target.getAttribute("data-username") || "the selected user";
-                const isConfirmed = confirm(`Are you sure you want to assign the ticket to ${userName}?`);
+            if (target && target.classList.contains("assign-confirm-btn")) {
+                e.preventDefault();
 
-                if (isConfirmed && form) {
-                    form.submit(); // Submit only if confirmed
+                const form = target.closest("form");
+                const userId = target.value;
+                const userName = target.getAttribute("data-username") || "this user";
+
+                // Save the form and selected user
+                pendingForm = form;
+                selectedUserID = userId;
+
+                // Show modal with message
+                document.getElementById("confirmationMessage").textContent =
+                    `Are you sure you want to assign the ticket to ${userName}?`;
+                document.getElementById("confirmationModal").style.display = "flex";
+            }
+
+            // OK button in modal
+            if (target && target.id === "confirmYesBtn") {
+                if (pendingForm && selectedUserID) {
+                    // Set hidden field value before submit
+                    const hiddenField = pendingForm.querySelector("#selectedUserID");
+                    if (hiddenField) hiddenField.value = selectedUserID;
+
+                    pendingForm.submit();
                 }
+
+                pendingForm = null;
+                selectedUserID = null;
+                document.getElementById("confirmationModal").style.display = "none";
+            }
+
+            // Cancel button
+            if (target && target.id === "confirmNoBtn") {
+                pendingForm = null;
+                selectedUserID = null;
+                document.getElementById("confirmationModal").style.display = "none";
             }
         });
     });
+
 
 
 

@@ -1,62 +1,111 @@
 ﻿@model QontrolSystem.Models.Ticket.Tickets
-
 @{
     Layout = "~/Views/Shared/_DashboardGrid.cshtml";
     ViewBag.Title = "Ticket Details";
+    <link href="~/css/manager-dashboard/ticketdetails.css" rel="stylesheet" />
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="ticket-details-container">
+    <div class="ticket-header">
+        <h2 class="ticket-title">@ViewBag.Title</h2>
+        <div class="ticket-id-badge">
+            <span class="badge-label">ID</span>
+            <span class="badge-value">@Model.TicketID</span>
+        </div>
+    </div>
 
-<div class="card mb-4">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">Ticket ID</dt>
-            <dd class="col-sm-9">@Model.TicketID</dd>
+    <div class="ticket-details-grid">
+        <!-- Main Info Section -->
+        <div class="detail-section main-info">
+            <h3 class="section-title">Basic Information</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <dt class="detail-label">Title</dt>
+                    <dd class="detail-value title-value">@Model.Title</dd>
+                </div>
+                <div class="detail-item">
+                    <dt class="detail-label">Category</dt>
+                    <dd class="detail-value category-value">
+                        <span class="category-badge">@Model.TicketCategory?.CategoryName</span>
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt class="detail-label">Urgency</dt>
+                    <dd class="detail-value urgency-value">
+                        <span class="urgency-badge urgency-@(Model.TicketUrgency?.UrgencyLevel?.ToLower())">
+                            @Model.TicketUrgency?.UrgencyLevel
+                        </span>
+                    </dd>
+                </div>
+            </div>
+        </div>
 
-            <dt class="col-sm-3">Title</dt>
-            <dd class="col-sm-9">@Model.Title</dd>
+        <!-- Assignment Section -->
+        <div class="detail-section assignment-info">
+            <h3 class="section-title">Assignment Details</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <dt class="detail-label">Created By</dt>
+                    <dd class="detail-value creator-value">
+                        @if (Model.Creator != null)
+                        {
+                            <div class="user-info">
+                                <div class="user-avatar">@Model.Creator.FirstName.First()@Model.Creator.LastName.First()</div>
+                                <span class="user-name">@($"{Model.Creator.FirstName} {Model.Creator.LastName}")</span>
+                            </div>
+                        }
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt class="detail-label">Assigned To</dt>
+                    <dd class="detail-value assignee-value">
+                        @if (Model.Assignee != null)
+                        {
+                            <div class="user-info">
+                                <div class="user-avatar assigned">@Model.Assignee.FirstName.First()@Model.Assignee.LastName.First()</div>
+                                <span class="user-name">@($"{Model.Assignee.FirstName} {Model.Assignee.LastName}")</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="unassigned-label">
+                                <i class="icon-unassigned"></i>
+                                Unassigned
+                            </span>
+                        }
+                    </dd>
+                </div>
+                <div class="detail-item">
+                    <dt class="detail-label">Created At</dt>
+                    <dd class="detail-value date-value">
+                        <time class="creation-date" datetime="@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")">
+                            @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                        </time>
+                    </dd>
+                </div>
+            </div>
+        </div>
 
-            <dt class="col-sm-3">Category</dt>
-            <dd class="col-sm-9">@Model.TicketCategory?.CategoryName</dd>
+        <!-- Description Section -->
+        <div class="detail-section description-section">
+            <h3 class="section-title">Description</h3>
+            <div class="description-content">
+                <p class="description-text">@Model.Description</p>
+            </div>
+        </div>
 
-            @* <dt class="col-sm-3">Status</dt>
-            <dd class="col-sm-9">@Model.TicketStatus?</dd> *@
-
-            <dt class="col-sm-3">Urgency</dt>
-            <dd class="col-sm-9">@Model.TicketUrgency</dd>
-
-            <dt class="col-sm-3">Created By</dt>
-            <dd class="col-sm-9">
-                @if (Model.Creator != null)
-                {
-                    @($"{Model.Creator.FirstName} {Model.Creator.LastName}")
-                }
-            </dd>
-
-            <dt class="col-sm-3">Assigned To</dt>
-            <dd class="col-sm-9">
-                @if (Model.Assignee != null)
-                {
-                    @($"{Model.Assignee.FirstName} {Model.Assignee.LastName}")
-                }
-                else
-                {
-                    <span class="text-muted">Unassigned</span>
-                }
-            </dd>
-
-            <dt class="col-sm-3">Created At</dt>
-            <dd class="col-sm-9">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
-
-            <dt class="col-sm-3">Description</dt>
-            <dd class="col-sm-9">@Model.Description</dd>
-
-            @* Add any other fields like comments, history, attachments, etc. *@
-        </dl>
-
-        <div class="d-flex gap-2">
-            <a asp-action="Edit" asp-route-id="@Model.TicketID" class="btn btn-primary">Edit</a>
-            <a asp-action="Index21" class="btn btn-secondary">Back to list</a>
+        <!-- Action Section -->
+        <div class="detail-section action-section">
+            <div class="action-buttons">
+                <a asp-action="Edit" asp-route-id="@Model.TicketID" class="btn btn-primary action-btn edit-btn">
+                    <i class="btn-icon edit-icon"></i>
+                    Edit Ticket
+                </a>
+                <a asp-action="Index21" class="btn btn-secondary action-btn back-btn">
+                    <i class="btn-icon back-icon"></i>
+                    Back to List
+                </a>
+            </div>
         </div>
     </div>
 </div>

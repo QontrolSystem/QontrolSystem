@@ -298,6 +298,16 @@ body {
     font-weight: 500;
 }
 
+.success-message {
+    width: 100%;
+    height: 5rem;
+    z-index: 1;
+    text-align: center;
+    background-color: var(--success-background-alt);
+    font-weight: bold;
+    color: var(--white);
+    line-height: 5rem;
+}
 
 
 
