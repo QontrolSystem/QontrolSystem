@@ -200,7 +200,15 @@ namespace QontrolSystem.Controllers
 
         public IActionResult TicketDetails(int id)
         {
-            var ticket = _context.Tickets.FirstOrDefault(t => t.TicketID == id);
+            //var ticket = _context.Tickets.FirstOrDefault(t => t.TicketID == id);
+            var ticket = _context.Tickets
+            .Include(t => t.TicketCategory) 
+            .Include(t=>t.TicketAttachments)
+            .Include(t=>t.Creator)
+            .Include(t=>t.TicketUrgency)
+            .Include(t=>t.Assignee)
+            //.Include(t=>t.CreatedBy)
+            .FirstOrDefault(t => t.TicketID == id);
 
             if (ticket == null)
             {
